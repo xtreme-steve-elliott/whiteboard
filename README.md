@@ -23,10 +23,6 @@ Usage
 =====
 Deploy to Heroku. Tell people in the office to use it.  At standup, go over the board, then add a title and click 'create post'.  The board is then cleared for the next day, and you can edit the post at your leisure and deliver it when ready.
 
-Coming Soon
-===========
-There are no promises as to what's actually coming soon.  Things I might get to are styling and UX improvements to make it clearer how to use the app.  Pull requests which move Pivotal specific config to ENV variables are welcome.  One communication problem I'd like to solve is somehow linking the email threads which inevitably develop to the blog comments which today to live in parallel universe.
-
 Development
 ===========
 Whiteboard is a Rails 3 app. It uses rspec with capybara for request specs.  Please add tests if you are adding code.
@@ -38,7 +34,7 @@ Deployment
 	heroku apps:create sf-whiteboard --stack cedar
 	heroku addons:add sendgrid:starter
 	heroku config:add WORDPRESS_USER=username WORDPRESS_PASSWORD=password WORDPRESS_BLOG=blogname.wordpress.com
-	heroku config:add EMAIL_DELIVERY_ADDRESS=all+standup@pivotallabs.com
+	heroku config:add EMAIL_DELIVERY_ADDRESS=mailinglist@example.com
 	heroku config:add AUTHORIZED_IP_ADDRESSES='{ :sf => [ IPAddr.new("10.0.0.1/24") ] }'
 	git push heroku
 
