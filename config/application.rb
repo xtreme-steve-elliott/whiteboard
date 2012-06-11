@@ -58,6 +58,6 @@ module Whiteboard
     config.assets.version = '1.0'
     config.assets.initialize_on_precompile = false
     config.assets.paths << Rails.root.join("lib", "assets", "deck-js")
-    config.assets.precompile += %w(deck.js deck.scss)
+    config.assets.precompile += %w(deck.js deck.css)
   end
 end
