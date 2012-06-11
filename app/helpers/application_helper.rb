@@ -14,7 +14,7 @@ module ApplicationHelper
   end
 
   def standup_closing
-    index = rand(0..STANDUP_CLOSINGS.length-1)
+    index = rand(STANDUP_CLOSINGS.length)
     STANDUP_CLOSINGS[index]
   end
 end
