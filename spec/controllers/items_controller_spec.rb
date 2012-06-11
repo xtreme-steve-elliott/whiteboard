@@ -69,17 +69,6 @@ describe ItemsController do
       assigns[:items]['Help'].should == [ old_help, new_help ]
     end
 
-    it "generates a blog hash with only public items" do
-      help, new_face, interesting = create(:item, kind: "Help"), create(:item, kind: "New face"), create(:item, kind: "Interesting")
-      public_help, public_new_face, public_interesting = create(:item, kind: "Help", public: true), create(:item, kind: "New face", public: true), create(:item, kind: "Interesting", public: true)
-
-      get :index
-      assigns[:public_items]['New face'].should    == [ public_new_face ]
-      assigns[:public_items]['Help'].should        == [ public_help ]
-      assigns[:public_items]['Interesting'].should == [ public_interesting ]
-      response.should be_ok
-    end
-
     it "does not include items which are associated with a post" do
       post = create(:post)
       help, new_face, interesting = create(:item, kind: "Help"), create(:item, kind: "New face"), create(:item, kind: "Interesting")
@@ -90,6 +79,18 @@ describe ItemsController do
       assigns[:items]['Help'].should        == [ help ]
       assigns[:items]['Interesting'].should == [ interesting ]
       response.should be_ok
+    end
+  end
+
+  describe "#presentation" do
+    it "renders the deck template" do
+      get :presentation
+      response.should render_template('deck')
+    end
+
+    it "loads the posts" do
+      get :presentation
+      assigns[:items].should be
     end
   end
 

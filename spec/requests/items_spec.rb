@@ -1,14 +1,16 @@
 require 'spec_helper'
 
 describe "items", type: :request, js: true do
-  it "creates an item" do
+  before do
     mock_omniauth
     visit '/auth/google_apps/callback'
     visit '/'
     find('a[data-kind="New face"] i').click
     fill_in 'item_title', :with => "Johnathon McKenzie"
     click_button 'Create New Face'
+  end
 
+  it "happy path blog post" do
     find('a[data-kind=Help] i').click
     fill_in 'item_title', :with => "IE8 doesn't work"
     fill_in 'item_description', :with => "No, srsly.  It doesn't work"
@@ -36,5 +38,21 @@ describe "items", type: :request, js: true do
     find('.blog_post').should_not have_content("Johnathon McKenzie")
     find('.blog_post').should_not have_content("IE8 doesn't work")
     find('.blog_post').should have_content("Rubymine 5.0 is Out")
+  end
+
+  it 'deck.js for standup' do
+    visit '/items/presentation'
+    find('section.deck-current').should have_content "Standup"
+    page.execute_script("$.deck('next')")
+    find('section.deck-current').should have_content "New faces"
+    find('section.deck-current').should have_content "Johnathon McKenzie"
+    page.execute_script("$.deck('next')")
+    find('section.deck-current').should have_content "Helps"
+    page.execute_script("$.deck('next')")
+    find('section.deck-current').should have_content "Interestings"
+    page.execute_script("$.deck('next')")
+    find('section.deck-current').should have_content "Events"
+    page.execute_script("$.deck('next')")
+    find('section.deck-current').should_not have_content "Events"
   end
 end

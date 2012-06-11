@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Whiteboard</title>
+  <%= stylesheet_link_tag    "deck", :media => "all" %>
+  <%= javascript_include_tag "deck" %>
+  <%= csrf_meta_tags %>
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<%= asset_path 'whiteboard-icon-144x144.png' %>">
+  <link rel="shortcut icon" href="<%= asset_path 'whiteboard-icon-144x144.png' %>" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1024, user-scalable=no">
+</head>
+<body class="deck-container">
+  <%=  yield %>
+  <script>
+    $(function() {
+      $.deck('.slide');
+    });
+  </script>
+</body>
+</html>

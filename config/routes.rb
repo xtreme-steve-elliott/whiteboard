@@ -1,5 +1,9 @@
 Whiteboard::Application.routes.draw do
-  resources :items
+  resources :items do
+    collection do
+      get 'presentation'
+    end
+  end
 
   resources :posts do
     member do

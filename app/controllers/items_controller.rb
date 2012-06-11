@@ -16,7 +16,6 @@ class ItemsController < ApplicationController
 
   def index
     @items = Item.orphans
-    @public_items = Item.public.orphans
   end
 
   def destroy
@@ -38,6 +37,11 @@ class ItemsController < ApplicationController
     else
       render_custom_item_template @item
     end
+  end
+
+  def presentation
+    @items = Item.orphans
+    render layout: 'deck'
   end
 
   private

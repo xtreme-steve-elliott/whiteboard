@@ -57,5 +57,7 @@ module Whiteboard
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
     config.assets.initialize_on_precompile = false
+    config.assets.paths << Rails.root.join("lib", "assets", "deck-js")
+    config.assets.precompile += %w(deck.js deck.scss)
   end
 end
