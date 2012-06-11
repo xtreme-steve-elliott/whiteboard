@@ -13,13 +13,9 @@ describe Post do
       unclaimed_item = create(:item)
 
       post = create(:post)
-      post.items.should == []
-      post.reload
-      post.items.should == []
       post.adopt_all_the_items
 
       post.items.should == [unclaimed_item]
-      old_post.items.should == [claimed_item]
     end
 
     it "does not adopt bumped items" do
