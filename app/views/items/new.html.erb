@@ -16,7 +16,7 @@
     <div class='control-group'>
       <div class='controls'>
         <div class="btn-group" data-toggle-name="item[kind]" data-toggle="buttons-radio" >
-          <% Item::KINDS.each do |kind| %>
+          <% (Item::KINDS - ['New face']).each do |kind| %>
             <button type='button' value='<%= kind %>' class='btn btn-info' data-toggle="button"><%= kind %></button>
           <% end %>
         </div>
