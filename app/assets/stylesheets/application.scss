@@ -81,6 +81,10 @@ a:hover {
   }
 
   @media (min-width: 3840px) {
+    h2 {
+      line-height: 90px;
+      font-size: 80px;
+    }
     li {
       line-height: 80px;
       font-size: 65px;
