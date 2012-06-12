@@ -28,7 +28,7 @@
       <%=  f.hidden_field :kind, value: 'New face' %>
     </div>
     <div class="form-actions">
-      <%= f.submit "Create New Face", class: 'btn btn-primary' %>
+      <%= f.submit "#{@item.persisted? ? "Update" : "Create"} New Face", class: 'btn btn-primary' %>
     </div>
   </fieldset>
 <% end %>
