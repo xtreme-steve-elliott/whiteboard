@@ -14,4 +14,16 @@ describe ApplicationHelper do
       helper.pending_post_count.should == 1
     end
   end
+
+  describe "#show_or_edit_post_path" do
+    it "links to edit if not archived" do
+      post = create(:post)
+      helper.show_or_edit_post_path(post).should == edit_post_path(post)
+    end
+
+    it "links to show if archived" do
+      post = create(:post, archived: true)
+      helper.show_or_edit_post_path(post).should == post_path(post)
+    end
+  end
 end

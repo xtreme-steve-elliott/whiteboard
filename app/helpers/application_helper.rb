@@ -21,4 +21,12 @@ module ApplicationHelper
   def pending_post_count
     Post.pending.size
   end
+
+  def show_or_edit_post_path(post)
+    if post.archived?
+      post_path(post)
+    else
+      edit_post_path(post)
+    end
+  end
 end

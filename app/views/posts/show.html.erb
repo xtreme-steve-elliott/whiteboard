@@ -1,0 +1,16 @@
+<h1><%= @post.title %></h1>
+
+<% items = @post.items_by_type %>
+<% Item::KINDS.each do |kind| %>
+  <% if items[kind] %>
+    <h2><%= kind.pluralize %></h2>
+    <ul>
+      <% items[kind].each do |item| %>
+        <li><%=  item.title %></li>
+        <% if item.description.present? %>
+          <pre><%=  item.description %></pre>
+        <% end %>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>

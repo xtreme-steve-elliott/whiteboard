@@ -29,6 +29,16 @@ describe PostsController do
     end
   end
 
+  describe "#show" do
+    it "shows the post" do
+      post = create(:post)
+      get :show, id: post.id
+      assigns[:post].should == post
+      response.should be_ok
+      response.body.should include(post.title)
+    end
+  end
+
   describe "#update" do
     it "updates the post" do
       post = create(:post)
@@ -54,8 +64,6 @@ describe PostsController do
   end
 
   describe "#archived" do
-    render_views
-
     it "lists the archived posts" do
       create(:post)
       archived_post = create(:post, archived: true)
@@ -85,8 +93,6 @@ describe PostsController do
   end
 
   describe "#post_to_blog" do
-    render_views
-
     class FakeWordpress
       attr_reader :post_opts
       def post(opts)
