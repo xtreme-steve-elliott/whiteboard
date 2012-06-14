@@ -14,28 +14,36 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
       <a class="brand" href="/">
         Whiteboard
       </a>
-      <ul class="nav">
-        <li class="dropdown">
-          <a class='dropdown-toggle posts' data-toggle='dropdown'>Posts<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Pending Posts (#{pending_post_count})", posts_path %></li>
-            <li><%= link_to "Archived Posts", archived_posts_path %></li>
-          </ul>
-        </li>
-        <li><%= link_to "Presentation", presentation_items_path %></li>
-      </ul>
-      <% if session['logged_in'] %>
-        <ul class="nav pull-right">
-          <li>
-            <%= link_to '/logout' do %>
-              <i class='icon-signout'></i>
-            <%- end -%>
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li class="dropdown">
+            <a class='dropdown-toggle posts' data-toggle='dropdown'>Posts<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Pending Posts (#{pending_post_count})", posts_path %></li>
+              <li><%= link_to "Archived Posts", archived_posts_path %></li>
+            </ul>
           </li>
+          <li><%= link_to "Presentation", presentation_items_path %></li>
         </ul>
-      <% end %>
+        <% if session['logged_in'] %>
+          <ul class="nav pull-right">
+            <li>
+              <%= link_to '/logout' do %>
+                <i class='icon-signout hidden-phone'></i>
+                <span class='visible-phone'>Logout</span>
+              <%- end -%>
+            </li>
+          </ul>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
