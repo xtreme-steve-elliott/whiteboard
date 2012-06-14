@@ -44,6 +44,28 @@ describe PostsController do
       get :index
       assigns[:posts].should == [ post ]
     end
+
+    it "does not include archived" do
+      unarchived_post = create(:post)
+      create(:post, archived: true)
+      get :index
+      assigns[:posts].should == [ unarchived_post ]
+    end
+  end
+
+  describe "#archived" do
+    render_views
+
+    it "lists the archived posts" do
+      create(:post)
+      archived_post = create(:post, archived: true)
+
+      get :archived
+
+      assigns[:posts].should =~ [ archived_post  ]
+      response.should render_template('archived')
+      response.body.should include(archived_post.title)
+    end
   end
 
   describe "#send" do
@@ -102,6 +124,20 @@ describe PostsController do
 
       response.should redirect_to(edit_post_path(@post))
       flash[:error].should == "The post has already been blogged"
+    end
+  end
+
+  describe "#archive" do
+    it "archives the post" do
+      @post = create(:post)
+      put :archive, id: @post.id
+      @post.reload.should be_archived
+      response.should redirect_to root_url
+    end
+
+    it "redirects back to index with a flash if it fails" do
+      put :archive, id: 1234
+      response.should be_not_found
     end
   end
 end

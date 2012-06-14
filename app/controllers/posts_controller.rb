@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  before_filter :load_post, except: [:create, :index, :archived]
+
   def create
     @post = Post.new(params[:post])
     if @post.save
@@ -10,12 +12,7 @@ class PostsController < ApplicationController
     end
   end
 
-  def edit
-    @post = Post.find(params[:id])
-  end
-
   def update
-    @post = Post.find(params[:id])
     @post.update_attributes(params[:post])
     if @post.save
       redirect_to edit_post_path(@post)
@@ -25,11 +22,14 @@ class PostsController < ApplicationController
   end
 
   def index
-    @posts = Post.all
+    @posts = Post.pending
+  end
+
+  def archived
+    @posts = Post.archived
   end
 
   def send_email
-    @post = Post.find(params[:id])
     if @post.sent_at
       flash[:error] = "The post has already been emailed"
     else
@@ -39,7 +39,6 @@ class PostsController < ApplicationController
   end
 
   def post_to_blog
-    @post = Post.find(params[:id])
     if @post.blogged_at
       flash[:error] = "The post has already been blogged"
     elsif !view_context.wordpress_enabled?
@@ -54,5 +53,18 @@ class PostsController < ApplicationController
       @post.save!
     end
     redirect_to edit_post_path(@post)
+  end
+
+  def archive
+    @post.archived = true
+    @post.save!
+    redirect_to root_url
+  end
+
+  private
+
+  def load_post
+    @post = Post.find_by_id(params[:id])
+    head 404 unless @post
   end
 end

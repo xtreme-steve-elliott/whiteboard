@@ -1,0 +1,5 @@
+<table class='table-striped'>
+  <% posts.each do |post| %>
+    <tr><td><%= link_to post.title, edit_post_path(post) %></td></tr>
+  <% end %>
+</table>

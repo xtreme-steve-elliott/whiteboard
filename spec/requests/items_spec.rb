@@ -38,6 +38,15 @@ describe "items", type: :request, js: true do
     find('.blog_post').should_not have_content("Johnathon McKenzie")
     find('.blog_post').should_not have_content("IE8 doesn't work")
     find('.blog_post').should have_content("Rubymine 5.0 is Out")
+
+    click_link 'Archive The Post'
+
+    current_url.should match(/http:\/\/127\.0\.0\.1:\d*\//)
+
+    find('a.posts').click
+    click_link 'Archived Posts'
+
+    find('table').should have_content "Epic Standup"
   end
 
   it 'deck.js for standup' do

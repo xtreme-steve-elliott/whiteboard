@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120529050306) do
+ActiveRecord::Schema.define(:version => 20120612151318) do
 
   create_table "items", :force => true do |t|
     t.text     "title"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20120529050306) do
     t.datetime "sent_at"
     t.string   "from",       :default => "Standup Blogger"
     t.datetime "blogged_at"
+    t.boolean  "archived",   :default => false
   end
 
 end

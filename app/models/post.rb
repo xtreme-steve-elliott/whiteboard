@@ -6,6 +6,14 @@ class Post < ActiveRecord::Base
 
   attr_accessible :title, :from
 
+  def self.pending
+    where(archived: false)
+  end
+
+  def self.archived
+    where(archived: true)
+  end
+
   def adopt_all_the_items
     self.items = Item.where(post_id: nil, bumped: false)
   end

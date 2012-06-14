@@ -9,7 +9,13 @@ Whiteboard::Application.routes.draw do
     member do
       put 'send_email'
       put 'post_to_blog'
+      put 'archive'
     end
+
+    collection do
+      get 'archived'
+    end
+
     resources :items, only: [ :new, :create ]
   end
 

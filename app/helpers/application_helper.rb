@@ -17,4 +17,8 @@ module ApplicationHelper
     index = rand(STANDUP_CLOSINGS.length)
     STANDUP_CLOSINGS[index]
   end
+
+  def pending_post_count
+    Post.pending.size
+  end
 end

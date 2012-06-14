@@ -64,4 +64,5 @@ From: <%= @post.from %>
               :method => :put %>
 <% end %>
 
-<h3 class='well'>We're all set here.  Thanks for emailing and blogging.</h3>
+<h3 class='well'> Thanks for emailing and blogging. Click the button below to archive the post.</h3>
+<%= link_to 'Archive The Post', archive_post_path(@post), :method => :put, :class => 'btn btn-warning' %>
