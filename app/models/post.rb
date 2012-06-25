@@ -19,7 +19,11 @@ class Post < ActiveRecord::Base
   end
 
   def title_for_email
-    "[Standup][SF] " + title_for_blog
+    if ENV['SUBJECT_PREFIX'].present?
+      "#{ENV['SUBJECT_PREFIX']} " + title_for_blog
+    else
+      "[Standup] " + title_for_blog
+    end
   end
 
   def title_for_blog

@@ -32,9 +32,21 @@ describe Post do
   end
 
   describe '#title_for_email' do
-    it 'prepends [Standup][SF] and the date' do
-      post = create(:post, title: "With Feeling", created_at: Time.parse("2012-06-02 12:00:00 -0700"))
-      post.title_for_email.should == "[Standup][SF] 06/02/12: With Feeling"
+    context 'when there is a subject prefix set' do
+      before { ENV['SUBJECT_PREFIX'] = '[Standup][NY]' }
+      after { ENV['SUBJECT_PREFIX'] = nil }
+
+      it 'prepends [Standup][SF] and the date' do
+        post = create(:post, title: "With Feeling", created_at: Time.parse("2012-06-02 12:00:00 -0700"))
+        post.title_for_email.should == "#{ENV['SUBJECT_PREFIX']} 06/02/12: With Feeling"
+      end
+    end
+
+    context 'when there is no subject prefix set' do
+      it 'prepends [Standup] and the date' do
+        post = create(:post, title: "With Feeling", created_at: Time.parse("2012-06-02 12:00:00 -0700"))
+        post.title_for_email.should == "[Standup] 06/02/12: With Feeling"
+      end
     end
   end
 
