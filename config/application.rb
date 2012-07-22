@@ -5,7 +5,9 @@ require 'ipaddr'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  groups = Rails.groups(:assets => %w(development test))
+  groups << "font_that_screws_up_capybara_webkit" unless Rails.env.test?
+  Bundler.require(*groups)
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
