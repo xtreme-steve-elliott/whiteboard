@@ -29,4 +29,10 @@ module ApplicationHelper
       edit_post_path(post)
     end
   end
+
+  def markdown_placeholder
+    "A description will appear in the email (and the blog if public), but not be visible during standup. Wrap code in backticks (\"`\") and wrap URLs in angle brackets (\"<\" and \">\") for Markdown goodness."
+    
+  end
+
 end
