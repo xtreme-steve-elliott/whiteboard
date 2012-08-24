@@ -14,6 +14,8 @@ module ApplicationHelper
   end
 
   def standup_closing
+    return "STRETCH! It's Floor Friday!" if Date.today.wday == 5
+    
     index = rand(STANDUP_CLOSINGS.length)
     STANDUP_CLOSINGS[index]
   end
