@@ -46,7 +46,8 @@ class ItemsController < ApplicationController
   end
 
   def presentation
-    @items = Item.orphans.merge(Item.events_on_or_after(Date.today))
+    events = @standup.items.events_on_or_after(Date.today)
+    @items = @standup.items.orphans.merge(events)
     render layout: 'deck'
   end
 
