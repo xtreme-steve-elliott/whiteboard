@@ -86,6 +86,17 @@ describe ItemsController do
       assigns[:items]['Interesting'].should == [ interesting ]
       response.should be_ok
     end
+
+    it "does not include items associated with other standups" do
+      other_standup = create(:standup)
+      standup_event = create(:item, kind: "Event", standup: standup, date: Date.tomorrow)
+      other_standup_event = create(:item, kind: "Event", standup: other_standup, date: Date.tomorrow)
+
+      get :index, params
+
+      assigns[:items]['Event'].should include standup_event
+      assigns[:items]['Event'].should_not include other_standup_event
+    end
   end
 
   describe "#presentation" do
