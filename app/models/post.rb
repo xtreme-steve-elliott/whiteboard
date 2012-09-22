@@ -9,6 +9,8 @@ class Post < ActiveRecord::Base
 
   attr_accessible :title, :from
 
+  delegate :subject_prefix, to: :standup, prefix: :standup
+
   def self.pending
     where(archived: false)
   end
@@ -22,8 +24,8 @@ class Post < ActiveRecord::Base
   end
 
   def title_for_email
-    if ENV['SUBJECT_PREFIX'].present?
-      "#{ENV['SUBJECT_PREFIX']} " + title_for_blog
+    if standup_subject_prefix.present?
+      "#{standup_subject_prefix} " + title_for_blog
     else
       "[Standup] " + title_for_blog
     end

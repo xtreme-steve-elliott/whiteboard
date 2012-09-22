@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "items", type: :request, js: true do
-  let!(:standup) { FactoryGirl.create(:standup, title: 'San Francisco') }
+  let!(:standup) { FactoryGirl.create(:standup, title: 'San Francisco', subject_prefix: "[Standup][SF]") }
   let!(:other_standup) { FactoryGirl.create(:standup, title: 'New York') }
   before do
     mock_omniauth
@@ -38,6 +38,7 @@ describe "items", type: :request, js: true do
     fill_in 'post_from', with: 'Matthew'
     click_button 'Update'
 
+    find('.email_post').should have_content("Subject: [Standup][SF] #{Post.last.created_at.strftime('%m/%d/%y')}: Epic Standup")
     find('.email_post').should have_content("From: Matthew")
     find('.email_post').should have_content("Johnathon McKenzie")
     find('.email_post').should have_content("IE8 doesn't work")
