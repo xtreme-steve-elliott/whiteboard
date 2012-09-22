@@ -40,15 +40,15 @@ describe Item do
 
     let(:date) { Date.parse('1/1/1970') }
     let!(:event_before_date) { create(:item, date: (date - 1.day), kind: 'Event') }
-    let!(:event_on_date) { create(:item, date: (date + 1.day), kind: 'Event') }
-    let!(:event_after_date) { create(:item, date: (date), kind: 'Event') }
+    let!(:event_after_date) { create(:item, date: (date + 1.day), kind: 'Event') }
+    let!(:event_on_date) { create(:item, date: (date), kind: 'Event') }
 
     it { should_not include event_before_date }
     it { should include event_on_date }
     it { should include event_after_date }
 
     it "orders the events by date" do
-      subject.should == [event_after_date, event_on_date]
+      subject.should == [event_on_date, event_after_date]
     end
   end
 end
