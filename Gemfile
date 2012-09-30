@@ -17,6 +17,7 @@ group :test, :development do
   gem 'launchy'
   gem 'sqlite3'
   gem 'database_cleaner'
+  gem 'lobot', '1.0.pre'
 end
 
 group :development do

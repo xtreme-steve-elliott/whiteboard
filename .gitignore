@@ -19,3 +19,5 @@ config/heroku.yml
 .env
 
 .DS_Store
+spec/reports
+config/ci.yml
