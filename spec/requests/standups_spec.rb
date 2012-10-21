@@ -7,7 +7,7 @@ describe "standups", type: :request, js: true do
     visit '/'
   end
 
-  it "creates new standups" do
+  it "creates new standups", js: true do
     page.should have_content 'Choose a Standup'
     click_link('New Standup')
 
@@ -19,7 +19,8 @@ describe "standups", type: :request, js: true do
     current_page = current_url
     current_page.should match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
     page.should have_content 'London'
-    click_link('London')
+    page.find('a.posts', text: 'London').click
+    click_link('Current Post')
     current_page.should match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
   end
 end
