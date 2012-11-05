@@ -6,8 +6,8 @@
       <% if item.date.present? %>
 ### <%= date_label(item) %><%= item.title %>
       <% else %>
-### <%= item.title.html_safe %> <%= "(#{item.author})" if include_authors && item.author.present? %>
-      <% end %>
+### <%= item.title.html_safe %>
+      <% end %><%= "(#{item.author})" if include_authors && item.author.present? %>
     <% if item.description.present? %>
 
 <%= item.description.html_safe %>
