@@ -20,7 +20,7 @@ class Post < ActiveRecord::Base
   end
 
   def adopt_all_the_items
-    self.items = Item.where(post_id: nil, bumped: false).where("kind != 'Event'")
+    self.items = Item.for_post
   end
 
   def title_for_email

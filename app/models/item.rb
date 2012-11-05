@@ -22,6 +22,10 @@ class Item < ActiveRecord::Base
     where(kind: "Event").where("date >= ?", date).order("date").group_by(&:kind)
   end
 
+  def self.for_post
+    where(post_id: nil, bumped: false).where("kind != 'Event'").where("date IS NULL OR date <= ?", Date.today)
+  end
+
   def possible_template_name
     kind && "items/new_#{kind.downcase.gsub(" ", '_')}"
   end

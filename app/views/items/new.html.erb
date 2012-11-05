@@ -60,6 +60,13 @@
     </div>
 
     <div class='control-group'>
+      <%= f.label :date, class: 'control-label' %>
+      <div class='controls'>
+        <%= f.text_field :date, value: @item.date || Date.today, "data-date-format" => "yyyy-mm-dd" %>
+      </div>
+    </div>
+
+    <div class='control-group'>
       <%= f.label :description, class: 'control-label' %><br />
       <div class='controls'>
         <%= f.text_area :description, placeholder: markdown_placeholder %>

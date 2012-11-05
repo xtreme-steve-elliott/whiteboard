@@ -36,6 +36,16 @@ describe Post do
 
       post.items.should == [unclaimed_item]
     end
+
+    it "does not adopt items with a date after today" do
+      item_for_today = create(:item, date: Date.today)
+      item_for_tomorrow = create(:item, date: Date.tomorrow)
+
+      post = create(:post)
+      post.adopt_all_the_items
+
+      post.items.should == [item_for_today]
+    end
   end
 
   describe '#title_for_email' do
