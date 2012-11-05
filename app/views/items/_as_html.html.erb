@@ -15,6 +15,9 @@
                     <%= Date::DAYNAMES[item.date.wday] %>:
                   <% end %>
                   <%= item.title %>
+                  <% if item.author.present? %>
+                    <%= "(#{item.author})" %>
+                  <% end %>
                   <%= link_to edit_item_path(item) do %>
                     <i class="icon-pencil"></i>
                   <% end %>

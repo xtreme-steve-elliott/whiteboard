@@ -10,6 +10,9 @@
         <% if item.description.present? %>
           <pre><%=  item.description %></pre>
         <% end %>
+        <% if item.author.present? %>
+          <pre>(<%=  item.author %>)</pre>
+        <% end %>
       <% end %>
     </ul>
   <% end %>

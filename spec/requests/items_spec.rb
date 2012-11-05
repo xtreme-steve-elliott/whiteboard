@@ -15,6 +15,10 @@ describe "items", type: :request, js: true do
     fill_in 'item_title', :with => "Party"
     fill_in 'item_date', :with => 5.days.from_now.to_date.strftime("%Y-%m-%d")
     click_button 'Create Item'
+    find('a[data-kind="Interesting"] i').click
+    fill_in 'item_title', :with => "Linux 3.2 out"
+    fill_in 'item_author', :with => "Linus Torvalds"
+    click_button 'Create Item'
   end
 
   it "happy path blog post" do
@@ -32,6 +36,8 @@ describe "items", type: :request, js: true do
 
     find('a[data-kind=Interesting] i').click
     fill_in 'item_title', :with => "Rubymine 5.0 is Out"
+    fill_in 'item_author', :with => "Linus Torvalds"
+    fill_in 'item_description', :with => "Better than ed"
     find("button:contains('Public')").click
     click_button 'Create Item'
 
@@ -43,11 +49,13 @@ describe "items", type: :request, js: true do
     find('.email_post').should have_content("Johnathon McKenzie")
     find('.email_post').should have_content("IE8 doesn't work")
     find('.email_post').should have_content("Rubymine 5.0 is Out")
+    find('.email_post').should have_content("Linus Torvalds")
     find('.email_post').should have_content("Party")
 
     find('.blog_post').should_not have_content("Johnathon McKenzie")
     find('.blog_post').should_not have_content("IE8 doesn't work")
     find('.blog_post').should have_content("Rubymine 5.0 is Out")
+    find('.blog_post').should_not have_content("Linus Torvalds")
 
     click_link 'Archive The Post'
 
@@ -69,6 +77,8 @@ describe "items", type: :request, js: true do
     find('section.deck-current').should have_content "Helps"
     page.execute_script("$.deck('next')")
     find('section.deck-current').should have_content "Interestings"
+    find('section.deck-current').should have_content("Linux 3.2 out")
+    find('section.deck-current').should have_content("Linus Torvalds")
     page.execute_script("$.deck('next')")
     find('section.deck-current').should have_content "Events"
     find('section.deck-current').should have_content "Party"

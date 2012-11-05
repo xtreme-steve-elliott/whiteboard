@@ -8,6 +8,12 @@ describe SessionsController do
       request.session['logged_in'].should be
     end
 
+    it "sets the session['username'] to the current user's name" do
+      request.env['omniauth.auth'] = { 'info' => { 'name' => 'Dennis' } }
+      get :create
+      request.session['username'].should == 'Dennis'
+    end
+
     it "does not allow someone from outside pivotallabs.com to log in" do
       request.env['omniauth.auth'] = { 'info' => { 'email' => 'mkocher@l33thack3r.com' } }
       get :create

@@ -50,7 +50,7 @@ class PostsController < ApplicationController
       wordpress.post(title: @post.title,
                      body: render_to_string(partial: 'items/as_markdown',
                                             layout: false,
-                                            locals: {items: @post.public_items_by_type}) )
+                                            locals: {items: @post.public_items_by_type, include_authors: false}) )
       @post.blogged_at = Time.now
       @post.save!
     end

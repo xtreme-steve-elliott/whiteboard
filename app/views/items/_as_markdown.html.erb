@@ -6,13 +6,13 @@
       <% if item.date.present? %>
 ### <%= Date::DAYNAMES[item.date.wday] %>: <%= item.title %>
       <% else %>
-### <%= item.title.html_safe %>
+### <%= item.title.html_safe %> <%= "(#{item.author})" if include_authors && item.author.present? %>
       <% end %>
     <% if item.description.present? %>
 
 <%= item.description.html_safe %>
+<% end %>
 
-  <% end %>
 <% end %>
 
 <% end %>
