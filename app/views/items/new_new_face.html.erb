@@ -21,6 +21,8 @@
       </div>
     </div>
 
+    <%= render partial: 'date_picker', locals: {f: f, item: @item} %>
+
     <div class="field">
       <%= f.hidden_field :post_id %>
     </div>

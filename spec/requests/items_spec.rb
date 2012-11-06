@@ -8,13 +8,21 @@ describe "items", type: :request, js: true do
     visit '/auth/google_apps/callback'
     visit '/'
     click_link(standup.title)
+
     find('a[data-kind="New face"] i').click
     fill_in 'item_title', :with => "Johnathon McKenzie"
     click_button 'Create New Face'
+
+    find('a[data-kind="New face"] i').click
+    fill_in 'item_title', :with => "Jane Doe"
+    fill_in 'item_date', :with => 5.days.from_now.to_date.strftime("%Y-%m-%d")
+    click_button 'Create New Face'
+
     find('a[data-kind="Event"] i').click
     fill_in 'item_title', :with => "Party"
     fill_in 'item_date', :with => 5.days.from_now.to_date.strftime("%Y-%m-%d")
     click_button 'Create Item'
+
     find('a[data-kind="Interesting"] i').click
     fill_in 'item_title', :with => "Linux 3.2 out"
     fill_in 'item_author', :with => "Linus Torvalds"
@@ -51,8 +59,10 @@ describe "items", type: :request, js: true do
     find('.email_post').should have_content("Rubymine 5.0 is Out")
     find('.email_post').should have_content("Linus Torvalds")
     find('.email_post').should have_content("Party")
+    find('.email_post').should_not have_content("Jane Doe")
 
     find('.blog_post').should_not have_content("Johnathon McKenzie")
+    find('.blog_post').should_not have_content("Jane Doe")
     find('.blog_post').should_not have_content("IE8 doesn't work")
     find('.blog_post').should have_content("Rubymine 5.0 is Out")
     find('.blog_post').should_not have_content("Linus Torvalds")
