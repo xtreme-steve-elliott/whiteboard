@@ -86,4 +86,25 @@ describe StandupsController do
       response.should redirect_to standups_path
     end
   end
+
+  describe "#route" do
+    let!(:new_york) { create(:standup, ip_key: "nyc") }
+    let!(:san_fran) { create(:standup, ip_key: "sf") }
+
+    it "redirects to the standup that corresponds with the given ip" do
+      with_authorized_ips({nyc: [IPAddr.new("127.0.0.1/32")], sf: [IPAddr.new("123.4.5.6/32")]}) do
+        request.env['REMOTE_ADDR'] = '123.4.5.6'
+        get :route
+        response.should redirect_to standup_items_path(san_fran)
+      end
+    end
+
+    it "redirects to the standup index page if no standup with a corresponding ip" do
+      with_authorized_ips do
+        request.env['REMOTE_ADDR'] = '111.9.9.9'
+        get :route
+        response.should redirect_to standups_path
+      end
+    end
+  end
 end

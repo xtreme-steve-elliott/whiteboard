@@ -39,6 +39,9 @@
           <% if session['logged_in'] %>
             <ul class="nav pull-right">
               <li>
+              <%= link_to "All Standups", standups_path %>
+              </li>
+              <li>
                 <%= link_to '/logout' do %>
                   <i class='icon-signout hidden-phone'></i>
                   <span class='visible-phone'>Logout</span>

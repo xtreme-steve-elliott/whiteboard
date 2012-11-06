@@ -1,5 +1,5 @@
 class StandupsController < ApplicationController
-  before_filter :load_standup, except: [:index, :new, :create]
+  before_filter :load_standup, except: [:index, :new, :create, :route]
 
   def create
     @standup = Standup.new(params[:standup])
@@ -41,6 +41,17 @@ class StandupsController < ApplicationController
     @standup = Standup.find(params[:id])
     @standup.destroy
     redirect_to standups_path
+  end
+
+  def route
+    ip_key = AuthorizedIps.corresponding_ip_key(request.env['REMOTE_ADDR'])
+    standup = Standup.find_by_ip_key(ip_key)
+
+    if ip_key && standup
+      redirect_to standup_items_path(standup)
+    else
+      redirect_to standups_path
+    end
   end
 
 

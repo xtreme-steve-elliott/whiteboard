@@ -14,6 +14,13 @@
       </div>
     </div>
 
+    <div class='ip_key'>
+      <div class='controls'>
+        <%= form.label :ip_key %>
+        <%= form.select(:ip_key, AuthorizedIps::AUTHORIZED_IP_ADDRESSES.keys) %>
+      </div>
+    </div>
+
     <div class='to_address'>
       <div class='controls'>
         <%= form.label :to_address %>

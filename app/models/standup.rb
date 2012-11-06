@@ -1,5 +1,5 @@
 class Standup < ActiveRecord::Base
-  attr_accessible :title, :to_address, :subject_prefix
+  attr_accessible :title, :to_address, :subject_prefix, :ip_key
 
   has_many :items, dependent: :destroy
   has_many :posts, dependent: :destroy
