@@ -93,7 +93,7 @@ describe StandupsController do
 
     it "redirects to the standup that corresponds with the given ip" do
       with_authorized_ips({nyc: [IPAddr.new("127.0.0.1/32")], sf: [IPAddr.new("123.4.5.6/32")]}) do
-        request.env['HTTP_X_REAL_IP'] = '123.4.5.6'
+        request.stub(remote_ip: '123.4.5.6')
         get :route
         response.should redirect_to standup_items_path(san_fran)
       end
@@ -101,7 +101,7 @@ describe StandupsController do
 
     it "redirects to the standup index page if no standup with a corresponding ip" do
       with_authorized_ips do
-        request.env['HTTP_X_REAL_IP'] = '111.9.9.9'
+        request.stub(remote_ip: '111.9.9.9')
         get :route
         response.should redirect_to standups_path
       end
