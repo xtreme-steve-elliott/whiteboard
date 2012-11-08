@@ -44,7 +44,7 @@ class StandupsController < ApplicationController
   end
 
   def route
-    ip_key = AuthorizedIps.corresponding_ip_key(request.env['REMOTE_ADDR'])
+    ip_key = AuthorizedIps.corresponding_ip_key(request.env['HTTP_X_REAL_IP'])
     standup = Standup.find_by_ip_key(ip_key)
 
     if ip_key && standup
@@ -53,7 +53,6 @@ class StandupsController < ApplicationController
       redirect_to standups_path
     end
   end
-
 
   private
 
