@@ -81,18 +81,26 @@ describe "items", type: :request, js: true do
     visit presentation_standup_items_path(standup)
     find('section.deck-current').should have_content "Standup"
     page.execute_script("$.deck('next')")
+
     find('section.deck-current').should have_content "New faces"
     find('section.deck-current').should have_content "Johnathon McKenzie"
     page.execute_script("$.deck('next')")
+
     find('section.deck-current').should have_content "Helps"
     page.execute_script("$.deck('next')")
+
     find('section.deck-current').should have_content "Interestings"
     find('section.deck-current').should have_content("Linux 3.2 out")
     find('section.deck-current').should have_content("Linus Torvalds")
     page.execute_script("$.deck('next')")
+
     find('section.deck-current').should have_content "Events"
     find('section.deck-current').should have_content "Party"
     page.execute_script("$.deck('next')")
+
     find('section.deck-current').should_not have_content "Events"
+
+    click_link "Exit"
+    current_path.should == standup_items_path(standup)
   end
 end
