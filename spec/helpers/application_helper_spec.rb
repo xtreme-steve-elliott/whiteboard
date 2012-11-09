@@ -99,6 +99,18 @@ describe ApplicationHelper do
             label.should == "Tuesday: "
           end
         end
+
+        describe "when the date is more than a week away" do
+          before do
+            Date.stub(today: Date.new(2012, 11, 04))
+            item.date = Date.new(2012, 11, 22)
+          end
+
+          it "displays the date rather than the day name" do
+            label = helper.date_label(item)
+            label.should == "11/22: "
+          end
+        end
       end
     end
   end

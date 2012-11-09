@@ -46,7 +46,15 @@ module ApplicationHelper
 
   def date_label(item)
     if item.date.present? && (item.kind == "Event" || item.date > Date.today)
+      return item.date.strftime("%m/%d") + ": " if is_item_after_this_week
       Date::DAYNAMES[item.date.wday].to_s + ": "
     end
+  end
+
+
+  private
+
+  def is_item_after_this_week
+    item.date > Date.today.at_end_of_week
   end
 end
