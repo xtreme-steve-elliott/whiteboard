@@ -90,13 +90,13 @@ describe ApplicationHelper do
 
         describe "when the date is in the future" do
           before do
-            Date.stub(today: Date.new(2012, 11, 04))
-            item.date = Date.new(2012, 11, 06)
+            Date.stub(today: Date.new(2012, 11, 05))
+            item.date = Date.new(2012, 11, 07)
           end
 
           it "returns the day of the week" do
             label = helper.date_label(item)
-            label.should == "Tuesday: "
+            label.should == "Wednesday: "
           end
         end
 
