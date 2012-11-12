@@ -12,7 +12,7 @@ class ItemsController < ApplicationController
 
   def new
     @standup = Standup.find_by_id(params[:standup_id])
-    options = (params[:item] || {}).merge(post_id: params[:post_id])
+    options = (params[:item] || {}).merge({post_id: params[:post_id], author: session[:username]})
     @item = @standup.items.build(options)
     render_custom_item_template @item
   end

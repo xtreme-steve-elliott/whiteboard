@@ -54,6 +54,13 @@ describe ItemsController do
       get :new, params.merge(item: { kind: 'Interesting' })
       assigns[:item].kind.should == 'Interesting'
     end
+
+    it "should set the author on the new Item" do
+      session[:username] = "Barney Rubble"
+      get :new, params
+      item = assigns[:item]
+      item.author.should == "Barney Rubble"
+    end
   end
 
   describe "#index" do
