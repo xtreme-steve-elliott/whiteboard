@@ -14,12 +14,14 @@ describe Post do
   end
 
   describe "#adopt_all_items" do
-    it "claims all items not associated with a post" do
+    let(:standup) { create(:standup) }
+
+    it "adopts all items not associated with a post" do
       old_post = create(:post)
       claimed_item = create(:item, post: old_post)
-      unclaimed_item = create(:item)
+      unclaimed_item = create(:item, standup: standup)
 
-      post = create(:post)
+      post = create(:post, standup: standup)
       post.adopt_all_the_items
 
       post.items.should == [unclaimed_item]
@@ -28,23 +30,35 @@ describe Post do
     it "does not adopt bumped items" do
       old_post = create(:post)
       claimed_item = create(:item, post: old_post)
-      unclaimed_item = create(:item)
-      bumped_item = create(:item, bumped: true)
+      unclaimed_item = create(:item, standup: standup)
+      bumped_item = create(:item, bumped: true, standup: standup)
 
-      post = create(:post)
+      post = create(:post, standup: standup)
       post.adopt_all_the_items
 
       post.items.should == [unclaimed_item]
     end
 
     it "does not adopt items with a date after today" do
-      item_for_today = create(:item, date: Date.today)
-      item_for_tomorrow = create(:item, date: Date.tomorrow)
+      item_for_today = create(:item, date: Date.today, standup: standup)
+      item_for_tomorrow = create(:item, date: Date.tomorrow, standup: standup)
 
-      post = create(:post)
+      post = create(:post, standup: standup)
       post.adopt_all_the_items
 
       post.items.should == [item_for_today]
+    end
+
+    it "adopts items only for same standup" do
+      other_standup = create(:standup)
+
+      item_for_other_standup = create(:item, standup: other_standup)
+      unclaimed_item = create(:item, standup: standup)
+
+      post = create(:post, standup: standup)
+      post.adopt_all_the_items
+
+      post.items.should == [unclaimed_item]
     end
   end
 

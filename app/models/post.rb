@@ -20,7 +20,7 @@ class Post < ActiveRecord::Base
   end
 
   def adopt_all_the_items
-    self.items = Item.for_post
+    self.items = Item.for_post(standup)
   end
 
   def title_for_email

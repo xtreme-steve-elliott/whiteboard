@@ -22,8 +22,11 @@ class Item < ActiveRecord::Base
     where(kind: "Event").where("date >= ?", date).order("date").group_by(&:kind)
   end
 
-  def self.for_post
-    where(post_id: nil, bumped: false).where("kind != 'Event'").where("date IS NULL OR date <= ?", Date.today)
+  def self.for_post(standup)
+    where(post_id: nil, bumped: false).
+      where("standup_id = #{standup.id} OR standup_id IS NULL").
+      where("kind != 'Event'").
+      where("date IS NULL OR date <= ?", Date.today)
   end
 
   def possible_template_name

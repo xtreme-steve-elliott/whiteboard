@@ -10,12 +10,19 @@ describe "items", type: :request, js: true do
     click_link(standup.title)
 
     find('a[data-kind="New face"] i').click
+    fill_in 'item_title', :with => "Fred Flintstone"
+    select 'New York', :from => 'Location'
+    click_button 'Create New Face'
+
+    find('a[data-kind="New face"] i').click
     fill_in 'item_title', :with => "Johnathon McKenzie"
+    select 'San Francisco', from: 'Location'
     click_button 'Create New Face'
 
     find('a[data-kind="New face"] i').click
     fill_in 'item_title', :with => "Jane Doe"
     fill_in 'item_date', :with => 5.days.from_now.to_date.strftime("%Y-%m-%d")
+    select 'San Francisco', from: 'Location'
     click_button 'Create New Face'
 
     find('a[data-kind="Event"] i').click
@@ -60,6 +67,7 @@ describe "items", type: :request, js: true do
     find('.email_post').should have_content("Linus Torvalds")
     find('.email_post').should have_content("Party")
     find('.email_post').should_not have_content("Jane Doe")
+    find('.email_post').should_not have_content("Fred Flintstone")
 
     find('.blog_post').should_not have_content("Johnathon McKenzie")
     find('.blog_post').should_not have_content("Jane Doe")

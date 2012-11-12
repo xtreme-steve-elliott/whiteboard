@@ -53,20 +53,24 @@ describe Item do
   end
 
   describe "#for_post" do
-    subject { Item.for_post }
+    subject { Item.for_post(standup) }
+    let!(:standup) { FactoryGirl.create(:standup, title: 'San Francisco', subject_prefix: "[Standup][SF]") }
+    let!(:other_standup) { FactoryGirl.create(:standup, title: 'New York') }
 
-    let!(:post) { create(:post) }
-    let!(:item_with_no_post_id) { create(:item, post_id: nil, kind: "Help") }
-    let!(:item_with_post_id) { create(:item, post_id: post.id, kind: "Help") }
+    let!(:post) { create(:post, standup: standup) }
+    let!(:item_with_no_post_id) { create(:item, post_id: nil, kind: "Help", standup: standup) }
+    let!(:item_with_post_id) { create(:item, post_id: post.id, kind: "Help", standup: standup) }
 
-    let!(:item_not_bumped) { create(:item, bumped: false, kind: "Help") }
-    let!(:bumped_item) { create(:item, bumped: true, kind: "Help") }
+    let!(:item_not_bumped) { create(:item, bumped: false, kind: "Help", standup: standup) }
+    let!(:bumped_item) { create(:item, bumped: true, kind: "Help", standup: standup) }
 
-    let!(:item_for_today) { create(:item, date: Date.today, kind: "Help") }
-    let!(:item_with_no_date) { create(:item, date: nil, kind: "Help") }
-    let!(:item_for_tomorrow) { create(:item, date: Date.tomorrow, kind: "Help") }
+    let!(:item_for_today) { create(:item, date: Date.today, kind: "Help", standup: standup) }
+    let!(:item_with_no_date) { create(:item, date: nil, kind: "Help", standup: standup) }
+    let!(:item_for_tomorrow) { create(:item, date: Date.tomorrow, kind: "Help", standup: standup) }
 
-    let!(:event_today) { create(:item, date: Date.today, kind: 'Event') }
+    let!(:item_for_different_standup) { create(:item, date: nil, kind: "Help", standup: other_standup) }
+
+    let!(:event_today) { create(:item, date: Date.today, kind: 'Event', standup: standup) }
 
     it "includes item with no post id" do
       should include item_with_no_post_id
@@ -89,7 +93,11 @@ describe Item do
     end
 
     it "combines all of the above" do
-      subject.should == [item_with_no_post_id, item_not_bumped, item_for_today, item_with_no_date]
+      should == [item_with_no_post_id, item_not_bumped, item_for_today, item_with_no_date]
+    end
+
+    it "does not include items for other standups" do
+      should_not include item_for_different_standup
     end
   end
 end
