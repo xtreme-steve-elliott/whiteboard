@@ -37,7 +37,7 @@ module ApplicationHelper
   end
 
   def format_title(item)
-    if item.kind == "Event"
+    if item.date?
       "#{item.date.strftime("%A(%m/%d)")}: #{item.title}"
     else
       item.title
