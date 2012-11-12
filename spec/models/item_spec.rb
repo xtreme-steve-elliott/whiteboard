@@ -3,6 +3,17 @@ require 'spec_helper'
 describe Item do
   let(:item) { build_stubbed(:item) }
 
+  describe "default_scope" do
+    let!(:furthest_item) { create(:item, date: 5.days.from_now) }
+    let!(:closest_item) { create(:item, date: 1.days.from_now) }
+    let!(:middlest_item) { create(:item, date: 3.days.from_now) }
+    let!(:no_date_item) { create(:item, date: nil) }
+
+    it "should bring them back in date asc order" do
+      Item.all.should == [no_date_item, closest_item, middlest_item, furthest_item]
+    end
+  end
+
   describe "associations" do
     it { should belong_to(:post) }
     it { should belong_to(:standup) }
@@ -93,7 +104,7 @@ describe Item do
     end
 
     it "combines all of the above" do
-      should == [item_with_no_post_id, item_not_bumped, item_for_today, item_with_no_date]
+      should =~ [item_with_no_post_id, item_not_bumped, item_for_today, item_with_no_date]
     end
 
     it "does not include items for other standups" do
