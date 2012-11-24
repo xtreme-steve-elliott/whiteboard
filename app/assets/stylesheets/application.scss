@@ -39,6 +39,7 @@ a:hover {
 
 .outer {
   height: 100%;
+  width: 100%;
   @include display-box;
   @include box-orient(horizontal);
   @include box-pack(top);
@@ -63,10 +64,6 @@ a:hover {
 }
 
 .kind {
-  i {
-    color: #08C;
-  }
-
   overflow: scroll;
   width: 100%;
   height: 100%;
@@ -78,7 +75,7 @@ a:hover {
   @include box-flex(1);
 
   @media (max-width: 979px) {
-    padding-top: 10px;
+    margin: 0;
   }
 
   @media (min-width: 3840px) {
@@ -104,6 +101,67 @@ a:hover {
       line-height: 24px;
       font-size: 20px;
     }
+  }
+}
+
+.block {
+  @include display-box;
+  @include box-orient(horizontal);
+
+  padding: 0 8px 8px 8px;
+
+  h2, a {
+    margin-top: 8px;
+  }
+
+  a {
+    @include display-box;
+    color: #08C;
+    font-size: 24px;
+  }
+
+  i.icon-plus-sign {
+    margin-top: 10px;
+  }
+}
+
+.spacer {
+  @include display-box;
+  @include box-flex(1);
+}
+
+.item {
+  @include display-box;
+  @include box-orient(vertical);
+
+  font-size: 1rem;
+  line-height: 1.2rem;
+
+  .author {
+    color: #aaa;
+    margin-top: 8px;
+  }
+
+  .text {
+    margin-top: 8px;
+    color: black;
+  }
+}
+
+.tools {
+  @include display-box;
+  @include box-orient(horizontal);
+  @include box-align(center);
+  @include box-pack(justify);
+
+  border-top: none;
+
+  a {
+    margin: 0 30px;
+  }
+
+  i {
+    font-size: 20px;
   }
 }
 

@@ -1,0 +1,57 @@
+//
+// Mobile-specific media queries
+//
+
+@import "jquery.qtip.min";
+@import "bootstrap";
+@import "bootstrap-responsive";
+@import 'font-awesome';
+@import "compass/css3/box";
+
+// Swap the below two lines when debugging/styling in Chrome, which
+// can't get smaller than 400px wide
+//@media (max-width: 401px) {
+@media (max-width: 321px) {
+
+  // correct for Bootstrap's padding
+  body {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  // un-correct correction of Bootstrap's padding
+  .navbar {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .block {
+    border-bottom: 1px solid #ccc;
+
+    &.header {
+      padding-right: 4px;
+      background-color: #eee;
+    }
+
+    h2, a {
+      margin-top: 8px;
+    }
+
+    a {
+      @include display-box;
+
+      i.icon-plus-sign {
+        margin-top: 10px;
+      }
+    }
+
+    &.item {
+      border-bottom: none;
+    }
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+  }
+}
