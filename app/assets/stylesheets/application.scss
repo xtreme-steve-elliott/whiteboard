@@ -108,10 +108,10 @@ a:hover {
   @include display-box;
   @include box-orient(horizontal);
 
-  padding: 0 8px 8px 8px;
+  padding: 8px;
 
-  h2, a {
-    margin-top: 8px;
+  h1, h2, a {
+    padding-bottom: 8px;
   }
 
   a {
@@ -125,11 +125,6 @@ a:hover {
   }
 }
 
-.spacer {
-  @include display-box;
-  @include box-flex(1);
-}
-
 .item {
   @include display-box;
   @include box-orient(vertical);
@@ -139,13 +134,38 @@ a:hover {
 
   .author {
     color: #aaa;
-    margin-top: 8px;
+    padding-bottom: 8px;
   }
 
   .text {
-    margin-top: 8px;
+    padding-bottom: 8px;
     color: black;
   }
+}
+
+.with-hint {
+  @include box-orient(vertical);
+}
+
+.hint {
+  display: none;
+  padding: 0 8px;
+  color: #777;
+  font-style: italic;
+}
+
+.hint.always {
+  display: inherit;
+  padding-top: 8px;
+}
+
+.with-qtip {
+  @include display-box;
+  @include box-orient(horizontal);
+}
+
+.has-qtip {
+  margin-left: 14px;
 }
 
 .tools {
@@ -163,6 +183,11 @@ a:hover {
   i {
     font-size: 20px;
   }
+}
+
+.spacer {
+  @include display-box;
+  @include box-flex(1);
 }
 
 .bottom.navbar {

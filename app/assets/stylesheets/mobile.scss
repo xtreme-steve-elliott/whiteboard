@@ -26,18 +26,15 @@
 
   .block {
     border-bottom: 1px solid #ccc;
+    padding-bottom: 0;
 
     &.header {
       padding-right: 4px;
       background-color: #eee;
     }
 
-    h1, h2, a {
-      margin-top: 8px;
-    }
-
-    i.icon-plus-sign {
-      margin-top: 10px;
+    &.with-hint {
+      padding-bottom: 8px;
     }
 
     &.item {
@@ -45,8 +42,13 @@
     }
   }
 
+  .block:first-child {
+    margin-top: 0;
+  }
+
   .block:last-child {
     border-bottom: none;
+    padding-bottom: 8px;
   }
 
   ul {
@@ -54,27 +56,57 @@
     margin: 0;
   }
 
-  fieldset .block label {
+  form .block label {
     display: none;
   }
 
-  input, select {
-    margin-top: 8px;
+  input, select, textarea {
 
     &.wide {
       display: block;
       width: 100%;
       padding-left: 0;
       padding-right: 0;
+      margin-bottom: 8px;
     }
   }
 
-  // copied from a more recent version of Bootstrap to get full-width buttons
+  textarea.wide {
+    box-sizing: border-box;
+  }
+
+  .hint {
+    display: inherit;
+    padding: 0 14px;
+  }
+
+  .has-qtip {
+    display: none;
+  }
+
+// copied from a more recent version of Bootstrap to get full-width buttons
   .btn.btn-block {
     width: 100%;
     padding-left: 0;
     padding-right: 0;
     display: block;
+  }
+
+  .btn-group.btn-block {
+    @include display-box;
+    @include box-orient(horizontal);
+    padding-left: 0;
+    padding-right: 0;
+
+    width: 100%;
+    margin-bottom: 8px;
+
+    button {
+      @include display-box;
+      @include box-orient(horizontal);
+      @include box-pack(center);
+      @include box-flex(1);
+    }
   }
 }
 
