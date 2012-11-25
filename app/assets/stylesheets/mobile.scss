@@ -10,16 +10,15 @@
 
 // Swap the below two lines when debugging/styling in Chrome, which
 // can't get smaller than 400px wide
-//@media (max-width: 401px) {
-@media (max-width: 321px) {
+@media (max-width: 481px) {
 
-  // correct for Bootstrap's padding
+// correct for Bootstrap's padding
   body {
     padding-left: 0;
     padding-right: 0;
   }
 
-  // un-correct correction of Bootstrap's padding
+// un-correct correction of Bootstrap's padding
   .navbar {
     padding-left: 20px;
     padding-right: 20px;
@@ -33,16 +32,12 @@
       background-color: #eee;
     }
 
-    h2, a {
+    h1, h2, a {
       margin-top: 8px;
     }
 
-    a {
-      @include display-box;
-
-      i.icon-plus-sign {
-        margin-top: 10px;
-      }
+    i.icon-plus-sign {
+      margin-top: 10px;
     }
 
     &.item {
@@ -50,8 +45,36 @@
     }
   }
 
+  .block:last-child {
+    border-bottom: none;
+  }
+
   ul {
     list-style-type: none;
     margin: 0;
   }
+
+  fieldset .block label {
+    display: none;
+  }
+
+  input, select {
+    margin-top: 8px;
+
+    &.wide {
+      display: block;
+      width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  // copied from a more recent version of Bootstrap to get full-width buttons
+  .btn.btn-block {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    display: block;
+  }
 }
+

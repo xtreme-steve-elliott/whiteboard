@@ -116,12 +116,12 @@ a:hover {
 
   a {
     @include display-box;
-    color: #08C;
-    font-size: 24px;
   }
 
   i.icon-plus-sign {
     margin-top: 10px;
+    color: #08C;
+    font-size: 24px;
   }
 }
 
