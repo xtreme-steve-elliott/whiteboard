@@ -148,24 +148,9 @@ a:hover {
 }
 
 .hint {
-  display: none;
-  padding: 0 8px;
+  padding: 8px 8px 0 8px;;
   color: #777;
   font-style: italic;
-}
-
-.hint.always {
-  display: inherit;
-  padding-top: 8px;
-}
-
-.with-qtip {
-  @include display-box;
-  @include box-orient(horizontal);
-}
-
-.has-qtip {
-  margin-left: 14px;
 }
 
 .tools {
