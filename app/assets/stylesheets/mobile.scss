@@ -11,6 +11,10 @@
 // can't get smaller than 400px wide
 @media (max-width: 481px) {
 
+  .outer {
+    margin-top: -18px;
+  }
+
 // correct for Bootstrap's padding
   body {
     padding-left: 0;
@@ -30,14 +34,6 @@
     &.header {
       background-color: #eee;
     }
-
-    &.with-hint {
-      padding-bottom: 8px;
-    }
-
-    &.item, &.description {
-      border-bottom: none;
-    }
   }
 
   .block:first-child {
@@ -45,13 +41,11 @@
   }
 
   .block:last-child {
-    border-bottom: none;
     padding-bottom: 8px;
   }
 
-  ul {
-    list-style-type: none;
-    margin: 0;
+  .with-hint {
+    padding-bottom: 8px;
   }
 
   form .block label {

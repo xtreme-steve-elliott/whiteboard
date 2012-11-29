@@ -82,24 +82,6 @@ a:hover {
       line-height: 90px;
       font-size: 80px;
     }
-    li {
-      line-height: 80px;
-      font-size: 65px;
-    }
-  }
-
-  @media (min-width: 980px) and (max-width: 3840px) {
-    li {
-      line-height: 32px;
-      font-size: 24px;
-    }
-  }
-
-  @media (min-width: 481px) and (max-width: 979px) {
-    li {
-      line-height: 24px;
-      font-size: 20px;
-    }
   }
 }
 
@@ -130,13 +112,14 @@ a:hover {
 
   font-size: 1rem;
   line-height: 1.2rem;
+  border-bottom: 1px solid #ccc;
 
   .author {
     color: #aaa;
     padding-bottom: 8px;
   }
 
-  .text {
+  .title {
     padding-bottom: 8px;
     color: black;
   }
@@ -147,6 +130,10 @@ a:hover {
   padding-bottom: 0;
   margin-top: 8px;
   margin-bottom: 8px;
+
+  color: #444;
+  font-size: .8rem;
+
 }
 
 
