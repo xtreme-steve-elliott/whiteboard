@@ -37,4 +37,10 @@ jQuery(function($) {
     $("#item_date").datepicker({
       show: new Date()
     });
+
+  $('a[data-toggle]').click(function() {
+    $('.collapse').css('height', '100%');
+  });
+
+
 });
