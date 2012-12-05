@@ -11,10 +11,6 @@
 // can't get smaller than 400px wide
 @media (max-width: 481px) {
 
-  .outer {
-    margin-top: -18px;
-  }
-
 // correct for Bootstrap's padding
   body {
     padding-left: 0;
@@ -32,16 +28,23 @@
     padding-bottom: 0;
 
     &.header {
-      background-color: #eee;
+      background-color: #444;
+
+      h2 {
+        font-size: 1rem;
+        line-height: 1.1rem;
+        color: white;
+      }
+
+      i.icon-plus-sign {
+        margin-top: 0;
+        font-size: 1rem;
+      }
     }
   }
 
   .block:first-child {
     margin-top: 0;
-  }
-
-  .block:last-child {
-    padding-bottom: 8px;
   }
 
   .with-hint {
@@ -97,3 +100,8 @@
   }
 }
 
+@media (max-width: 1025px) {
+  .bottom.navbar form {
+    display: none;
+  }
+}
