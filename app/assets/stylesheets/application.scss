@@ -93,6 +93,20 @@ a:hover {
 
   padding: 8px;
 
+  &.header {
+    border-bottom: 1px solid #ccc;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  &.errors {
+    @include box-orient(vertical);
+
+    ul {
+      @include display-box;
+    }
+  }
+
   h1 {
     padding-bottom: 8px;
   }
@@ -107,10 +121,10 @@ a:hover {
     font-size: 1.5rem;
   }
 
-  &.header {
-    border-bottom: 1px solid #ccc;
-    padding-top: 4px;
-    padding-bottom: 4px;
+
+  .field_with_errors {
+    @include display-box;
+    @include box-flex(1);
   }
 }
 
