@@ -71,7 +71,7 @@ describe "items", type: :request, js: true do
     find('.email_post').should have_content("Subject: [Standup][SF] #{Post.last.created_at.strftime('%m/%d/%y')}: Epic Standup")
     find('.email_post').should have_content("From: Matthew")
     find('.email_post').should have_content("Johnathon McKenzie")
-    find('.email_post').should have_content("IE8 doesn't work")
+    find('.email_post').should have_content("IE8 doesn&#39;t work")
     find('.email_post').should have_content("Rubymine 5.0 is Out")
     find('.email_post').should have_content("Linus Torvalds")
     find('.email_post').should have_content("Party")
@@ -81,7 +81,7 @@ describe "items", type: :request, js: true do
 
     find('.blog_post').should_not have_content("Johnathon McKenzie")
     find('.blog_post').should_not have_content("Jane Doe")
-    find('.blog_post').should_not have_content("IE8 doesn't work")
+    find('.blog_post').should_not have_content("IE8 doesn&#39;t work")
     find('.blog_post').should have_content("Rubymine 5.0 is Out")
     find('.blog_post').should_not have_content("Linus Torvalds")
 

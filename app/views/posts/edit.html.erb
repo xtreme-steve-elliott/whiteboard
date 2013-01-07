@@ -32,7 +32,7 @@
 Subject: <%= @post.title_for_email %>
 From: <%= @post.from %>
 
-<%= raw CGI::escapeHTML(GitHub::Markdown.render(render partial: 'items/as_markdown', locals: { items: @post.items_by_type, include_authors: true })) %>
+<%= raw CGI::escapeHTML(GitHub::Markdown.render(render partial: 'items/as_markdown', formats: [:text], handlers: [:erb], locals: { items: @post.items_by_type, include_authors: true })) %>
   </pre>
 </div>
 
@@ -49,17 +49,13 @@ From: <%= @post.from %>
 
 <div class='well'>
 <h3>Please double check the blog post. Ensure that there are no client names in the post, and that
-  the content is of interest to the general public. When you are ready, please copy the markdown into a blog post.</h3>
+  the content is of interest to the general public. When you are ready, please copy the HTML into a blog post.</h3>
 
 <div class='blog_post preview'>
 (Title: <%= @post.title_for_blog %>)
 
   <pre>
-<<<<<<< HEAD
-<%= raw CGI::escapeHTML(GitHub::Markdown.render(render partial: 'items/as_markdown', locals: { items: @post.public_items_by_type, include_authors: false })) %>
-=======
-<%= raw CGI::escapeHTML(render partial: 'items/as_blog_post', locals: {items: @post.public_items_by_type, include_authors: false}) %>
->>>>>>> 14e599131576ab05e43d37a9de0770b7a09d350f
+<%= raw CGI::escapeHTML(GitHub::Markdown.render(render partial: 'items/as_markdown', formats: [:text], handlers: [:erb], locals: { items: @post.public_items_by_type, include_authors: false })) %>
   </pre>
 </div>
 <% if @post.blogged_at %>

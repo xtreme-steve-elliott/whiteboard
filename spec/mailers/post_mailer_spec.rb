@@ -15,16 +15,16 @@ describe PostMailer do
     end
 
     it 'renders the items in the body of the message' do
-      mail.body.should include(post.items.first.title)
+      mail.text_part.body.should include(post.items.first.title)
     end
 
     it 'includes a link to the standup' do
-      mail.body.should include(standup_items_url(post.standup))
+      mail.text_part.body.should include(standup_items_url(post.standup))
     end
 
     it 'properly deals with & and " by not escaping them' do
-      mail.body.should include('"Winning"')
-      mail.body.should include('Like this & like "that"')
+      mail.text_part.body.should include('"Winning"')
+      mail.text_part.body.should include('Like this & like "that"')
     end
 
     it 'delivers to the specified address' do

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :item do
-    title "Can't run focused specs"
+    title "Focused specs are broken"
     kind "Help"
 
     association :standup
