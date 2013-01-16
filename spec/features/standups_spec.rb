@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "standups", type: :request, js: true do
   before do
     mock_omniauth
-    visit '/auth/google_apps/callback'
+    visit '/auth/google_oauth2/callback'
     visit '/'
   end
 
