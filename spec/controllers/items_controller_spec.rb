@@ -64,6 +64,22 @@ describe ItemsController do
   end
 
   describe "#index" do
+    before do
+      request.session[:email_address] = 'matthewkocher@pivotallabs.com'
+    end
+
+    it "should allow access from matthewkocher.com" do
+      request.session[:email_address] = 'mk@matthewkocher.com'
+      get :index, params
+      response.should be_ok
+    end
+
+    it "should not allow access from hacker.com" do
+      request.session[:email_address] = 'mk@hacker.com'
+      get :index, params
+      response.should_not be_ok
+    end
+
     it "generates a hash of items by type" do
       help = create(:item, kind: "Help", standup: standup)
       new_face = create(:item, kind: "New face", standup: standup)

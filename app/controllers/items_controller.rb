@@ -18,9 +18,15 @@ class ItemsController < ApplicationController
   end
 
   def index
+    domain = session[:email_address].split('@').last
     @standup = Standup.find_by_id(params[:standup_id])
-    events = Item.events_on_or_after(Date.today, @standup)
-    @items = @standup.items.orphans.merge(events)
+
+    if @standup.authorized_domain(domain)
+      events = Item.events_on_or_after(Date.today, @standup)
+      @items = @standup.items.orphans.merge(events)
+    else
+      head 401
+    end
   end
 
   def destroy

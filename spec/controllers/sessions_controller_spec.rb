@@ -14,10 +14,10 @@ describe SessionsController do
       request.session['username'].should == 'Dennis'
     end
 
-    it "does not allow someone from outside pivotallabs.com to log in" do
+    it "allows someone from outside pivotallabs.com to log in" do
       request.env['omniauth.auth'] = { 'info' => { 'email' => 'mkocher@l33thack3r.com' } }
       get :create
-      request.session['logged_in'].should_not be
+      request.session['logged_in'].should be
     end
   end
 

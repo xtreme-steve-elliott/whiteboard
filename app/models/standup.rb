@@ -6,4 +6,8 @@ class Standup < ActiveRecord::Base
 
   validates :title, presence: true
   validates :to_address, presence: true
+
+  def authorized_domain(domain)
+    domain == "pivotallabs.com" || domain == "matthewkocher.com"
+  end
 end
