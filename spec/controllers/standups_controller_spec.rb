@@ -12,7 +12,7 @@ describe StandupsController do
       it "creates a standup" do
         expect do
           post :create, standup: { title: "Berlin", to_address: "berlin+standup@pivotallabs.com" }
-        end.should change { Standup.count }.by(1)
+        end.to change { Standup.count }.by(1)
         response.should be_redirect
       end
     end
@@ -21,7 +21,7 @@ describe StandupsController do
       it "creates a standup" do
         expect do
           post :create, standup: { }
-        end.should change { Standup.count }.by(0)
+        end.to change { Standup.count }.by(0)
         response.should render_template 'standups/new'
       end
     end

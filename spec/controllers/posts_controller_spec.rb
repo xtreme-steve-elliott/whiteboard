@@ -10,7 +10,7 @@ describe PostsController do
     it "creates a post" do
       expect do
         post :create, post: { title: "Standup 12/12/12"}, standup_id: standup.id
-      end.should change { Post.count }.by(1)
+      end.to change { Post.count }.by(1)
       response.should be_redirect
     end
 

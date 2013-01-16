@@ -38,6 +38,6 @@ RSpec.configure do |config|
   config.render_views
 
   config.include FactoryGirl::Syntax::Methods
-  config.include MockOmniAuth, :type => :request
+  config.include MockOmniAuth, :type => :feature
   config.include WithAuthorizedIps
 end

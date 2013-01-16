@@ -13,7 +13,7 @@ describe ItemsController do
     it "should allow you to create an item" do
       expect {
         post :create, valid_params
-      }.should change { standup.items.count }.by(1)
+      }.to change { standup.items.count }.by(1)
     end
 
     it "should redirect to root on success" do
@@ -32,7 +32,7 @@ describe ItemsController do
         post :create, (valid_params.tap do |params|
           params[:item][:post_id] =  standup_post.to_param
         end)
-      }.should change { standup_post.items.count }.by(1)
+      }.to change { standup_post.items.count }.by(1)
       response.should redirect_to(edit_post_path(standup_post))
     end
   end

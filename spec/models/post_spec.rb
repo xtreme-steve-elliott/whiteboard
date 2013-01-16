@@ -100,7 +100,7 @@ describe Post do
       post = create(:post, items: [create(:item)])
       post.deliver_email
       ActionMailer::Base.deliveries.last.to.should == [post.standup.to_address]
-      expect { post.deliver_email }.should raise_error("Duplicate Email")
+      expect { post.deliver_email }.to raise_error("Duplicate Email")
     end
   end
 
