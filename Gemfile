@@ -19,13 +19,13 @@ group :test, :development do
   gem 'sqlite3'
   gem 'database_cleaner'
   gem 'pry'
+  gem 'letter_opener'
 end
 
 group :development do
   gem 'debugger'
   gem 'heroku'
   gem 'heroku_san'
-  gem 'letter_opener'
 end
 
 group :assets do
