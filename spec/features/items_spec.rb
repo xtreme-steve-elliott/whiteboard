@@ -6,7 +6,7 @@ describe "items", type: :request, js: true do
 
   before do
     mock_omniauth
-    visit '/auth/google_oauth2/callback'
+    visit '/auth/google_apps/callback'
     visit '/'
     click_link(standup.title)
 

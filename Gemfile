@@ -5,7 +5,7 @@ gem 'rails', '3.2.11'
 gem 'pg'
 gem 'unicorn'
 gem 'jquery-rails'
-gem 'omniauth-google-oauth2'
+gem 'omniauth-google-apps'
 gem 'github-markdown', :require => 'github/markdown'
 
 group :test, :development do
