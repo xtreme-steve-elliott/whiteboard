@@ -1,5 +1,5 @@
-[![Build Status](https://secure.travis-ci.org/mkocher/whiteboard.png?branch=master)](http://travis-ci.org/mkocher/whiteboard)
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/mkocher/whiteboard)
+[![Build Status](https://secure.travis-ci.org/pivotal/whiteboard.png?branch=master)](http://travis-ci.org/pivotal/whiteboard)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/pivotal/whiteboard)
 
 Goals
 =====
