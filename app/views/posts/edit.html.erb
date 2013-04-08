@@ -64,6 +64,8 @@ From: <%= @post.from %>
   <%= link_to 'Post Blog Entry', post_to_blog_post_path(@post),
               :confirm => 'This will post to wordpress.  Are you sure?',
               :method => :put %>
+<% elsif !wordpress_enabled? %>
+  <p class='btn btn-warning' disabled='disabled' title='Wordpress is not configured. You can not send blog posts.'>Post Blog Entry</p>
 <% end %>
 </div>
 
