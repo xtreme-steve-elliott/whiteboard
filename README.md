@@ -37,6 +37,7 @@ Deployment
 	heroku config:add WORDPRESS_USER=username WORDPRESS_PASSWORD=password WORDPRESS_BLOG=blogname.wordpress.com
 	heroku config:add EMAIL_DELIVERY_ADDRESS=mailinglist@example.com
 	heroku config:add AUTHORIZED_IP_ADDRESSES='{ :sf => [ IPAddr.new("10.0.0.1/24") ] }'
+	heroku config:add EXCEPTIONAL_API_KEY=<you exceptional API key>
 	git push heroku
 
 Author

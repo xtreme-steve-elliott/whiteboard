@@ -1,0 +1,3 @@
+<%= Rails.env %>:
+  enabled: <%= ENV['EXCEPTIONAL_API_KEY'] ? true : false %>
+  api-key: <%= ENV['EXCEPTIONAL_API_KEY'] %>
