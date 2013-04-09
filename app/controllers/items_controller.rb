@@ -26,7 +26,7 @@ class ItemsController < ApplicationController
   def destroy
     @item = Item.find(params[:id])
     @item.destroy
-    redirect_to @item.post ? edit_post_path(@item.post) : @standup
+    redirect_to request.referer
   end
 
   def edit

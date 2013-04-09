@@ -135,18 +135,13 @@ describe ItemsController do
 
   describe "#destroy" do
     it "should destroy the item" do
+      request.env["HTTP_REFERER"] = "the url we came from"
+
       item = create(:item)
-      standup = item.standup
       delete :destroy, id: item.id
       Item.find_by_id(item.id).should_not be
-      response.should redirect_to(standup)
-    end
 
-    it "redirects to the post if there is one" do
-      item = create(:item, post: create(:post))
-      delete :destroy, id: item.id, post_id: item.post
-      Item.find_by_id(item.id).should_not be
-      response.should redirect_to(edit_post_path(item.post))
+      response.should redirect_to "the url we came from"
     end
   end
 
