@@ -1,7 +1,13 @@
 <section class="slide">
   <h1>Standup<br>
   <%= Time.now.strftime("%m/%d/%y") %></h1>
+  <div class='footer'>
+    <p>
+      <%= link_to 'Exit', standup_items_path(@standup), class: 'btn btn-large btn-primary exit-presentation' %>
+    </p>
+  </div>
 </section>
+
 <% Item::KINDS.each do |kind| %>
   <section class="slide">
     <h2><%= kind.pluralize %></h2>
@@ -25,6 +31,11 @@
       <% end %>
       </ul>
     <% end %>
+    <div class='footer'>
+      <p>
+        <%= link_to 'Exit', standup_items_path(@standup), class: 'btn btn-large btn-primary exit-presentation' %>
+      </p>
+    </div>
   </section>
 <% end %>
 
@@ -32,7 +43,7 @@
   <h1><%= standup_closing %></h1>
   <div class='footer'>
     <p>
-      <%= link_to 'Exit', standup_items_path(@standup) %>
+      <%= link_to 'Exit', standup_items_path(@standup), class: 'btn btn-large btn-primary exit-presentation' %>
     </p>
   </div>
 </section>

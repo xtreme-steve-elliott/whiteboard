@@ -122,7 +122,8 @@ describe "items", type: :request, js: true do
 
     find('section.deck-current').should_not have_content "Events"
 
-    click_link "Exit"
+    all('.exit-presentation').first.click
+
     current_path.should == standup_items_path(standup)
   end
 end
