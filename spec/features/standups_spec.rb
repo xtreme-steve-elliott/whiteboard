@@ -20,8 +20,8 @@ describe "standups", type: :request, js: true do
 
       current_page = current_url
       current_page.should match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
-      find('div.navbar-fixed-top').should have_content 'London'
-      page.find('a.posts', text: 'London').click
+      find('div.navbar-fixed-top').should have_content 'London Whiteboard'
+      page.find('a.posts', text: 'Posts').click
       click_link('Current Post')
       current_page.should match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
     end
