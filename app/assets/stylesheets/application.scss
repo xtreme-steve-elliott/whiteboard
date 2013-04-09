@@ -9,23 +9,16 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require_tree .
-*/
+ *= require_tree ./media
+ */
+
 @import "bootstrap";
 @import "bootstrap-responsive";
 @import 'font-awesome';
 @import "compass/css3/box";
 
-@media (min-width: 979px) {
-  body {
-    padding: 60px 0 60px 0;
-  }
-}
-
-@media (min-width: 3840px) {
-  .bottom.navbar form, .kind i {
-    display: none;
-  }
+body{
+  color: #5D5C5C;
 }
 
 a:hover {
@@ -36,19 +29,16 @@ a:hover {
   font-size: 19px;
 }
 
+
 .outer {
   @include display-box;
-  @include box-orient(horizontal);
+  @include box-orient(vertical);
   @include box-pack(top);
   @include box-align(top);
 
   height: 100%;
   width: 100%;
   margin-top: -18px;
-
-  @media (max-width: 1024px) {
-    @include box-orient(vertical);
-  }
 }
 
 .standup {
@@ -60,38 +50,22 @@ a:hover {
 
 .two-wide {
   @include display-box;
-  @include box-orient(horizontal);
+  @include box-orient(vertical);
   @include box-pack(top);
   @include box-align(top);
   @include box-flex(1);
   width: 100%;
-
-  @media (max-width: 480px) {
-    @include box-orient(vertical);
-  }
 }
 
 .kind {
-  overflow: scroll;
   width: 100%;
   height: 100%;
-  margin: 0 10px;
+  margin: 0;
 
   @include display-box;
   @include box-orient(vertical);
   @include box-pack(top);
   @include box-flex(1);
-
-  @media (max-width: 979px) {
-    margin: 0;
-  }
-
-  @media (min-width: 3840px) {
-    h2 {
-      line-height: 90px;
-      font-size: 80px;
-    }
-  }
 }
 
 .block {
@@ -104,6 +78,7 @@ a:hover {
     border-bottom: 1px solid #ccc;
     padding-top: 4px;
     padding-bottom: 4px;
+    position: relative;
   }
 
   &.errors {
@@ -116,18 +91,23 @@ a:hover {
 
   h1 {
     padding-bottom: 8px;
+    text-transform: uppercase;
   }
 
+  h2{
+    text-transform: uppercase;
+  }
   a {
     @include display-box;
   }
 
   i.icon-plus-sign {
-    margin-top: 0.5rem;
+    position: absolute;
+    right: 0;
+    line-height: 1.5em;
     color: #08C;
-    font-size: 1.5rem;
+    font-size: 2.5rem;
   }
-
 
   .field_with_errors {
     @include display-box;
@@ -138,7 +118,7 @@ a:hover {
 .item {
   @include display-box;
   @include box-orient(vertical);
-
+  position: relative;
   font-size: 1rem;
   line-height: 1.2rem;
 
@@ -149,7 +129,6 @@ a:hover {
 
   .title {
     padding-bottom: 8px;
-    color: black;
   }
 }
 
@@ -179,10 +158,13 @@ a:hover {
   @include box-align(center);
   @include box-pack(justify);
 
+  position: absolute;
+  top: 5px;
+  right: 5px;
   padding-bottom: 8px;
 
   a {
-    margin: 0 30px;
+    margin: 0 0 0 10px;
   }
 
   i {
@@ -190,16 +172,10 @@ a:hover {
   }
 }
 
-.spacer {
-  @include display-box;
-  @include box-flex(1);
-}
-
-.bottom.navbar {
-  @media (max-width: 480px) {
-    display: none;
-  }
-}
+//.spacer {
+//  @include display-box;
+//  @include box-flex(1);
+//}
 
 .preview pre {
   background-color: white;
@@ -209,3 +185,18 @@ a:hover {
   font-size: 28px;
   line-height: 28px;
 }
+
+.navbar.bottom {
+  .navbar-form, .btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .navbar-form input{
+    width: 100%;
+  }
+}
+.navbar-fixed-bottom .navbar-inner {
+  padding: 5px;
+}
+

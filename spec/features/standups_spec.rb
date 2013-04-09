@@ -9,7 +9,7 @@ describe "standups", type: :request, js: true do
 
   it "creates new standups", js: true do
     with_authorized_ips({london: [IPAddr.new("127.0.0.1/32")]}) do
-      find('h2').should have_content 'Choose a Standup'
+      find('h2').should have_content 'CHOOSE A STANDUP'
       click_link('New Standup')
 
       fill_in 'standup_title', with: "London"

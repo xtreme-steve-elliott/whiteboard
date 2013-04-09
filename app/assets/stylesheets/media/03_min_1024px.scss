@@ -1,0 +1,14 @@
+@import "compass/css3/box";
+
+//four columns for big screens
+@media (min-width: 1025px) {
+  .navbar .brand{
+    margin-left: 0;
+  }
+
+
+
+  .outer {
+    @include box-orient(horizontal);
+  }
+}

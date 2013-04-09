@@ -45,56 +45,6 @@ describe "items", type: :request, js: true do
     click_button 'Create Item'
   end
 
-  it "happy path blog post" do
-    find('a[data-kind=Help] i').click
-    select 'San Francisco', from: 'item[standup_id]'
-    fill_in 'item_title', :with => "IE8 doesn't work"
-    fill_in 'item_description', :with => "No, srsly.  It doesn't work"
-    click_button 'Create Item'
-
-    current_url.should match(/http:\/\/127\.0\.0\.1:\d*\//)
-
-    page.execute_script "$.rails.confirm = function() { return true; }"
-    fill_in 'post_title', with: 'Epic Standup'
-    click_button 'create-post'
-
-    find('a[data-kind=Interesting] i').click
-    fill_in 'item_title', :with => "Rubymine 5.0 is Out"
-    fill_in 'item_author', :with => "Linus Torvalds"
-    fill_in 'item_description', :with => "Better than ed"
-    find("button:contains('Post to Blog')").click
-    click_button 'Create Item'
-
-    fill_in 'post_from', with: 'Matthew'
-    click_button 'Update'
-
-    find('.email_post').should have_content("Subject: [Standup][SF] #{Post.last.created_at.strftime('%m/%d/%y')}: Epic Standup")
-    find('.email_post').should have_content("From: Matthew")
-    find('.email_post').should have_content("Johnathon McKenzie")
-    find('.email_post').should have_content("IE8 doesn&#39;t work")
-    find('.email_post').should have_content("Rubymine 5.0 is Out")
-    find('.email_post').should have_content("Linus Torvalds")
-    find('.email_post').should have_content("Party")
-    find('.email_post').should_not have_content("Meetup")
-    find('.email_post').should_not have_content("Jane Doe")
-    find('.email_post').should_not have_content("Fred Flintstone")
-
-    find('.blog_post').should_not have_content("Johnathon McKenzie")
-    find('.blog_post').should_not have_content("Jane Doe")
-    find('.blog_post').should_not have_content("IE8 doesn&#39;t work")
-    find('.blog_post').should have_content("Rubymine 5.0 is Out")
-    find('.blog_post').should_not have_content("Linus Torvalds")
-
-    click_link 'Archive Post'
-
-    current_url.should match(/http:\/\/127\.0\.0\.1:\d*\//)
-
-    find('a.posts').click
-    click_link 'Archived Posts'
-
-    find('table').should have_content "Epic Standup"
-  end
-
   it 'deck.js for standup' do
     visit presentation_standup_items_path(standup)
     find('section.deck-current').should have_content "Standup"

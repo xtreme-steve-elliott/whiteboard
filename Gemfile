@@ -10,12 +10,12 @@ gem 'github-markdown', :require => 'github/markdown'
 gem 'exceptional'
 
 group :test, :development do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '2.13.0'
   gem 'shoulda-matchers'
   gem 'factory_girl_rails'
   gem 'faker'
-  gem 'capybara', '2.0.2'
-  gem 'capybara-webkit', '0.14.1'
+  gem 'capybara'
+  gem 'capybara-webkit'
   gem 'launchy'
   gem 'sqlite3'
   gem 'database_cleaner'
@@ -35,8 +35,9 @@ group :assets do
   gem 'coffee-rails'
   gem 'uglifier'
   gem 'bootstrap-sass'
-end
-
-group :font_that_screws_up_capybara_webkit do
   gem 'font-awesome-sass-rails'
 end
+
+
+
+
