@@ -48,18 +48,18 @@ class PostsController < ApplicationController
     if @post.blogged_at
       flash[:error] = "The post has already been blogged"
     elsif !view_context.wordpress_enabled?
-      flash[:error] = "Please set WORDPRESS_USER, WORDPRESS_PASSWORD and WORDPRESS_BLOG"
+      flash[:error] = "Wordpress blogging disabled. Please set wordpress environment variables."
     else
-      wordpress = WordpressService.new(:username => ENV['WORDPRESS_USER'], :password => ENV['WORDPRESS_PASSWORD'], :blog => ENV['WORDPRESS_BLOG'])
-      wordpress.post(title: @post.title,
-                     body: GitHub::Markdown.render(
-                         render_to_string(partial: 'items/as_markdown',
-                                          formats: [:text],
-                                          layout: false,
-                                          locals: {items: @post.public_items_by_type, include_authors: false}) ) )
+      blog_post = BlogPost.new.tap do |blog_post|
+        blog_post.title = @post.title
+        blog_post.body = prepare_post_body(@post.public_items_by_type)
+      end
+      Rails.configuration.blogging_service.send!(blog_post)
+
       @post.blogged_at = Time.now
       @post.save!
     end
+
     redirect_to edit_post_path(@post)
   end
 
@@ -83,5 +83,13 @@ class PostsController < ApplicationController
     else
       @standup = Post.find(params[:id]).standup
     end
+  end
+
+  def prepare_post_body(items)
+    GitHub::Markdown.render(
+      render_to_string(partial: 'items/as_markdown',
+                       formats: [:text],
+                       layout: false,
+                       locals: {items: items, include_authors: false}))
   end
 end

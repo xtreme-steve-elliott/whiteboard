@@ -63,7 +63,8 @@ From: <%= @post.from %>
 <% elsif wordpress_enabled? %>
   <%= link_to 'Post Blog Entry', post_to_blog_post_path(@post),
               :confirm => 'This will post to wordpress.  Are you sure?',
-              :method => :put %>
+              :method => :put,
+              :class => 'btn btn-warning' %>
 <% elsif !wordpress_enabled? %>
   <p class='btn btn-warning' disabled='disabled' title='Wordpress is not configured. You can not send blog posts.'>Post Blog Entry</p>
 <% end %>
@@ -71,5 +72,5 @@ From: <%= @post.from %>
 
 <div class='well'>
   <h3> Thanks for emailing and blogging. Click the button below to archive the post.</h3>
-  <%= link_to 'Archive The Post', archive_post_path(@post), :method => :put, :class => 'btn btn-warning' %>
+  <%= link_to 'Archive Post', archive_post_path(@post), :method => :put, :class => 'btn btn-warning' %>
 </div>

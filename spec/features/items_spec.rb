@@ -85,7 +85,7 @@ describe "items", type: :request, js: true do
     find('.blog_post').should have_content("Rubymine 5.0 is Out")
     find('.blog_post').should_not have_content("Linus Torvalds")
 
-    click_link 'Archive The Post'
+    click_link 'Archive Post'
 
     current_url.should match(/http:\/\/127\.0\.0\.1:\d*\//)
 

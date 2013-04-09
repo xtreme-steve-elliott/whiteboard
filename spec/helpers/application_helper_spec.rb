@@ -121,4 +121,16 @@ describe ApplicationHelper do
       end
     end
   end
+
+  describe "#wordpress_enabled?" do
+    it "returns true if the app's blogging service is minimally configured" do
+      Rails.application.config.blogging_service.stub(:minimally_configured?).and_return(true)
+      helper.wordpress_enabled?.should == true
+    end
+
+    it "returns false otherwise" do
+      Rails.application.config.blogging_service.stub(:minimally_configured?).and_return(false)
+      helper.wordpress_enabled?.should == false
+    end
+  end
 end

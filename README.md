@@ -30,11 +30,26 @@ Whiteboard is a Rails 3 app. It uses rspec with capybara for request specs.  Ple
 
 Whiteboard [is on Pivotal Tracker](https://www.pivotaltracker.com/projects/560741).
 
+The following environment variables are necessary for posting to a wordpress blog.
+	export WORDPRESS_BLOG_HOST=<blog server>
+	export WORDPRESS_BASIC_AUTH_USER=<user> #optional
+	export WORDPRESS_BASIC_AUTH_PASSWORD=<password> #optional
+	export WORDPRESS_XMLRPC_ENDPOINT_PATH=/wordpress/xmlrpc.php
+	export WORDPRESS_USER=<username>
+	export WORDPRESS_PASSWORD=<password>
+
+The following environment variables are necessary for posting to email via sendgrid.
+	export EMAIL_DELIVERY_ADDRESS=<mailinglist@example.com>
+    export SENDGRID_USERNAME=<username>
+    export SENDGRID_PASSWORD=<password>
+
 Deployment
 ==========
 	heroku apps:create sf-whiteboard --stack cedar
 	heroku addons:add sendgrid:starter
 	heroku config:add WORDPRESS_USER=username WORDPRESS_PASSWORD=password WORDPRESS_BLOG=blogname.wordpress.com
+	heroku config:add WORDPRESS_BASIC_AUTH_USER=<user> WORDPRESS_BASIC_AUTH_PASSWORD=<password>
+	heroku config:add WORDPRESS_XMLRPC_ENDPOINT_PATH=/wordpress/xmlrpc.php
 	heroku config:add EMAIL_DELIVERY_ADDRESS=mailinglist@example.com
 	heroku config:add AUTHORIZED_IP_ADDRESSES='{ :sf => [ IPAddr.new("10.0.0.1/24") ] }'
 	heroku config:add EXCEPTIONAL_API_KEY=<you exceptional API key>

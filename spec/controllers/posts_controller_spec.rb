@@ -115,32 +115,38 @@ describe PostsController do
   end
 
   describe "#post_to_blog" do
-    class FakeWordpress
-      attr_reader :post_opts
-      def post(opts)
-        @post_opts = opts
-      end
-    end
-
     before do
-      @fakeWordpress = FakeWordpress.new
-      WordpressService.stub(:new) { @fakeWordpress }
-      ENV['WORDPRESS_USER'], ENV['WORDPRESS_PASSWORD'], ENV['WORDPRESS_BLOG'] = "foo", "bar", "baz"
+      @fakeWordpress = mock("wordpress service", :"minimally_configured?" => true)
+      Rails.application.config.stub(:blogging_service) { @fakeWordpress }
 
       @item = create(:item, public: true)
       @post = create(:post, items: [@item])
     end
 
-    it "posts to wordpress" do
+    it "sets the post data on the blog post object" do
+      @fakeWordpress.stub(:send!)
+      blog_post = OpenStruct.new
+      BlogPost.should_receive(:new).and_return(blog_post)
+
       put :post_to_blog, id: @post.id
-      @fakeWordpress.post_opts[:title].should == @post.title
-      @fakeWordpress.post_opts[:body].should include(@item.title)
+
+      blog_post.title.should == @post.title
+      blog_post.body.should be
+    end
+
+    it "posts to wordpress" do
+      @fakeWordpress.should_receive(:send!)
+
+      put :post_to_blog, id: @post.id
 
       response.should redirect_to(edit_post_path(@post))
     end
 
     it "marks it as posted" do
+      @fakeWordpress.stub(:send!)
+
       put :post_to_blog, id: @post.id
+
       @post.reload.blogged_at.should be
     end
 

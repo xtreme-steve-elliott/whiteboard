@@ -6,7 +6,7 @@ module ApplicationHelper
   ]
 
   def wordpress_enabled?
-    !!(ENV['WORDPRESS_USER'] && ENV['WORDPRESS_PASSWORD'] && ENV['WORDPRESS_BLOG'])
+    Rails.application.config.blogging_service.minimally_configured?
   end
 
   def dynamic_new_item_path(opts={})
