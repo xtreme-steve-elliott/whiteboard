@@ -12,7 +12,7 @@ describe "publishing", type: :request, js: true do
     WordpressService.any_instance.should_not_receive(:send!)
   end
 
-  it "allows publishing to blog and email" do
+  it "does not allow publishing to blog and email when no public content" do
     click_link(standup.title)
 
     fill_in "Blogger Name(s)", with: "Me"
@@ -23,7 +23,15 @@ describe "publishing", type: :request, js: true do
 
     page.should have_content("Please update these items with any new information from standup:")
 
+    page.should have_css('p[disabled="disabled"]', text: 'Send Email')
+    within('div', text: 'Please double check this email for accuracy.') do
+      page.should have_content("There is no content to publish")
+    end
+
     page.should have_css('p[disabled="disabled"]', text: 'Post Blog Entry')
-    page.should have_content("There is no content to publish")
+    within('div', text: 'Please double check the blog post.') do
+      page.should have_content("There is no content to publish")
+    end
+
   end
 end
