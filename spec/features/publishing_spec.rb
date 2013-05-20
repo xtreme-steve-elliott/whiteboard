@@ -33,5 +33,15 @@ describe "publishing", type: :request, js: true do
       page.should have_content("There is no content to publish")
     end
 
+    within "div.block.header", text: "NEW FACES" do
+      find("i").click
+    end
+
+    fill_in "item_title", with: "John Doe"
+
+    click_on "Create New Face"
+
+    find_link("Send Email").should be
+    page.should have_css('p[disabled="disabled"]', text: 'Post Blog Entry')
   end
 end

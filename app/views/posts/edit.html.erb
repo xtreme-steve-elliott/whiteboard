@@ -38,9 +38,9 @@ Subject: <%= @post.title_for_email %>
 
   <% if @post.sent_at %>
       This email was sent at <%= @post.sent_at %>
-  <% elsif !@post.publishable_content? %>
+  <% elsif @post.items.empty? %>
       <p class='btn btn-warning' disabled='disabled'>Send Email</p>
-      <span class='notice'>There is no content to publish, please verify that the helps / interestings are marked as public if you want to send an email.</span>
+      <span class='notice'>There is no content to publish.</span>
   <% else %>
       <%= link_to 'Send Email', send_email_post_path(@post),
                   :confirm => 'Emails can not be unsent.  Are you sure?',
