@@ -37,22 +37,22 @@ describe WordpressService do
       subject.minimally_configured?.should == true
     end
 
-    it "returns true when the host is missing" do
+    it "returns false when the host is missing" do
       subject.host = nil
       subject.minimally_configured?.should == false
     end
 
-    it "returns true when the endpoint path is missing" do
+    it "returns false when the endpoint path is missing" do
       subject.endpoint_path = nil
       subject.minimally_configured?.should == false
     end
 
-    it "returns true when the wordpress username is missing" do
+    it "returns false when the wordpress username is missing" do
       subject.wordpress_username = nil
       subject.minimally_configured?.should == false
     end
 
-    it "returns true when the wordpress password is missing" do
+    it "returns false when the wordpress password is missing" do
       subject.wordpress_password = nil
       subject.minimally_configured?.should == false
     end

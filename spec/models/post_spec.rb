@@ -112,4 +112,21 @@ describe Post do
       post.items_by_type['Help'].should == items.reverse
     end
   end
+
+  describe '#publishable_content?' do
+    it "returns false when no content items" do
+      post = create(:post)
+      post.publishable_content?.should be_false
+    end
+
+    it "returns false when no public content items" do
+      post = create(:post, items: [create(:item, created_at: Time.now, public: false)])
+      post.publishable_content?.should be_false
+    end
+
+    it "returns true when there are public content items" do
+      post = create(:post, items: [create(:item, created_at: Time.now, public: true)])
+      post.publishable_content?.should be_true
+    end
+  end
 end

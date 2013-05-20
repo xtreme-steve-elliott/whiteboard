@@ -55,6 +55,10 @@ class Post < ActiveRecord::Base
     end
   end
 
+  def publishable_content?
+    public_items.length > 0
+  end
+
   private
 
   def sorted_by_type(relation)
