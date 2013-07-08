@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "items", type: :request, js: true, inaccessible: true do
+describe "items", type: :request, js: true do
   let!(:standup) { FactoryGirl.create(:standup, title: 'San Francisco', subject_prefix: "[Standup][SF]") }
   let!(:other_standup) { FactoryGirl.create(:standup, title: 'New York') }
 
