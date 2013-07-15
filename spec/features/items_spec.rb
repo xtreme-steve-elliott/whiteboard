@@ -5,8 +5,7 @@ describe "items", type: :request, js: true do
   let!(:other_standup) { FactoryGirl.create(:standup, title: 'New York') }
 
   before do
-    mock_omniauth
-    visit '/auth/google_apps/callback'
+    login
     visit '/'
     click_link(standup.title)
 

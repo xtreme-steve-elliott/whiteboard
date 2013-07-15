@@ -6,7 +6,8 @@ require 'rspec/autorun'
 
 require 'capybara/rails'
 require 'capybara/rspec'
-Capybara.javascript_driver = :accessible
+Capybara.javascript_driver = :selenium
+Capybara.default_driver = :accessible
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -31,7 +32,7 @@ RSpec.configure do |config|
   end
 
   config.around(:each, inaccessible: true) do |example|
-    Capybara::Accessible.skip_audit { example }
+    Capybara::Accessible.skip_audit { example.run }
   end
 
   # If true, the base class of anonymous controllers will be inferred
@@ -42,6 +43,6 @@ RSpec.configure do |config|
   config.render_views
 
   config.include FactoryGirl::Syntax::Methods
-  config.include MockOmniAuth, :type => :feature
+  config.include MockAuth, :type => :feature
   config.include WithAuthorizedIps
 end
