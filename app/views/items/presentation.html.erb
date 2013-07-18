@@ -23,9 +23,9 @@
           </ul>
         <% end %>
       <% else %>
-          <ul>
-            <%= render partial: 'presentation_item', collection: @items[kind.name] %>
-          </ul>
+        <ul>
+          <%= render partial: 'presentation_item', collection: @items[kind.name] %>
+        </ul>
       <% end %>
     <% end %>
     <div class='footer'>

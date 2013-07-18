@@ -52,4 +52,8 @@ class Item < ActiveRecord::Base
       :upcoming
     end
   end
+
+  def self.kinds
+    KINDS.map { |kind| Kind.new(kind[:name], kind[:subtitle]) }
+  end
 end
