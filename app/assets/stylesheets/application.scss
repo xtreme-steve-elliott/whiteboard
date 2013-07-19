@@ -185,6 +185,10 @@ a:hover {
 //  @include box-flex(1);
 //}
 
+.fluid-container {
+  margin: 0 20px;
+}
+
 .preview pre {
   background-color: white;
 }
