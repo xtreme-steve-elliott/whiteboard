@@ -43,4 +43,13 @@ class Item < ActiveRecord::Base
   def self.kinds
     KINDS.map { |kind| Kind.new(kind[:name], kind[:subtitle]) }
   end
+
+  def relative_date
+    case date
+    when Date.today then :today
+    when Date.tomorrow then :tomorrow
+    else
+      :upcoming
+    end
+  end
 end
