@@ -6,9 +6,13 @@ gem 'pg'
 gem 'unicorn'
 gem 'jquery-rails'
 gem 'omniauth-google-apps'
-gem 'github-markdown', :require => 'github/markdown'
+gem 'github-markdown', require: 'github/markdown'
 gem 'exceptional'
 gem 'protected_attributes'
+
+group :production do
+  gem 'rails_12factor'
+end
 
 group :test, :development do
   gem 'rspec-rails', '2.14.0'
