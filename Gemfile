@@ -32,7 +32,7 @@ group :development do
 end
 
 group :assets do
-  gem 'compass-rails', git: "git://github.com/milgner/compass-rails", branch: "rails4"
+  gem 'compass-rails', git: 'git://github.com/milgner/compass-rails', branch: 'rails4'
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'uglifier'
@@ -40,4 +40,4 @@ group :assets do
   gem 'font-awesome-sass-rails'
 end
 
-gem "ruby-openid", :git => "git://github.com/kendagriff/ruby-openid.git", :ref => "79beaa419d4754e787757f2545331509419e222e"
+gem 'ruby-openid', git: 'git://github.com/kendagriff/ruby-openid.git', ref: '79beaa419d4754e787757f2545331509419e222e'
