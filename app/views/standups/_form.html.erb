@@ -34,6 +34,13 @@
       </div>
     </div>
 
+    <div class='time_zone control-group'>
+      <%= form.label :time_zone_name, 'Time Zone', class: 'control-label' %>
+      <div class="controls">
+        <%= form.select :time_zone_name, ActiveSupport::TimeZone.all.map(&:name), :class => "wide" %>
+      </div>
+    </div>
+
     <div class='control-group'>
       <div class="controls">
         <%= form.submit class: 'btn btn-primary' %>

@@ -15,4 +15,17 @@ describe Standup do
     standup = FactoryGirl.create(:standup, closing_message: 'Yay')
     standup.closing_message.should == 'Yay'
   end
+
+  it "allows mass assignment" do
+    expect {
+      Standup.new(
+          title: "Berlin",
+          to_address: "berlin+standup@pivotallabs.com",
+          subject_prefix: "[FOO]",
+          ip_key: "london",
+          closing_message: "Go Running.",
+          time_zone_name: "Mountain Time (US & Canada)"
+      )
+    }.to_not raise_exception
+  end
 end

@@ -14,6 +14,7 @@ describe "standups", type: :request, js: true do
       fill_in 'standup_title', with: "London"
       fill_in 'standup_subject_prefix', with: "[Standup][ENG]"
       select 'london', from: "standup_ip_key"
+      select 'Mountain Time (US & Canada)', from: "standup_time_zone_name"
       fill_in 'standup_to_address', with: "all@pivotallabs.com"
       fill_in 'standup_closing_message', with: "Woohoo"
       click_button 'Create Standup'
@@ -36,6 +37,7 @@ describe "standups", type: :request, js: true do
       page.should have_css('input[value="[Standup][ENG]"]')
       page.should have_css('input[value="all@pivotallabs.com"]')
       page.should have_css('input[value="Woohoo"]')
+      page.should have_css('option[value="Mountain Time (US & Canada)"][selected]')
     end
   end
 end
