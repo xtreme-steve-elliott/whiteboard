@@ -42,9 +42,9 @@ class Item < ActiveRecord::Base
 
   def relative_date
     case date
-      when Date.today then
+      when standup.date_today then
         :today
-      when Date.tomorrow then
+      when standup.date_tomorrow then
         :tomorrow
       else
         :upcoming

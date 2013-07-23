@@ -27,6 +27,7 @@ group :test, :development do
   gem 'database_cleaner'
   gem 'pry'
   gem 'letter_opener'
+  gem 'timecop'
 end
 
 group :development do

@@ -114,18 +114,40 @@ describe Item do
   end
 
   describe "relative_date" do
+    let(:today) { 5.days.ago.to_date }
+    let(:tomorrow) { 4.days.ago.to_date }
+
+    let(:standup) do
+      standup = Standup.new
+      standup.stub(:date_today).and_return(today)
+      standup.stub(:date_tomorrow).and_return(tomorrow)
+      standup
+    end
+
     it 'returns :today for an event taking place today' do
-      item = Item.new(date: Date.today)
+      item = Item.new do |item|
+        item.date = today
+        item.standup = standup
+      end
+
       item.relative_date.should == :today
     end
 
     it 'returns :tomorrow for an event taking place tomorrow' do
-      item = Item.new(date: Date.tomorrow)
+      item = Item.new do |item|
+        item.date = tomorrow
+        item.standup = standup
+      end
+
       item.relative_date.should == :tomorrow
     end
 
     it 'returns :upcoming for an event taking place after tomorrow' do
-      item = Item.new(date: 2.days.from_now.to_date)
+      item = Item.new do |item|
+        item.date = 10.days.from_now.to_date
+        item.standup = standup
+      end
+
       item.relative_date.should == :upcoming
     end
   end
