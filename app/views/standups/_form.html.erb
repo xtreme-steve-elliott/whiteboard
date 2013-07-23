@@ -1,26 +1,43 @@
 <%= form_for standup, html: {class: 'form-horizontal'} do |form| %>
-<div class='block title'>
-  <%= form.text_field :title, :placeholder => 'Title', :size => nil, :class => "wide" %>
-</div>
+    <div class='title control-group' style="padding-top: 8px">
+      <%= form.label :title, class: 'control-label' %>
+      <div class="controls">
+        <%= form.text_field :title, :placeholder => 'Title', :size => nil, :class => "wide" %>
+      </div>
+    </div>
 
-<div class='block subject_prefix'>
-  <%= form.text_field :subject_prefix, :placeholder => 'Email Subject Prefix', :size => nil, :class => "wide" %>
-</div>
+    <div class='subject_prefix control-group'>
+      <%= form.label :subject_prefix, 'Email Subject Prefix', class: 'control-label' %>
+      <div class="controls">
+        <%= form.text_field :subject_prefix, :placeholder => 'Email Subject Prefix', :size => nil, :class => "wide" %>
+      </div>
+    </div>
 
-<div class='block ip_key'>
-  <%= form.select :ip_key, AuthorizedIps::AUTHORIZED_IP_ADDRESSES.keys, {}, :class => "wide" %>
-</div>
+    <div class='ip_key control-group'>
+      <%= form.label :ip_key, 'Location', class: 'control-label' %>
+      <div class="controls">
+        <%= form.select :ip_key, AuthorizedIps::AUTHORIZED_IP_ADDRESSES.keys, {}, :class => "wide" %>
+      </div>
+    </div>
 
-<div class='block to_address'>
-  <%= form.text_field :to_address, :placeholder => 'Send Email To (address)', :size => nil, :class => "wide" %>
-</div>
+    <div class='to_address control-group'>
+      <%= form.label :to_address, 'Send Email To', class: 'control-label' %>
+      <div class="controls">
+        <%= form.text_field :to_address, :placeholder => 'Send Email To (address)', :size => nil, :class => "wide" %>
+      </div>
+    </div>
 
-<div class='block closing_message'>
-  <%= form.text_field :closing_message, :placeholder => 'Closing Message (optional)', :size => nil, :class => "wide" %>
-</div>
+    <div class='closing_message control-group'>
+      <%= form.label :closing_message, class: 'control-label' %>
+      <div class="controls">
+        <%= form.text_field :closing_message, :placeholder => 'Closing Message (optional)', :size => nil, :class => "wide" %>
+      </div>
+    </div>
 
-<div class='block'>
-  <%= form.submit class: 'btn btn-primary btn-block' %>
-</div>
+    <div class='control-group'>
+      <div class="controls">
+        <%= form.submit class: 'btn btn-primary' %>
+      </div>
+    </div>
 <%- end %>
 

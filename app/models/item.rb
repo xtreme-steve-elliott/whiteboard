@@ -1,14 +1,14 @@
 class Item < ActiveRecord::Base
   KINDS = [{name: 'New face', subtitle: ''},
-  {name: 'Help', subtitle: ''},
-  {name: 'Interesting', subtitle: 'News, Articles, Tools, Best Practices, Project Milestones, etc'},
-  {name: 'Event', subtitle: ''}]
+           {name: 'Help', subtitle: ''},
+           {name: 'Interesting', subtitle: 'News, Articles, Tools, Best Practices, Project Milestones, etc'},
+           {name: 'Event', subtitle: ''}]
   default_scope { order('date ASC') }
 
   belongs_to :post
   belongs_to :standup
 
-  validates_inclusion_of :kind, in: KINDS.map { |k| k[:name]}
+  validates_inclusion_of :kind, in: KINDS.map { |k| k[:name] }
   validates :standup, presence: true
   validates :title, presence: true
 
@@ -24,32 +24,30 @@ class Item < ActiveRecord::Base
 
   def self.events_on_or_after(date, standup)
     where(kind: "Event").
-      where("standup_id = #{standup.id} OR standup_id IS NULL").
-      where("date >= ?", date).
-      order("date").group_by(&:kind)
+        where("standup_id = #{standup.id} OR standup_id IS NULL").
+        where("date >= ?", date).
+        order("date").group_by(&:kind)
   end
 
   def self.for_post(standup)
     where(post_id: nil, bumped: false).
-      where("standup_id = #{standup.id} OR standup_id IS NULL").
-      where("kind != 'Event'").
-      where("date IS NULL OR date <= ?", Date.today)
+        where("standup_id = #{standup.id} OR standup_id IS NULL").
+        where("kind != 'Event'").
+        where("date IS NULL OR date <= ?", Date.today)
   end
 
   def possible_template_name
     kind && "items/new_#{kind.downcase.gsub(" ", '_')}"
   end
 
-  def self.kinds
-    KINDS.map { |kind| Kind.new(kind[:name], kind[:subtitle]) }
-  end
-
   def relative_date
     case date
-    when Date.today then :today
-    when Date.tomorrow then :tomorrow
-    else
-      :upcoming
+      when Date.today then
+        :today
+      when Date.tomorrow then
+        :tomorrow
+      else
+        :upcoming
     end
   end
 
