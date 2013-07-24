@@ -9,10 +9,6 @@
 
               <% end %>
             </div>
-            <% if kind.subtitle.present? %>
-                <div class="subtitle"><%= kind.subtitle %></div>
-            <% end %>
-
             <% if items[kind.name].present? %>
                 <% if kind.name == 'Event' %>
                     <% items[kind.name].group_by(&:relative_date).each do |group_name, events| %>

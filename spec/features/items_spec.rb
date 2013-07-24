@@ -85,7 +85,6 @@ describe "items", type: :request, js: true do
     page.execute_script("$.deck('next')")
 
     find('section.deck-current').should have_content "Interestings"
-    find('section.deck-current').should have_content "News, Articles, Tools"
     find('section.deck-current').should have_content("Linux 3.2 out")
     find('section.deck-current').should have_content("Linus Torvalds")
     find('section.deck-current').should have_content("Rails 62 is out")
