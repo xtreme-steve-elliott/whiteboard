@@ -1,7 +1,7 @@
 require "ipaddr"
 
 class Standup < ActiveRecord::Base
-  attr_accessible :title, :to_address, :subject_prefix, :closing_message, :time_zone_name, :ip_addresses_string
+  attr_accessible :title, :to_address, :subject_prefix, :closing_message, :time_zone_name, :ip_addresses_string, :start_time_string
 
   has_many :items, dependent: :destroy
   has_many :posts, dependent: :destroy

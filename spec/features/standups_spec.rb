@@ -17,6 +17,7 @@ describe "standups", type: :request, js: true do
     fill_in 'standup_to_address', with: "all@pivotallabs.com"
     fill_in 'standup_closing_message', with: "Woohoo"
     fill_in 'standup_ip_addresses_string', with: "192.168.0.0/24\n\r192.168.1.5"
+    fill_in 'standup_start_time_string', with: '10:00am'
     click_button 'Create Standup'
 
     visit '/'
@@ -38,6 +39,7 @@ describe "standups", type: :request, js: true do
     page.should have_css('input[value="all@pivotallabs.com"]')
     page.should have_css('input[value="Woohoo"]')
     page.should have_css('option[value="Mountain Time (US & Canada)"][selected]')
+    page.should have_css('input[value="10:00am"]')
 
     within 'textarea' do
       page.should have_content('192.168.0.0/24')

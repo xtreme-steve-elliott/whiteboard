@@ -41,6 +41,13 @@
       </div>
     </div>
 
+    <div class='start_time_string control-group'>
+      <%= form.label :start_time_string, 'Start Time (ex. 9:06am)', class: 'control-label' %>
+      <div class="controls">
+        <%= form.text_field :start_time_string, :class => "wide" %>
+      </div>
+    </div>
+
     <div class='control-group'>
       <div class="controls">
         <%= form.submit class: 'btn btn-primary' %>

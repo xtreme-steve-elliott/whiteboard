@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130725155717) do
+ActiveRecord::Schema.define(version: 20130725191212) do
 
   create_table "items", force: true do |t|
     t.text "title"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20130725155717) do
     t.string "closing_message"
     t.string "time_zone_name", default: "Eastern Time (US & Canada)", null: false
     t.text "ip_addresses_string"
+    t.string "start_time_string", default: "9:06am"
   end
 
 end
