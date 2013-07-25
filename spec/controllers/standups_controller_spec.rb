@@ -11,7 +11,7 @@ describe StandupsController do
     context "with valid params" do
       it "creates a standup" do
         expect do
-          post :create, standup: { title: "Berlin", to_address: "berlin+standup@pivotallabs.com" }
+          post :create, standup: {title: "Berlin", to_address: "berlin+standup@pivotallabs.com"}
         end.to change { Standup.count }.by(1)
         response.should be_redirect
       end
@@ -20,7 +20,7 @@ describe StandupsController do
     context "with invalid params" do
       it "creates a standup" do
         expect do
-          post :create, standup: { }
+          post :create, standup: {}
         end.to change { Standup.count }.by(0)
         response.should render_template 'standups/new'
       end
@@ -40,13 +40,13 @@ describe StandupsController do
       standup = create(:standup)
       get :index
       response.should be_ok
-      assigns[:standups].should == [ standup ]
+      assigns[:standups].should == [standup]
     end
   end
 
   describe "#edit" do
     it "shows the post for editing" do
-      get :edit, id:  standup.id
+      get :edit, id: standup.id
       assigns[:standup].should == standup
       response.should be_ok
     end
@@ -62,14 +62,14 @@ describe StandupsController do
   describe "#update" do
     context "with valid params" do
       it "updates the post" do
-        put :update, id: standup.id, standup: { title: "New Title" }
+        put :update, id: standup.id, standup: {title: "New Title"}
         standup.reload.title.should == "New Title"
       end
     end
 
     context "with invalid params" do
       it "does not update the post" do
-        put :update, id: standup.id, standup: { title: nil }
+        put :update, id: standup.id, standup: {title: nil}
         standup.reload.title.should == standup.title
         response.should render_template 'standups/edit'
       end
@@ -88,36 +88,35 @@ describe StandupsController do
   end
 
   describe "#route" do
-    let!(:new_york) { create(:standup, ip_key: "nyc") }
-    let!(:san_fran) { create(:standup, ip_key: "sf") }
+    let!(:new_york) { create(:standup, ip_addresses_string: "123.4.5.6/32") }
+    let!(:san_fran) { create(:standup, ip_addresses_string: "127.0.0.1/32") }
+
 
     context "when a standup matches the ip address" do
-      let!(:new_york2) { create(:standup, ip_key: 'nyc') }
-      let!(:no_location) { create(:standup, ip_key: 'none') }
+      let!(:new_york2) { create(:standup, ip_addresses_string: "123.4.5.6/32") }
+      let!(:no_location) { create(:standup, ip_addresses_string: "") }
 
       before do
-        with_authorized_ips({nyc: [IPAddr.new("123.4.5.6/32")], sf: [IPAddr.new("127.0.0.1/32")]}) do
-          request.stub(remote_ip: '123.4.5.6')
-          get :route
-        end
+        request.stub(remote_ip: "123.4.5.6")
+        get :route
       end
 
-      it 'renders the standups index' do
+      it "renders the standups index" do
         response.should render_template :index
       end
 
-      it 'includes all standups with the specified ip address' do
+      it "includes all standups with the specified ip address" do
         assigns(:standups).should include new_york, new_york2
       end
 
-      it 'includes all standups with the specified ip address' do
+      it "includes all standups with the specified ip address" do
         assigns(:standups).should include no_location
       end
     end
 
-    it "redirects to the standup index page if no standup with a corresponding ip" do
-      with_authorized_ips do
-        request.stub(remote_ip: '111.9.9.9')
+    context "when no standup matches" do
+      it "redirects to the standup index page if no standup with a corresponding ip" do
+        request.stub(remote_ip: "111.9.9.9")
         get :route
         response.should redirect_to standups_path
       end

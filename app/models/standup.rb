@@ -1,5 +1,7 @@
+require "ipaddr"
+
 class Standup < ActiveRecord::Base
-  attr_accessible :title, :to_address, :subject_prefix, :ip_key, :closing_message, :time_zone_name
+  attr_accessible :title, :to_address, :subject_prefix, :closing_message, :time_zone_name, :ip_addresses_string
 
   has_many :items, dependent: :destroy
   has_many :posts, dependent: :destroy
@@ -13,6 +15,12 @@ class Standup < ActiveRecord::Base
 
   def date_tomorrow
     date_today + 1.day
+  end
+
+  def ip_addresses
+    (ip_addresses_string || "").split(/\s|,/).map(&:strip).select(&:present?).map do |string|
+      IPAddr.new(string)
+    end
   end
 
   private

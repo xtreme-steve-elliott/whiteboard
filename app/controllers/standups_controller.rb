@@ -2,8 +2,9 @@ class StandupsController < ApplicationController
   before_filter :load_standup, except: [:index, :new, :create, :route]
 
   def create
-    @standup = Standup.new(params[:standup])
-    if @standup.save
+    @standup = standup_service.create(attributes: params[:standup])
+
+    if @standup.persisted?
       flash[:notice] = "#{@standup.title} Standup successfully created"
       redirect_to @standup
     else
@@ -29,11 +30,12 @@ class StandupsController < ApplicationController
   end
 
   def update
-    @standup = Standup.find(params[:id])
-    if @standup.update_attributes(params[:standup])
-      redirect_to @standup
-    else
+    @standup = standup_service.update(id: params[:id], attributes: params[:standup])
+
+    if @standup.changed?
       render 'standups/edit'
+    else
+      redirect_to @standup
     end
   end
 
@@ -44,11 +46,10 @@ class StandupsController < ApplicationController
   end
 
   def route
-    ip_key = AuthorizedIps.corresponding_ip_key(request.remote_ip)
-    @standups = Standup.where(ip_key: ip_key).to_a
+    mapper = IpToStandupMapper.new
+    @standups = mapper.standups_matching_ip_address(ip_address: request.remote_ip)
 
     if @standups.any?
-      @standups |= Standup.where(ip_key: 'none').to_a
       render :index
     else
       redirect_to standups_path
@@ -59,5 +60,9 @@ class StandupsController < ApplicationController
 
   def load_standup
     @standup = Standup.find(params[:id])
+  end
+
+  def standup_service
+    @standup_service ||= StandupService.new(user_ip_address: request.remote_ip)
   end
 end

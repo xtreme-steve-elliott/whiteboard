@@ -4,7 +4,10 @@ class ApplicationController < ActionController::Base
   before_filter :require_login
 
   def require_login
-    redirect_to '/auth/google_apps' unless session[:logged_in] || AuthorizedIps.authorized_ip?(request.env['HTTP_X_FORWARDED_FOR'])
+    mapper = IpToStandupMapper.new
+    current_ip = request.env['HTTP_X_FORWARDED_FOR']
+
+    redirect_to '/auth/google_apps' unless session[:logged_in] || mapper.authorized?(ip_address: current_ip)
   end
 
   # Adds an outer container element around any yielded HTML.

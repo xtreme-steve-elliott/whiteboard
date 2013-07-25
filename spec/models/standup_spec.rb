@@ -16,6 +16,40 @@ describe Standup do
     standup.closing_message.should == 'Yay'
   end
 
+  describe "#ip_addresses" do
+    context "when separated by newline characters" do
+      it "should convert the string to an array of IPAddr objects" do
+        standup = Standup.new(ip_addresses_string: "127.0.0.1/24\r\n168.2.1.3/8\r\n\r\n")
+
+        standup.ip_addresses.should == [IPAddr.new("127.0.0.1/24"), IPAddr.new("168.2.1.3/8")]
+      end
+    end
+
+    context "when separated by carriage returns" do
+      it "should convert the string to an array of IPAddr objects" do
+        standup = Standup.new(ip_addresses_string: "127.0.0.1/24\r168.2.1.3/8\r\r")
+
+        standup.ip_addresses.should == [IPAddr.new("127.0.0.1/24"), IPAddr.new("168.2.1.3/8")]
+      end
+    end
+
+    context "when separated by white spaces" do
+      it "should convert the string to an array of IPAddr objects" do
+        standup = Standup.new(ip_addresses_string: "127.0.0.1/24\t168.2.1.3/8\t\t")
+
+        standup.ip_addresses.should == [IPAddr.new("127.0.0.1/24"), IPAddr.new("168.2.1.3/8")]
+      end
+    end
+
+    context "when separated by commas" do
+      it "should convert the string to an array of IPAddr objects" do
+        standup = Standup.new(ip_addresses_string: "127.0.0.1/24, 168.2.1.3/8, \r\t\t")
+
+        standup.ip_addresses.should == [IPAddr.new("127.0.0.1/24"), IPAddr.new("168.2.1.3/8")]
+      end
+    end
+  end
+
   describe "dates" do
     before do
       @utc_today = Time.now.utc.to_date
@@ -48,9 +82,9 @@ describe Standup do
           title: "Berlin",
           to_address: "berlin+standup@pivotallabs.com",
           subject_prefix: "[FOO]",
-          ip_key: "london",
           closing_message: "Go Running.",
-          time_zone_name: "Mountain Time (US & Canada)"
+          time_zone_name: "Mountain Time (US & Canada)",
+          ip_addresses_string: "127.0.0.1",
       )
     }.to_not raise_exception
   end

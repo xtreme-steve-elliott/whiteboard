@@ -13,13 +13,6 @@
       </div>
     </div>
 
-    <div class='ip_key control-group'>
-      <%= form.label :ip_key, 'Location', class: 'control-label' %>
-      <div class="controls">
-        <%= form.select :ip_key, AuthorizedIps::AUTHORIZED_IP_ADDRESSES.keys, {}, :class => "wide" %>
-      </div>
-    </div>
-
     <div class='to_address control-group'>
       <%= form.label :to_address, 'Send Email To', class: 'control-label' %>
       <div class="controls">
@@ -38,6 +31,13 @@
       <%= form.label :time_zone_name, 'Time Zone', class: 'control-label' %>
       <div class="controls">
         <%= form.select :time_zone_name, ActiveSupport::TimeZone.all.map(&:name), :class => "wide" %>
+      </div>
+    </div>
+
+    <div class='ip_addresses control-group'>
+      <%= form.label :ip_addresses_string, 'Authorized IP Addresses', class: 'control-label' %>
+      <div class="controls">
+        <%= form.text_area :ip_addresses_string, :class => "wide" %>
       </div>
     </div>
 
