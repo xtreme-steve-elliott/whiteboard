@@ -3,6 +3,7 @@
 
   <div class='well'>
     <h3>Please update these items with any new information from standup:</h3>
+
     <div>
       Add any answers/discussions that were brought up. <strong>If you missed anything, ask the owner of the help /
       interesting to fill in details before you submit.</strong>
@@ -49,22 +50,21 @@ Subject: <%= @post.title_for_email %>
 
     <% if @post.sent_at %>
         This email was sent at <%= @post.sent_at %>
-    <% elsif @post.items.empty? %>
-        <p class='btn btn-warning' disabled='disabled'>Send Email</p>
-        <span class='notice'>There is no content to publish.</span>
-    <% else %>
+    <% elsif @post.emailable_content? %>
         <%= link_to 'Send Email', send_email_post_path(@post),
                     data: {confirm: 'Emails can not be unsent.  Are you sure?'},
                     method: :put,
-                    class: 'btn btn-warning'
-        %>
+                    class: 'btn btn-warning' %>
+    <% else %>
+        <p class='btn btn-warning' disabled='disabled'>Send Email</p>
+        <span class='notice'>There is no content to publish.</span>
     <% end %>
     <br/>
     <br/>
 
     <h3>Please double check the blog post. Ensure that there are no client names or private info in the post, and that
-    the content is of interest to the general public. Click the "Post Blog Entry" button to post it to
-    <%= link_to "http://www.pivotallabs.com/community", "http://www.pivotallabs.com/community" %>.</h3>
+      the content is of interest to the general public. Click the "Post Blog Entry" button to post it to
+      <%= link_to "http://www.pivotallabs.com/community", "http://www.pivotallabs.com/community" %>.</h3>
 
     <div class='blog_post preview'>
       (Title: <%= @post.title_for_blog %>)

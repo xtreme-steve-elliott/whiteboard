@@ -28,6 +28,7 @@ group :test, :development do
   gem 'pry'
   gem 'letter_opener'
   gem 'timecop'
+  gem 'foreman'
 end
 
 group :development do
