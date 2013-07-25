@@ -45,6 +45,10 @@ The following environment variables are necessary for posting to email via sendg
     export SENDGRID_USERNAME=<username>
     export SENDGRID_PASSWORD=<password>
 
+To use these environment variables in development mode:
+
+    $ foreman run -e .env-development [command] # example: rails s
+
 Deployment
 ==========
 	heroku apps:create sf-whiteboard --stack cedar
