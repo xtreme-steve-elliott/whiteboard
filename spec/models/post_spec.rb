@@ -107,26 +107,62 @@ describe Post do
   describe '#items_by_type' do
     it "orders by created_at asc" do
       post = create(:post)
-      items = [ create(:item, created_at: Time.now), create(:item, created_at: 2.days.ago )]
+      items = [create(:item, created_at: Time.now), create(:item, created_at: 2.days.ago)]
       post.items = items
       post.items_by_type['Help'].should == items.reverse
     end
   end
 
-  describe '#publishable_content?' do
-    it "returns false when no content items" do
+  describe "#publishable_content?" do
+    it "returns false when no content items and no events" do
       post = create(:post)
-      post.publishable_content?.should be_false
+      post.publishable_content?.should == false
     end
 
-    it "returns false when no public content items" do
+    it "returns false when no public content items or public event" do
       post = create(:post, items: [create(:item, created_at: Time.now, public: false)])
-      post.publishable_content?.should be_false
+      create(:event, date: 1.day.from_now.to_date, public: false)
+      post.publishable_content?.should == false
     end
 
     it "returns true when there are public content items" do
       post = create(:post, items: [create(:item, created_at: Time.now, public: true)])
-      post.publishable_content?.should be_true
+      post.publishable_content?.should == true
+    end
+
+    it "returns true when there are public events" do
+      post = create(:post, items: [create(:item, created_at: Time.now, public: false)])
+      create(:event, date: 1.day.from_now.to_date, public: true, standup: post.standup)
+      post.publishable_content?.should == true
+    end
+  end
+
+  describe "#emailable_content?" do
+    it "returns false when no content items and no events" do
+      post = create(:post)
+      post.emailable_content?.should == false
+    end
+
+    it "returns true with a private content item" do
+      post = create(:post, items: [create(:item, created_at: Time.now, public: false)])
+      post.emailable_content?.should == true
+    end
+
+    it "returns true with a private event" do
+      post = create(:post, items: [])
+      create(:event, date: 1.day.from_now.to_date, public: false, standup: post.standup)
+      post.emailable_content?.should == true
+    end
+
+    it "returns true when there are public content items" do
+      post = create(:post, items: [create(:item, created_at: Time.now, public: true)])
+      post.emailable_content?.should == true
+    end
+
+    it "returns true when there are public events" do
+      post = create(:post, items: [])
+      create(:event, date: 1.day.from_now.to_date, public: true, standup: post.standup)
+      post.emailable_content?.should == true
     end
   end
 end

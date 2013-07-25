@@ -5,4 +5,8 @@ FactoryGirl.define do
 
     association :standup
   end
+
+  factory :event, parent: :item do
+    kind "Event"
+  end
 end

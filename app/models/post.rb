@@ -35,14 +35,20 @@ class Post < ActiveRecord::Base
     created_at.strftime("%m/%d/%y") + ': '+ title
   end
 
+  def events
+    Item.events_on_or_after(Date.today, standup)
+  end
+
+  def public_events
+    Item.public.events_on_or_after(Date.today, standup)
+  end
+
   def items_by_type
-    sorted_by_type(items).
-      merge(Item.events_on_or_after(Date.today, standup))
+    sorted_by_type(items).merge(events)
   end
 
   def public_items_by_type
-    sorted_by_type(public_items).
-      merge(Item.public.events_on_or_after(Date.today, standup))
+    sorted_by_type(public_items).merge(public_events)
   end
 
   def deliver_email
@@ -56,7 +62,11 @@ class Post < ActiveRecord::Base
   end
 
   def publishable_content?
-    public_items.length > 0
+    public_items.present? || public_events.present?
+  end
+
+  def emailable_content?
+    items.present? || events.present?
   end
 
   private
