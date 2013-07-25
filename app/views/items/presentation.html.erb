@@ -1,6 +1,11 @@
 <section class="slide">
-  <h1>Standup<br>
-  <%= Time.now.strftime("%m/%d/%y") %></h1>
+  <h1>
+    Standup<br/>
+    <span><%= @standup.date_today.strftime("%m/%d/%y") %></span>
+    <br/>in
+    <span data-countdown-date="<%= @standup.next_standup_date.to_i * 1000 %>"></span>
+  </h1>
+
   <div class='footer'>
     <p>
       <%= link_to 'Exit', standup_items_path(@standup), class: 'btn btn-large btn-primary exit-presentation' %>
@@ -9,34 +14,35 @@
 </section>
 
 <% Item.kinds.each do |kind| %>
-  <section class="slide">
-    <div class="titles">
-      <h2><%= kind.name.pluralize %></h2>
-    </div>
-    <% if @items[kind.name] %>
-      <% if kind.name == 'Event' %>
-        <% @items[kind.name].group_by(&:relative_date).each do |group_name, events| %>
-          <h3 class="<%= group_name %>"><%= group_name.capitalize %></h3>
-          <ul>
-            <%= render partial: 'presentation_item', collection: events %>
-          </ul>
-        <% end %>
-      <% else %>
-        <ul>
-          <%= render partial: 'presentation_item', collection: @items[kind.name] %>
-        </ul>
+    <section class="slide">
+      <div class="titles">
+        <h2><%= kind.name.pluralize %></h2>
+      </div>
+      <% if @items[kind.name] %>
+          <% if kind.name == 'Event' %>
+              <% @items[kind.name].group_by(&:relative_date).each do |group_name, events| %>
+                  <h3 class="<%= group_name %>"><%= group_name.capitalize %></h3>
+                  <ul>
+                    <%= render partial: 'presentation_item', collection: events %>
+                  </ul>
+              <% end %>
+          <% else %>
+              <ul>
+                <%= render partial: 'presentation_item', collection: @items[kind.name] %>
+              </ul>
+          <% end %>
       <% end %>
-    <% end %>
-    <div class='footer'>
-      <p>
-        <%= link_to 'Exit', standup_items_path(@standup), class: 'btn btn-large btn-primary exit-presentation' %>
-      </p>
-    </div>
-  </section>
+      <div class='footer'>
+        <p>
+          <%= link_to 'Exit', standup_items_path(@standup), class: 'btn btn-large btn-primary exit-presentation' %>
+        </p>
+      </div>
+    </section>
 <% end %>
 
 <section class="slide">
   <h1><%= @standup.closing_message %></h1>
+
   <div class='footer'>
     <p>
       <%= link_to 'Exit', standup_items_path(@standup), class: 'btn btn-large btn-primary exit-presentation' %>

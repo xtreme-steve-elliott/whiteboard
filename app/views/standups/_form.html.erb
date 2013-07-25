@@ -1,4 +1,6 @@
 <%= form_for standup, html: {class: 'form-horizontal'} do |form| %>
+    <%= render partial: 'shared/errors',  locals: {model: standup} %>
+
     <div class='title control-group' style="padding-top: 8px">
       <%= form.label :title, class: 'control-label' %>
       <div class="controls">

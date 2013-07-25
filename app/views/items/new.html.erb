@@ -1,6 +1,5 @@
 <%= form_for(@item, html: {class: 'form-horizontal'}) do |f| %>
-
-  <%= render partial: 'errors', locals: {f: f, item: @item} %>
+  <%= render partial: 'shared/errors', locals: {model: @item} %>
 
   <%= hidden_field_tag :redirect_to, params[:redirect_to] || request.referer %>
 

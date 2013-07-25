@@ -9,6 +9,23 @@ describe Standup do
   describe 'validations' do
     it { should validate_presence_of(:title) }
     it { should validate_presence_of(:to_address) }
+
+    it "should validate the format of the standup time" do
+      standup = FactoryGirl.build(:standup)
+      standup.should be_valid
+
+      standup.start_time_string = "9:00 am"
+      standup.should be_valid
+
+      standup.start_time_string = "09:10 AM"
+      standup.should be_valid
+
+      standup.start_time_string = "10:00"
+      standup.should_not be_valid
+
+      standup.start_time_string = "23:00"
+      standup.should_not be_valid
+    end
   end
 
   it 'has a closing message' do
@@ -52,25 +69,46 @@ describe Standup do
 
   describe "dates" do
     before do
-      @utc_today = Time.now.utc.to_date
+      @utc_today = Time.new(2012, 1, 1).utc.to_date
       @utc_yesterday = @utc_today - 1.day
 
       @standup = FactoryGirl.create(:standup, closing_message: 'Yay')
       @standup.time_zone_name = "Pacific Time (US & Canada)"
+      Timecop.freeze(@utc_today)
+    end
+
+    after do
+      Timecop.return
     end
 
     describe "#date_today" do
       it "returns the date based on the time zone" do
-        Timecop.freeze(@utc_today) do
-          @standup.date_today.should == @utc_yesterday
-        end
+        @standup.date_today.should == @utc_yesterday
       end
     end
 
     describe "#date_tomorrow" do
       it "returns the date based on the time zone" do
-        Timecop.freeze(@utc_today) do
-          @standup.date_tomorrow.should == @utc_today
+        @standup.date_tomorrow.should == @utc_today
+      end
+    end
+
+    describe "#next_standup_date" do
+      context "when the standup is today" do
+        it "returns date and time as an integer" do
+          standup_beginning_of_day = @standup.time_zone.now.beginning_of_day
+
+          @standup.start_time_string = "5:00pm"
+          @standup.next_standup_date.should == standup_beginning_of_day + 17.hours
+        end
+      end
+
+      context "when the standup is tomorrow" do
+        it "returns date and time as an integer" do
+          standup_beginning_of_day = @standup.time_zone.now.beginning_of_day
+
+          @standup.start_time_string = "8:00am"
+          @standup.next_standup_date.should == standup_beginning_of_day + 1.day + 8.hour
         end
       end
     end
