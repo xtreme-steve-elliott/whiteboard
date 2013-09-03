@@ -14,10 +14,12 @@ $(document).keyup(function (e) {
 
 $(function () {
     $("[data-countdown-date]").each(function () {
-        var secondsSinceEpoch = parseInt($(this).data('countdown-date'));
+        var secondsSinceEpoch = parseInt($(this).data('countdown-date'), 10);
         $(this).countdown({
             until: new Date(secondsSinceEpoch),
-            layout: '{hn}:{mnn}:{snn}'
+            layout: '{desc} {hn}:{mnn}:{snn}',
+            description: 'in',
+            expiryText: 'starts NOW!'
         });
     });
 });

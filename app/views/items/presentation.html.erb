@@ -2,8 +2,13 @@
   <h1>
     Standup<br/>
     <span><%= @standup.date_today.strftime("%m/%d/%y") %></span>
-    <br/>in
-    <span data-countdown-date="<%= @standup.next_standup_date.to_i * 1000 %>"></span>
+    <div class="countdown">
+      <% if @standup.finished_today %>
+        starts NOW!
+      <% else %>
+        <span data-countdown-date="<%= @standup.next_standup_date.to_i * 1000 %>"></span>
+      <% end %>
+    </div>
   </h1>
 
   <div class='footer'>

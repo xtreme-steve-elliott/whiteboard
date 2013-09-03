@@ -33,9 +33,13 @@ class Standup < ActiveRecord::Base
   def next_standup_date
     standup_time = standup_time_today
 
-    standup_time += 1.day if standup_time < time_zone.now
+    standup_time += 1.day if finished_today
 
     standup_time
+  end
+
+  def finished_today
+    standup_time_today < time_zone.now
   end
 
   private
@@ -48,7 +52,7 @@ class Standup < ActiveRecord::Base
   def hour_of_standup
     matches = start_time_string.match(Standup::TIME_FORMAT)
     hours, minutes = matches[1].to_i, matches[2].to_i
-    hours += 12 if matches[3] =~ /pm/i
+    hours += 12 if hours != 12 && matches[3] =~ /pm/i
 
     [hours, minutes]
   end

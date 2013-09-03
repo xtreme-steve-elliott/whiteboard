@@ -75,7 +75,7 @@ describe "items", type: :request, js: true do
 
     visit presentation_standup_items_path(standup)
     find('section.deck-current').should have_content "Standup"
-    find('section.deck-current').should have_css "[data-countdown-date]"
+    find('section.deck-current').should have_css('section.deck-current .countdown')
     page.execute_script("$.deck('next')")
 
     find('section.deck-current').should have_content "New faces"
