@@ -9,7 +9,8 @@ pairs:
   ab: Adam Berlin; aberlin
   dlb: Damien Le Berrigaud; dleberrigaud
   dn: Dan Neumann; dneumann
-
+  lm: Lucas Marks; lmarks
+  ib: Ian Baker; ibaker
 email:
   prefix: pair
   domain: pivotallabs.com
