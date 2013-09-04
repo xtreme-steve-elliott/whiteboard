@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :item do
     title "Focused specs are broken"
     kind "Help"
+    date Date.today
 
     association :standup
   end

@@ -76,9 +76,9 @@ describe ItemsController do
       response.should be_ok
     end
 
-    it "sorts the hash by created_at desc" do
-      new_help = create(:item, created_at: 1.days.ago, standup: standup)
-      old_help = create(:item, created_at: 4.days.ago, standup: standup)
+    it "sorts the hash by date asc" do
+      new_help = create(:item, date: 1.days.ago, standup: standup)
+      old_help = create(:item, date: 4.days.ago, standup: standup)
 
       get :index, params
       assigns[:items]['Help'].should == [ old_help, new_help ]

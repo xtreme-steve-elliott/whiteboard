@@ -151,4 +151,37 @@ describe Item do
       item.relative_date.should == :upcoming
     end
   end
+
+  describe '.orphans' do
+    it 'returns all unposted interestings and helps' do
+      interesting = FactoryGirl.create(:item, kind: 'Interesting')
+      old_help = FactoryGirl.create(:item, kind: 'Help', date: Date.yesterday)
+
+      Item.orphans.should == {'Help' => [old_help], 'Interesting' => [interesting]}
+    end
+
+    it 'returns new faces that are not in the past' do
+      face = FactoryGirl.create(:item, kind: 'New face')
+      other_face = FactoryGirl.create(:item, kind: 'New face', date: Date.yesterday)
+
+      Item.orphans['New face'].should == [face]
+    end
+
+    it 'returns items in date asc order' do
+      interesting = FactoryGirl.create(:item, kind: 'Interesting')
+      old_interesting = FactoryGirl.create(:item, kind: 'Interesting', date: Date.yesterday)
+
+      Item.orphans.should == {'Interesting' => [old_interesting, interesting]}
+    end
+  end
+
+  describe '.orphans' do
+    it 'returns the non-event items that are not in the past' do
+      item = FactoryGirl.create(:item, kind: 'Help')
+      FactoryGirl.create(:item, kind: 'Event')
+      FactoryGirl.create(:item, kind: 'Help', date: Date.yesterday)
+
+      Item.orphans.length.should == 1
+    end
+  end
 end

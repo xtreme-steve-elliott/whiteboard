@@ -24,7 +24,7 @@
         <h2><%= kind.name.pluralize %></h2>
       </div>
       <% if @items[kind.name] %>
-          <% if kind.name == 'Event' %>
+          <% if kind.name == 'Event' || kind.name == 'New face'%>
               <% @items[kind.name].group_by(&:relative_date).each do |group_name, events| %>
                   <h3 class="<%= group_name %>"><%= group_name.capitalize %></h3>
                   <ul>

@@ -25,7 +25,7 @@ group :test, :development do
   gem 'launchy'
   gem 'sqlite3'
   gem 'database_cleaner'
-  gem 'pry'
+  gem 'pry-debugger'
   gem 'letter_opener'
   gem 'timecop'
   gem 'foreman'

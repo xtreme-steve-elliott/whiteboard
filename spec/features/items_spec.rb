@@ -70,32 +70,51 @@ describe "items", type: :request, js: true do
   it 'deck.js for standup' do
     visit '/'
     click_link(standup.title)
-    page.should have_css('.subheader.today', text: 'Today')
-    page.should have_css('.today + .item', text: 'Happy Hour')
-    page.should have_css('.subheader.tomorrow', text: 'Tomorrow')
-    page.should have_css('.tomorrow + .item', text: 'Baseball')
-    page.should have_css('.subheader.upcoming', text: 'Upcoming')
-    page.should have_css('.upcoming + .item', text: 'Party')
+
+    within '.kind.event' do
+      page.should have_css('.subheader.today', text: 'Today')
+      page.should have_css('.today + .item', text: 'Happy Hour')
+      page.should have_css('.subheader.tomorrow', text: 'Tomorrow')
+      page.should have_css('.tomorrow + .item', text: 'Baseball')
+      page.should have_css('.subheader.upcoming', text: 'Upcoming')
+      page.should have_css('.upcoming + .item', text: 'Party')
+    end
+
+    within '.kind.new_face' do
+      page.should have_css('.subheader.today', text: 'Today')
+      page.should have_css('.today + .item', text: 'Johnathon McKenzie')
+      page.should have_css('.subheader.upcoming', text: 'Upcoming')
+      page.should have_css('.upcoming + .item', text: 'Jane Doe')
+    end
 
     visit presentation_standup_items_path(standup)
-    find('section.deck-current').should have_content "Standup"
-    find('section.deck-current').should have_css('section.deck-current .countdown')
+
+    within 'section.deck-current' do
+      page.should have_content "Standup"
+      page.should have_css('.countdown')
+    end
     page.execute_script("$.deck('next')")
 
-    find('section.deck-current').should have_content "New faces"
-    find('section.deck-current').should have_content "Johnathon McKenzie"
+    within 'section.deck-current' do
+      page.should have_content "New faces"
+      page.should have_content "Today"
+      page.should have_content "Upcoming"
+      page.should have_content "Johnathon McKenzie"
+    end
     page.execute_script("$.deck('next')")
 
     find('section.deck-current').should have_content "Helps"
     page.execute_script("$.deck('next')")
 
-    find('section.deck-current').should have_content "Interestings"
-    find('section.deck-current').should have_content("Linux 3.2 out")
-    find('section.deck-current').should have_content("Linus Torvalds")
-    find('section.deck-current').should have_content("Rails 62 is out")
-    find('section.deck-current').should_not have_selector('.in')
-    first('section.deck-current a[data-toggle]').click
-    find('section.deck-current').should have_selector('.in')
+    within 'section.deck-current' do
+      page.should have_content "Interestings"
+      page.should have_content("Linux 3.2 out")
+      page.should have_content("Linus Torvalds")
+      page.should have_content("Rails 62 is out")
+      page.should_not have_selector('.in')
+      first('a[data-toggle]').click
+      page.should have_selector('.in')
+    end
     page.execute_script("$.deck('next')")
 
     find('section.deck-current').should have_content "Events"
@@ -109,8 +128,10 @@ describe "items", type: :request, js: true do
     find('section.deck-current').should_not have_content("Rails 62 is out")
     page.execute_script("$.deck('next')")
 
-    find('section.deck-current').should_not have_content "Events"
-    find('section.deck-current').should have_content "Woohoo"
+    within 'section.deck-current' do
+      page.should_not have_content "Events"
+      page.should have_content "Woohoo"
+    end
 
     all('.exit-presentation').first.click
 

@@ -19,7 +19,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.orphans
-    where(post_id: nil).where("kind != 'Event'").order("created_at ASC").group_by(&:kind)
+    where(post_id: nil).where("kind != 'Event' AND (date >= ? OR kind == 'Help' OR kind == 'Interesting')", Date.today).order("date ASC").group_by(&:kind)
   end
 
   def self.events_on_or_after(date, standup)
