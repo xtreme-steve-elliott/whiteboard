@@ -5,6 +5,10 @@ describe "items", type: :request, js: true do
   let!(:other_standup) { FactoryGirl.create(:standup, title: 'New York') }
 
   before do
+    utc_today = Time.now
+    utc_tomorrow = utc_today + 1.day
+    utc_five_days = utc_today + 5.days
+
     login
     visit '/'
     click_link(standup.title)
@@ -21,31 +25,31 @@ describe "items", type: :request, js: true do
 
     find('a[data-kind="New face"] i').click
     fill_in 'item_title', :with => "Jane Doe"
-    fill_in 'item_date', :with => 5.days.from_now.to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => (Time.now + 5.days).to_date.strftime("%Y-%m-%d")
     select 'San Francisco', from: 'item[standup_id]'
     click_button 'Create New Face'
 
     find('a[data-kind="Event"] i').click
     fill_in 'item_title', :with => "Meetup"
-    fill_in 'item_date', :with => 5.days.from_now.to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => utc_five_days.to_date.strftime("%Y-%m-%d")
     select 'New York', from: 'item[standup_id]'
     click_button 'Create Item'
 
     find('a[data-kind="Event"] i').click
     fill_in 'item_title', :with => "Party"
-    fill_in 'item_date', :with => 5.days.from_now.to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => utc_five_days.to_date.strftime("%Y-%m-%d")
     select 'San Francisco', from: 'item[standup_id]'
     click_button 'Create Item'
 
     find('a[data-kind="Event"] i').click
     fill_in 'item_title', :with => "Happy Hour"
-    fill_in 'item_date', :with => Time.now.to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => utc_today.to_date.strftime("%Y-%m-%d")
     select 'San Francisco', from: 'item[standup_id]'
     click_button 'Create Item'
 
     find('a[data-kind="Event"] i').click
     fill_in 'item_title', :with => "Baseball"
-    fill_in 'item_date', :with => 1.day.from_now.to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => utc_tomorrow.to_date.strftime("%Y-%m-%d")
     select 'San Francisco', from: 'item[standup_id]'
     click_button 'Create Item'
 
