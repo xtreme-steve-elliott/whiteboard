@@ -26,13 +26,14 @@ class Item < ActiveRecord::Base
     where(kind: "Event").
         where("standup_id = #{standup.id} OR standup_id IS NULL").
         where("date >= ?", date).
+        where(post_id: nil).
         order("date").group_by(&:kind)
   end
 
   def self.for_post(standup)
     where(post_id: nil, bumped: false).
         where("standup_id = #{standup.id} OR standup_id IS NULL").
-        where("kind != 'Event'").
+        where("(kind != 'Event' OR date == ?)", Date.today).
         where("date IS NULL OR date <= ?", Date.today)
   end
 

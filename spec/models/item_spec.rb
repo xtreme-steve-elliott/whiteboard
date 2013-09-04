@@ -55,12 +55,23 @@ describe Item do
     let!(:event_after_date) { create(:item, date: (date + 1.day), kind: 'Event', standup: standup) }
     let!(:event_on_date) { create(:item, date: (date), kind: 'Event', standup: standup) }
 
+    let(:post) { create(:post) }
+    let(:event_with_post) { create(:item, date: (date), kind: 'Event', standup: standup) }
+
+    before do
+      post.items << event_with_post
+    end
+
     it { should_not include event_before_date }
     it { should include event_on_date }
     it { should include event_after_date }
 
     it "orders the events by date" do
       subject.should == [event_on_date, event_after_date]
+    end
+
+    it "does not include events that have a post_id set" do
+      subject.should_not include event_with_post
     end
   end
 
@@ -83,6 +94,7 @@ describe Item do
     let!(:item_for_different_standup) { create(:item, date: nil, kind: "Help", standup: other_standup) }
 
     let!(:event_today) { create(:item, date: Date.today, kind: 'Event', standup: standup) }
+    let!(:event_tomorrow) { create(:item, date: Date.tomorrow, kind: 'Event', standup: standup) }
 
     it "includes item with no post id" do
       should include item_with_no_post_id
@@ -100,12 +112,16 @@ describe Item do
       should include item_with_no_date
     end
 
-    it "does not include events" do
-      should_not include event_today
+    it "does not include events in the future" do
+      should_not include event_tomorrow
+    end
+
+    it "includes events from today" do
+      should include event_today
     end
 
     it "combines all of the above" do
-      should =~ [item_with_no_post_id, item_not_bumped, item_for_today, item_with_no_date]
+      should =~ [item_with_no_post_id, item_not_bumped, item_for_today, item_with_no_date, event_today]
     end
 
     it "does not include items for other standups" do
