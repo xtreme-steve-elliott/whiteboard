@@ -11,7 +11,7 @@ describe PostMailer do
     end
 
     it 'sets the from address' do
-      mail.from.should == ["noreply@pivotallabs.com"]
+      mail.from.should == [destination]
     end
 
     it 'renders the items in the body of the message' do
