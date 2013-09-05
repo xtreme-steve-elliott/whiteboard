@@ -3,11 +3,12 @@ require 'spec_helper'
 describe "items", type: :request, js: true do
   let!(:standup) { FactoryGirl.create(:standup, title: 'San Francisco', subject_prefix: "[Standup][SF]", closing_message: 'Woohoo') }
   let!(:other_standup) { FactoryGirl.create(:standup, title: 'New York') }
+  let(:timezone) { ActiveSupport::TimeZone.new(standup.time_zone_name) }
 
   before do
-    utc_today = Time.now
-    utc_tomorrow = utc_today + 1.day
-    utc_five_days = utc_today + 5.days
+    date_today = timezone.now.strftime("%Y-%m-%d")
+    date_tomorrow = (timezone.now + 1.day).strftime("%Y-%m-%d")
+    date_five_days = (timezone.now + 5.days).strftime("%Y-%m-%d")
 
     login
     visit '/'
@@ -20,36 +21,37 @@ describe "items", type: :request, js: true do
 
     find('a[data-kind="New face"] i').click
     fill_in 'item_title', :with => "Johnathon McKenzie"
+    fill_in 'item_date', :with => date_today
     select 'San Francisco', from: 'item[standup_id]'
     click_button 'Create New Face'
 
     find('a[data-kind="New face"] i').click
     fill_in 'item_title', :with => "Jane Doe"
-    fill_in 'item_date', :with => (Time.now + 5.days).to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => date_five_days
     select 'San Francisco', from: 'item[standup_id]'
     click_button 'Create New Face'
 
     find('a[data-kind="Event"] i').click
     fill_in 'item_title', :with => "Meetup"
-    fill_in 'item_date', :with => utc_five_days.to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => date_five_days
     select 'New York', from: 'item[standup_id]'
     click_button 'Create Item'
 
     find('a[data-kind="Event"] i').click
     fill_in 'item_title', :with => "Party"
-    fill_in 'item_date', :with => utc_five_days.to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => date_five_days
     select 'San Francisco', from: 'item[standup_id]'
     click_button 'Create Item'
 
     find('a[data-kind="Event"] i').click
     fill_in 'item_title', :with => "Happy Hour"
-    fill_in 'item_date', :with => utc_today.localtime.to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => date_today
     select 'San Francisco', from: 'item[standup_id]'
     click_button 'Create Item'
 
     find('a[data-kind="Event"] i').click
     fill_in 'item_title', :with => "Baseball"
-    fill_in 'item_date', :with => utc_tomorrow.localtime.to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => date_tomorrow
     select 'San Francisco', from: 'item[standup_id]'
     click_button 'Create Item'
 
@@ -70,7 +72,6 @@ describe "items", type: :request, js: true do
   it 'deck.js for standup' do
     visit '/'
     click_link(standup.title)
-
 
     within '.kind.event' do
       page.should have_css('.subheader.today', text: 'Today')
