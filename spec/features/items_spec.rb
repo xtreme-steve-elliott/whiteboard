@@ -43,13 +43,13 @@ describe "items", type: :request, js: true do
 
     find('a[data-kind="Event"] i').click
     fill_in 'item_title', :with => "Happy Hour"
-    fill_in 'item_date', :with => utc_today.to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => utc_today.localtime.to_date.strftime("%Y-%m-%d")
     select 'San Francisco', from: 'item[standup_id]'
     click_button 'Create Item'
 
     find('a[data-kind="Event"] i').click
     fill_in 'item_title', :with => "Baseball"
-    fill_in 'item_date', :with => utc_tomorrow.to_date.strftime("%Y-%m-%d")
+    fill_in 'item_date', :with => utc_tomorrow.localtime.to_date.strftime("%Y-%m-%d")
     select 'San Francisco', from: 'item[standup_id]'
     click_button 'Create Item'
 
