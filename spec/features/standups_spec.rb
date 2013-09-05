@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "standups", type: :request, js: true do
+describe "standups", type: :request do
   before do
     login
     visit '/'
