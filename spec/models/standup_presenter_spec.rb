@@ -40,16 +40,20 @@ describe StandupPresenter do
     context 'when standup image folder is not blank' do
       let!(:standup) { FactoryGirl.create(:standup, image_folder: 'sf') }
 
+      before do
+        FakeFS.activate!
+      end
+
+      after do
+        FakeFS::FileSystem.clear
+        FakeFS.deactivate!
+      end
+
       context 'when the directory contains files' do
         before do
-          FakeFS.activate!
           FileUtils.mkdir_p('app/assets/images/sf')
           FileUtils.touch('app/assets/images/sf/foo.jpg')
           FileUtils.touch('app/assets/images/sf/bar.jpg')
-        end
-
-        after do
-          FakeFS.deactivate!
         end
 
         it 'returns an image url from the image folder' do
@@ -67,7 +71,19 @@ describe StandupPresenter do
       end
 
       context 'when there are no files' do
-        it 'returns nil'
+        before do
+          FileUtils.mkdir_p('app/assets/images/sf')
+        end
+
+        it 'raises an exception' do
+          expect{ subject.closing_image}.to raise_error
+        end
+      end
+
+      context 'when the directory does not exist' do
+        it 'raises an exception' do
+          expect{ subject.closing_image}.to raise_error
+        end
       end
     end
   end
