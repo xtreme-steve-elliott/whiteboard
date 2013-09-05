@@ -71,9 +71,9 @@ describe "items", type: :request, js: true do
     visit '/'
     click_link(standup.title)
 
-    page.should have_css('.subheader.today', text: 'Today')
 
-    within '.event' do
+    within '.kind.event' do
+      page.should have_css('.subheader.today', text: 'Today')
       page.should have_css('.today + .item', text: 'Happy Hour')
       page.should have_css('.subheader.tomorrow', text: 'Tomorrow')
       page.should have_css('.tomorrow + .item', text: 'Baseball')
