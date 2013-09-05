@@ -29,6 +29,7 @@ group :test, :development do
   gem 'letter_opener'
   gem 'timecop'
   gem 'foreman'
+  gem 'fakefs', :require => 'fakefs/safe'
 end
 
 group :development do

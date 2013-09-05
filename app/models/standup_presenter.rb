@@ -17,4 +17,9 @@ class StandupPresenter < SimpleDelegator
     index = rand(STANDUP_CLOSINGS.length)
     STANDUP_CLOSINGS[index]
   end
+
+  def closing_image
+    dir = @standup.image_folder
+    "#{dir}/" + Dir.entries("app/assets/images/#{dir}").select { |f| f =~ /\.(png|gif|jpg|jpeg)$/i }.sample
+  end
 end

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'fileutils'
 
 describe StandupPresenter do
   let(:standup) { double(foo: 'bar', closing_message: '') }
@@ -27,12 +28,49 @@ describe StandupPresenter do
     end
   end
 
-  context 'when standup object does have a closing message' do
+  context 'when standup object does have a closing message and image folder is blank' do
     let(:standup) { double(closing_message: 'Yay!') }
 
     it 'returns the standup closing message' do
       subject.closing_message.should == 'Yay!'
     end
   end
+
+  describe '#closing_image' do
+    context 'when standup image folder is not blank' do
+      let!(:standup) { FactoryGirl.create(:standup, image_folder: 'sf') }
+
+      context 'when the directory contains files' do
+        before do
+          FakeFS.activate!
+          FileUtils.mkdir_p('app/assets/images/sf')
+          FileUtils.touch('app/assets/images/sf/foo.jpg')
+          FileUtils.touch('app/assets/images/sf/bar.jpg')
+        end
+
+        after do
+          FakeFS.deactivate!
+        end
+
+        it 'returns an image url from the image folder' do
+          ['sf/foo.jpg', 'sf/bar.jpg'].should include subject.closing_image
+        end
+
+        it 'does not return the same image 100 times in a row' do
+          images = []
+          100.times do
+            images << subject.closing_image
+          end
+
+          images.uniq.length.should == 2
+        end
+      end
+
+      context 'when there are no files' do
+        it 'returns nil'
+      end
+    end
+  end
+
 
 end

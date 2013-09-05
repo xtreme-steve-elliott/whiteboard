@@ -46,7 +46,11 @@
 <% end %>
 
 <section class="slide">
-  <h1><%= @standup.closing_message %></h1>
+  <h1><%= @standup.closing_message %>
+  <% if @standup.image_folder %>
+    <%= image_tag(@standup.closing_image) %>
+  <% end %>
+  </h1>
 
   <div class='footer'>
     <p>

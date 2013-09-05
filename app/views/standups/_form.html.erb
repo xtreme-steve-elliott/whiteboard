@@ -50,6 +50,13 @@
       </div>
     </div>
 
+    <div class='image_folder control-group'>
+      <%= form.label :image_folder, 'Image Folder (ex. sf)', class: 'control-label' %>
+      <div class="controls">
+        <%= form.text_field :image_folder, :class => "wide" %>
+      </div>
+    </div>
+
     <div class='control-group'>
       <div class="controls">
         <%= form.submit class: 'btn btn-primary' %>

@@ -124,6 +124,7 @@ describe Standup do
           time_zone_name: "Mountain Time (US & Canada)",
           ip_addresses_string: "127.0.0.1",
           start_time_string: "9:00am",
+          image_folder: 'sf'
       )
     }.to_not raise_exception
   end

@@ -18,6 +18,7 @@ describe "standups", type: :request do
     fill_in 'standup_closing_message', with: "Woohoo"
     fill_in 'standup_ip_addresses_string', with: "192.168.0.0/24\n\r192.168.1.5"
     fill_in 'standup_start_time_string', with: '10:00am'
+    fill_in 'standup_image_folder', with: 'sf'
     click_button 'Create Standup'
 
     visit '/'
