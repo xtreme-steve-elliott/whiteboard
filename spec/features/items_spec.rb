@@ -1,11 +1,12 @@
 require 'spec_helper'
 
 describe "items", type: :request, js: true do
-  let!(:standup) { FactoryGirl.create(:standup, title: 'San Francisco', subject_prefix: "[Standup][SF]", closing_message: 'Woohoo', image_folder: 'sf') }
+  let!(:standup) { FactoryGirl.create(:standup, title: 'San Francisco', subject_prefix: "[Standup][SF]", closing_message: 'Woohoo', image_folder: 'sf', image_days: ['Mon']) }
   let!(:other_standup) { FactoryGirl.create(:standup, title: 'New York') }
   let(:timezone) { ActiveSupport::TimeZone.new(standup.time_zone_name) }
 
   before do
+    Timecop.travel(Time.local(2013, 9, 2, 12, 0, 0)) #monday
     date_today = timezone.now.strftime("%Y-%m-%d")
     date_tomorrow = (timezone.now + 1.day).strftime("%Y-%m-%d")
     date_five_days = (timezone.now + 5.days).strftime("%Y-%m-%d")

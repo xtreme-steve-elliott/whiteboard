@@ -37,10 +37,11 @@ describe StandupPresenter do
   end
 
   describe '#closing_image' do
-    context 'when standup image folder is not blank' do
-      let!(:standup) { FactoryGirl.create(:standup, image_folder: 'sf') }
+    let!(:standup) { FactoryGirl.create(:standup, image_folder: 'sf', image_days: ['Mon', 'Tue']) }
 
+    context 'when the day is selected' do
       before do
+        Timecop.travel(Time.local(2013, 9, 2, 12, 0, 0)) #monday
         FakeFS.activate!
       end
 
@@ -84,6 +85,16 @@ describe StandupPresenter do
         it 'raises an exception' do
           expect{ subject.closing_image}.to raise_error
         end
+      end
+    end
+
+    context 'when the day is not selected' do
+      before do
+        Timecop.travel(Time.local(2013, 9, 4, 12, 0, 0)) #wednesday
+      end
+
+      it 'returns nil' do
+        subject.closing_image.should be_nil
       end
     end
   end

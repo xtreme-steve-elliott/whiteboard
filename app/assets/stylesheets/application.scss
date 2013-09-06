@@ -223,3 +223,16 @@ a:hover {
   padding: 1em;
   margin: 1em;
 }
+
+.image_days .controls{
+  margin-top: 5px;
+  
+  label {
+    display: inline;
+    margin-right: 12px;
+    margin-left: 2px;
+  }
+  input {
+    margin-top: 0;
+  }
+}

@@ -57,6 +57,13 @@
       </div>
     </div>
 
+    <div class='image_days control-group'>
+      <%= form.label :image_days, 'Show image on', class: 'control-label' %>
+      <div class="controls">
+        <%= form.collection_check_boxes(:image_days, [['Mon', 'M'], ['Tue', 'Tu'], ['Wed', 'W'], ['Thu', 'Th'], ['Fri', 'F']], :first, :last) %>
+      </div>
+    </div>
+
     <div class='control-group'>
       <div class="controls">
         <%= form.submit class: 'btn btn-primary' %>

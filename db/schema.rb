@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130905215429) do
+ActiveRecord::Schema.define(version: 20130905233354) do
 
   create_table "items", force: true do |t|
     t.text     "title"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20130905215429) do
     t.text     "ip_addresses_string"
     t.string   "start_time_string",   default: "9:06am"
     t.string   "image_folder"
+    t.string   "image_days"
   end
 
 end

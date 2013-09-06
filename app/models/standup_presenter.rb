@@ -19,6 +19,7 @@ class StandupPresenter < SimpleDelegator
   end
 
   def closing_image
+    return nil unless @standup.image_days.include? @standup.date_today.strftime("%a")
     dir = @standup.image_folder
     "#{dir}/" + Dir.entries("app/assets/images/#{dir}").select { |f| f =~ /\.(png|gif|jpg|jpeg)$/i }.sample
   end
