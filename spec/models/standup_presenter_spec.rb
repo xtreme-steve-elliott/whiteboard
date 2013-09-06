@@ -48,6 +48,7 @@ describe StandupPresenter do
       after do
         FakeFS::FileSystem.clear
         FakeFS.deactivate!
+        Timecop.return
       end
 
       context 'when the directory contains files' do
@@ -91,6 +92,10 @@ describe StandupPresenter do
     context 'when the day is not selected' do
       before do
         Timecop.travel(Time.local(2013, 9, 4, 12, 0, 0)) #wednesday
+      end
+
+      after do
+        Timecop.return
       end
 
       it 'returns nil' do

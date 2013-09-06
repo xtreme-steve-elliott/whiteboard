@@ -70,6 +70,10 @@ describe "items", type: :request, js: true do
     click_button 'Create Item'
   end
 
+  after do
+    Timecop.return
+  end
+
   it 'deck.js for standup' do
     visit '/'
     click_link(standup.title)
