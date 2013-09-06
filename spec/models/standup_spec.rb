@@ -79,7 +79,7 @@ describe Standup do
 
     after do
       Timecop.return
-    end
+    end 
 
     describe "#date_today" do
       it "returns the date based on the time zone" do
