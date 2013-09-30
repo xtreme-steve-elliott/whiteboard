@@ -159,6 +159,13 @@ describe PostsController do
       response.should redirect_to(edit_post_path(@post))
       flash[:error].should == "The post has already been blogged"
     end
+
+    it "catches runtime errors" do
+      @fakeWordpress.should_receive(:send!).and_raise(RuntimeError, "Wrong size. Was 180, should be 131")
+      put :post_to_blog, id: @post.id
+      flash[:error].should == "While posting to the blog, the service reported the following error: 'Wrong size. Was 180, should be 131'. Please check the blog for your post, and if necessary repost."
+      response.should redirect_to(edit_post_path(@post))
+    end
   end
 
   describe "#archive" do

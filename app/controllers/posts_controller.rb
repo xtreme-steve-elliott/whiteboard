@@ -54,7 +54,13 @@ class PostsController < ApplicationController
         blog_post.title = @post.title
         blog_post.body = prepare_post_body(@post.public_items_by_type)
       end
-      Rails.configuration.blogging_service.send!(blog_post)
+
+      begin
+        Rails.configuration.blogging_service.send!(blog_post)
+      rescue RuntimeError => e
+        message = "While posting to the blog, the service reported the following error: '" + e.message + "'. Please check the blog for your post, and if necessary repost."
+        flash[:error] = message
+      end
 
       @post.blogged_at = Time.now
       @post.save!
