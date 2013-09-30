@@ -40,6 +40,7 @@
       <%= form.label :ip_addresses_string, 'Authorized IP Addresses', class: 'control-label' %>
       <div class="controls">
         <%= form.text_area :ip_addresses_string, :class => "wide" %>
+        <span class="help-block help-wide">Please remember to add your own IP (<%= request.remote_ip %>) to the whitelist if you'd like to access this standup from your current location.</span>
       </div>
     </div>
 

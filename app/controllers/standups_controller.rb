@@ -63,6 +63,6 @@ class StandupsController < ApplicationController
   end
 
   def standup_service
-    @standup_service ||= StandupService.new(user_ip_address: request.remote_ip)
+    @standup_service ||= StandupService.new()
   end
 end
