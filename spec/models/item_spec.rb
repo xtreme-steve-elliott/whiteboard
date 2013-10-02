@@ -10,7 +10,7 @@ describe Item do
     let!(:no_date_item) { create(:item, date: nil) }
 
     it "should bring them back in date asc order" do
-      Item.all.should == [no_date_item, closest_item, middlest_item, furthest_item]
+      expect(Item.all).to match_array([no_date_item, closest_item, middlest_item, furthest_item])
     end
   end
 
