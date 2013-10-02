@@ -16,9 +16,14 @@ class WordpressService
     !!(host && endpoint_path && wordpress_username && wordpress_password)
   end
 
+  def public_url
+    "http://#{host}/community"
+  end
+
   private
 
   def connection
     XMLRPC::Client.new(@host, @endpoint_path, "80", nil, nil, @host_basic_auth_user, @host_basic_auth_password, false, 900)
   end
+
 end
