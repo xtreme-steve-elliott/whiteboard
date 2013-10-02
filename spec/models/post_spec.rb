@@ -165,4 +165,32 @@ describe Post do
       post.emailable_content?.should == true
     end
   end
+
+  describe "#public_url" do
+    it 'exists when blog service is defined and has a blog_post_id' do
+      @fakeWordpress = double("wordpress service", :"minimally_configured?" => true, :"public_url" => 'http://example.com')
+      Rails.application.config.stub(:blogging_service) { @fakeWordpress }
+
+      post = Post.new
+      post.blog_post_id = 'some-thing'
+      expect(post.public_url).to eq('http://example.com/some-thing')
+    end
+
+    it 'returns an empty string when blog service is not defined' do
+      @fakeWordpress = double("wordpress service", :"minimally_configured?" => false)
+      Rails.application.config.stub(:blogging_service) { @fakeWordpress }
+
+      post = Post.new
+      post.blog_post_id = 'some-thing'
+      expect(post.public_url).to eq('')
+    end
+
+    it 'returns an empty string when blog_post_id is not defined ' do
+      @fakeWordpress = double("wordpress service", :"minimally_configured?" => true, :"public_url" => 'http://example.com')
+      Rails.application.config.stub(:blogging_service) { @fakeWordpress }
+
+      post = Post.new
+      expect(post.public_url).to eq('')
+    end
+  end
 end

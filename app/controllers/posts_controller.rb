@@ -56,14 +56,14 @@ class PostsController < ApplicationController
       end
 
       begin
-        Rails.configuration.blogging_service.send!(blog_post)
-      rescue RuntimeError => e
-        message = "While posting to the blog, the service reported the following error: '" + e.message + "'. Please check the blog for your post, and if necessary repost."
+        @post.blog_post_id = Rails.configuration.blogging_service.send!(blog_post)
+        @post.blogged_at = Time.now
+        @post.save!
+      rescue XMLRPC::FaultException => e
+        message = "While posting to the blog, the service reported the following error: '" + e.message + "', please repost."
         flash[:error] = message
       end
 
-      @post.blogged_at = Time.now
-      @post.save!
     end
 
     redirect_to edit_post_path(@post)

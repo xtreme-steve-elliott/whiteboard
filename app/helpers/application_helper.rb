@@ -38,6 +38,12 @@ module ApplicationHelper
     end
   end
 
+  def published_post_info(post)
+    output = "This entry was posted at #{post.blogged_at}"
+    output += " to #{link_to post.public_url, post.public_url, target: '_blank'}" if post.public_url.present?
+    output.html_safe
+  end
+
   private
 
   def is_item_after_this_week(item)

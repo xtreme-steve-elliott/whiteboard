@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130905233354) do
+ActiveRecord::Schema.define(version: 20131002174738) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "items", force: true do |t|
     t.text     "title"
@@ -20,8 +23,8 @@ ActiveRecord::Schema.define(version: 20130905233354) do
     t.integer  "post_id"
     t.boolean  "public",      default: false
     t.boolean  "bumped",      default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "standup_id"
     t.date     "date"
     t.string   "author"
@@ -30,21 +33,22 @@ ActiveRecord::Schema.define(version: 20130905233354) do
   create_table "posts", force: true do |t|
     t.text     "title"
     t.boolean  "sent"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.datetime "sent_at"
-    t.string   "from",       default: "Standup Blogger"
+    t.string   "from",         default: "Standup Blogger"
     t.datetime "blogged_at"
-    t.boolean  "archived",   default: false
+    t.boolean  "archived",     default: false
     t.integer  "standup_id"
+    t.string   "blog_post_id"
   end
 
   create_table "standups", force: true do |t|
     t.string   "title"
     t.string   "subject_prefix"
     t.string   "to_address"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                                 null: false
+    t.datetime "updated_at",                                                 null: false
     t.string   "closing_message"
     t.string   "time_zone_name",      default: "Eastern Time (US & Canada)", null: false
     t.text     "ip_addresses_string"

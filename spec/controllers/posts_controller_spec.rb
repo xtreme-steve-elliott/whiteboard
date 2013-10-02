@@ -150,6 +150,14 @@ describe PostsController do
       @post.reload.blogged_at.should be
     end
 
+    it "records the published post id" do
+      @fakeWordpress.stub(:send!).and_return("1234")
+
+      put :post_to_blog, id: @post.id
+
+      @post.reload.blog_post_id.should eq "1234"
+    end
+
     it "doesn't post to wordpress multiple times" do
       @post.blogged_at = Time.now
       @post.save!
@@ -160,12 +168,23 @@ describe PostsController do
       flash[:error].should == "The post has already been blogged"
     end
 
-    it "catches runtime errors" do
-      @fakeWordpress.should_receive(:send!).and_raise(RuntimeError, "Wrong size. Was 180, should be 131")
-      put :post_to_blog, id: @post.id
-      flash[:error].should == "While posting to the blog, the service reported the following error: 'Wrong size. Was 180, should be 131'. Please check the blog for your post, and if necessary repost."
-      response.should redirect_to(edit_post_path(@post))
+    context 'unsuccessful post' do
+
+      before do
+        @fakeWordpress.should_receive(:send!).and_raise(XMLRPC::FaultException.new(123, "Wrong size. Was 180, should be 131"))
+        put :post_to_blog, id: @post.id
+      end
+
+      it "catches XMLRPC::FaultException and displays error message" do
+        flash[:error].should == "While posting to the blog, the service reported the following error: 'Wrong size. Was 180, should be 131', please repost."
+        response.should redirect_to(edit_post_path(@post))
+      end
+
+      it "it doesn't set blogged_at for an unsuccessful post" do
+        expect(@post.blogged_at).to be_nil
+      end
     end
+
   end
 
   describe "#archive" do

@@ -69,6 +69,14 @@ class Post < ActiveRecord::Base
     items.present? || events.present?
   end
 
+  def public_url
+    if Rails.application.config.blogging_service.minimally_configured? and blog_post_id.present?
+      Rails.application.config.blogging_service.public_url + "/#{blog_post_id}"
+    else
+      ''
+    end
+  end
+
   private
 
   def sorted_by_type(relation)
