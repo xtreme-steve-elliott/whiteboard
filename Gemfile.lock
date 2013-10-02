@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/Compass/compass-rails
-  revision: aea69635f6000bbc7180f7fdd0ce216f904db30d
-  branch: master
-  specs:
-    compass-rails (2.0.alpha.0)
-      compass (>= 0.12.2, < 0.14)
-
-GIT
   remote: git://github.com/kendagriff/ruby-openid.git
   revision: 79beaa419d4754e787757f2545331509419e222e
   ref: 79beaa419d4754e787757f2545331509419e222e
@@ -95,6 +87,8 @@ GEM
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
+    compass-rails (2.0.alpha.0)
+      compass (>= 0.12.2, < 0.14)
     database_cleaner (1.0.1)
     debugger (1.6.1)
       columnize (>= 0.3.1)
@@ -294,7 +288,7 @@ DEPENDENCIES
   capybara-webkit
   cf
   coffee-rails
-  compass-rails!
+  compass-rails (~> 2.0.alpha.0)
   database_cleaner
   debugger
   dotenv (~> 0.9.0)

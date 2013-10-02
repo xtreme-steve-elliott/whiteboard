@@ -43,7 +43,7 @@ group :development do
 end
 
 gem 'sass-rails'
-gem 'compass-rails', git: 'git://github.com/Compass/compass-rails', branch: 'master'
+gem "compass-rails", "~> 2.0.alpha.0"  # alpha required for Rails 4 support
 gem 'coffee-rails'
 gem 'uglifier'
 gem 'bootstrap-sass'
