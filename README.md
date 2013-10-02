@@ -48,8 +48,12 @@ To use these environment variables in development mode:
 
     $ foreman run -e .env-development [command] # example: rails s
 
-Deployment
+Another option is to use the dotenv gem to setup your environment. Created a .env file in the root of your project. See the .env-example file for setup.
+
+First Time Deployment Setup
 ==========
+    See Kevin Olsen for these credentials.
+
 	heroku apps:create sf-whiteboard --stack cedar
 	heroku addons:add sendgrid:starter
 	heroku config:add WORDPRESS_USER=username WORDPRESS_PASSWORD=password WORDPRESS_BLOG_HOST=blogname.wordpress.com
@@ -57,6 +61,27 @@ Deployment
 	heroku config:add WORDPRESS_XMLRPC_ENDPOINT_PATH=/wordpress/xmlrpc.php
 	heroku config:add EXCEPTIONAL_API_KEY=<you exceptional API key>
 	git push heroku
+
+
+	cf push --reset
+	cf set-env whiteboard WORDPRESS_USER username
+	cf set-env whiteboard WORDPRESS_PASSWORD password
+	cf set-env whiteboard WORDPRESS_BLOG_HOST blogname.wordpress.com
+	cf set-env whiteboard WORDPRESS_BASIC_AUTH_USER <user>
+	cf set-env whiteboard WORDPRESS_BASIC_AUTH_PASSWORD <password>
+	cf set-env whiteboard WORDPRESS_XMLRPC_ENDPOINT_PATH /wordpress/xmlrpc.php
+	cf set-env whiteboard EXCEPTIONAL_API_KEY <you exceptional API key>
+	cf env  # check all settings
+	cf push --reset
+
+Deployment After ENV Vars Set
+=============
+    git push heroku
+
+    or
+
+    cf env  # check all settings
+	cf push --reset
 
 Author
 ======
