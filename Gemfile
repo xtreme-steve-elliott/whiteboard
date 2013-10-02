@@ -9,6 +9,9 @@ gem 'omniauth-google-apps'
 gem 'github-markdown', require: 'github/markdown'
 gem 'exceptional'
 gem 'protected_attributes'
+gem 'cf'
+gem 'logs-cf-plugin'
+gem 'ruby-openid', git: 'git://github.com/kendagriff/ruby-openid.git', ref: '79beaa419d4754e787757f2545331509419e222e'
 
 group :production do
   gem 'rails_12factor'
@@ -30,6 +33,7 @@ group :test, :development do
   gem 'timecop'
   gem 'foreman'
   gem 'fakefs', :require => 'fakefs/safe'
+  gem 'dotenv', '~> 0.9.0'
 end
 
 group :development do
@@ -38,13 +42,10 @@ group :development do
   gem 'heroku_san'
 end
 
-group :assets do
-  gem 'compass-rails', git: 'git://github.com/milgner/compass-rails', branch: 'rails4'
-  gem 'sass-rails'
-  gem 'coffee-rails'
-  gem 'uglifier'
-  gem 'bootstrap-sass'
-  gem 'font-awesome-sass-rails'
-end
+gem 'sass-rails'
+gem 'compass-rails', git: 'git://github.com/Compass/compass-rails', branch: 'master'
+gem 'coffee-rails'
+gem 'uglifier'
+gem 'bootstrap-sass'
+gem 'font-awesome-sass-rails'
 
-gem 'ruby-openid', git: 'git://github.com/kendagriff/ruby-openid.git', ref: '79beaa419d4754e787757f2545331509419e222e'
