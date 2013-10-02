@@ -41,7 +41,6 @@ The following environment variables are necessary for posting to a wordpress blo
 
 The following environment variables are necessary for posting to email via sendgrid.
 
-    export EMAIL_DELIVERY_ADDRESS=<mailinglist@example.com>
     export SENDGRID_USERNAME=<username>
     export SENDGRID_PASSWORD=<password>
 
@@ -56,8 +55,6 @@ Deployment
 	heroku config:add WORDPRESS_USER=username WORDPRESS_PASSWORD=password WORDPRESS_BLOG_HOST=blogname.wordpress.com
 	heroku config:add WORDPRESS_BASIC_AUTH_USER=<user> WORDPRESS_BASIC_AUTH_PASSWORD=<password>
 	heroku config:add WORDPRESS_XMLRPC_ENDPOINT_PATH=/wordpress/xmlrpc.php
-	heroku config:add EMAIL_DELIVERY_ADDRESS=mailinglist@example.com
-	heroku config:add AUTHORIZED_IP_ADDRESSES='{ :sf => [ IPAddr.new("10.0.0.1/24") ] }'
 	heroku config:add EXCEPTIONAL_API_KEY=<you exceptional API key>
 	git push heroku
 
