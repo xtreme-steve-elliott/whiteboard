@@ -19,3 +19,7 @@ config/heroku.yml
 .env
 
 .DS_Store
+public/assets
+
+.env
+manifest.yml
