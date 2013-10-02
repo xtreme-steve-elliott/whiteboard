@@ -3,7 +3,8 @@ require 'json'
 if ENV['VCAP_SERVICES'].present?
 
   vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
-  # The namespaces for vcap services are defined in the manifest.yml
+  # After starting your cloud foundry app run:
+  # cf files [app-name] logs/env.log to see the VCAP_SERVICES vars
   credentials = vcap_services["sendgrid-n/a"][0]['credentials']
 
   ActionMailer::Base.smtp_settings = {

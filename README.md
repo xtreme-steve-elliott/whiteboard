@@ -52,7 +52,7 @@ Another option is to use the dotenv gem to setup your environment. Created a .en
 
 First Time Deployment Setup
 ==========
-    See Kevin Olsen for these credentials.
+    See Kevin Olsen for credentials.
 
 	heroku apps:create sf-whiteboard --stack cedar
 	heroku addons:add sendgrid:starter
@@ -62,17 +62,28 @@ First Time Deployment Setup
 	heroku config:add EXCEPTIONAL_API_KEY=<you exceptional API key>
 	git push heroku
 
+	or
 
-	cf push --reset
-	cf set-env whiteboard WORDPRESS_USER username
-	cf set-env whiteboard WORDPRESS_PASSWORD password
-	cf set-env whiteboard WORDPRESS_BLOG_HOST blogname.wordpress.com
-	cf set-env whiteboard WORDPRESS_BASIC_AUTH_USER <user>
-	cf set-env whiteboard WORDPRESS_BASIC_AUTH_PASSWORD <password>
-	cf set-env whiteboard WORDPRESS_XMLRPC_ENDPOINT_PATH /wordpress/xmlrpc.php
-	cf set-env whiteboard EXCEPTIONAL_API_KEY <you exceptional API key>
-	cf env  # check all settings
-	cf push --reset
+    cf login
+    cf target -s <cloud foundry space name>
+
+	cf push --no-start --reset
+	cf set-env whiteboard-production WORDPRESS_USER username
+	cf set-env whiteboard-production WORDPRESS_PASSWORD password
+	cf set-env whiteboard-production WORDPRESS_BLOG_HOST blogname.wordpress.com
+	cf set-env whiteboard-production WORDPRESS_XMLRPC_ENDPOINT_PATH /wordpress/xmlrpc.php
+	cf set-env whiteboard-production EXCEPTIONAL_API_KEY <you exceptional API key>
+    cf set-env whiteboard-acceptance WORDPRESS_USER username
+    cf set-env whiteboard-acceptance WORDPRESS_PASSWORD password
+    cf set-env whiteboard-acceptance WORDPRESS_BLOG_HOST blogname.wordpress.com
+    cf set-env whiteboard-acceptance WORDPRESS_BASIC_AUTH_USER <user>
+    cf set-env whiteboard-acceptance WORDPRESS_BASIC_AUTH_PASSWORD <password>
+    cf set-env whiteboard-acceptance WORDPRESS_XMLRPC_ENDPOINT_PATH /wordpress/xmlrpc.php
+    cf set-env whiteboard-acceptance EXCEPTIONAL_API_KEY <you exceptional API key>
+	cf env   # check all settings
+	# migrate data
+	cf push --reset  # push env settings and start app
+	cf start
 
 Deployment After ENV Vars Set
 =============
