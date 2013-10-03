@@ -3,8 +3,19 @@ class IpToStandupMapper
     self.standups = standups
   end
 
-  def authorized?(ip_address: "0.0.0.0")
-    standups.map(&:ip_addresses).any? { |ip| ip.include? ip_address }
+  def authorized?(ip_address_string: "0.0.0.0")
+
+    begin
+      ip_address = IPAddr.new(ip_address_string)
+
+      authorized_ips = standups.map(&:ip_addresses)
+      return authorized_ips.any? { |ip| ip.include? ip_address }
+
+    rescue
+
+      Rails.logger.debug "Rescued from exception while authenticating IP: '#{ip_address_string}'"
+      return false
+    end
   end
 
   alias_method :includes?, :authorized?

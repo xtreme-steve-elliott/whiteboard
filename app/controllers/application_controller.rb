@@ -5,9 +5,7 @@ class ApplicationController < ActionController::Base
 
   def require_login
     mapper = IpToStandupMapper.new
-    current_ip = request.env['HTTP_X_FORWARDED_FOR']
-
-    redirect_to '/auth/google_apps' unless session[:logged_in] || mapper.authorized?(ip_address: current_ip)
+    redirect_to '/auth/google_apps' unless session[:logged_in] || mapper.authorized?(ip_address_string: request.remote_ip)
   end
 
   # Adds an outer container element around any yielded HTML.

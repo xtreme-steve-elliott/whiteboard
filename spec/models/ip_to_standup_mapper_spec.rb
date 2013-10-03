@@ -1,11 +1,19 @@
 require "spec_helper"
 
 describe IpToStandupMapper do
-  it "can tell if a ip is authorized" do
-    FactoryGirl.create(:standup, ip_addresses_string: "127.0.0.1/32")
 
-    mapper = IpToStandupMapper.new
-    mapper.authorized?(ip_address: "127.0.0.1").should == true
+  describe '#authorized?' do
+    it "can tell if a ip is authorized" do
+      FactoryGirl.create(:standup, ip_addresses_string: "127.0.0.1/32")
+
+      mapper = IpToStandupMapper.new
+      mapper.authorized?(ip_address_string: "127.0.0.1").should == true
+    end
+
+    it 'returns false with an invalid address' do
+      mapper = IpToStandupMapper.new
+      mapper.authorized?(ip_address_string: "").should == false
+    end
   end
 
 
