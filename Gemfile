@@ -37,8 +37,6 @@ end
 
 group :development do
   gem 'debugger'
-  gem 'heroku'
-  gem 'heroku_san'
 end
 
 gem 'sass-rails'
