@@ -4,13 +4,19 @@ describe "items", type: :request, js: true do
   let!(:standup) { FactoryGirl.create(:standup, title: 'San Francisco', subject_prefix: "[Standup][SF]", closing_message: 'Woohoo', image_folder: 'sf', image_days: ['Mon']) }
   let!(:other_standup) { FactoryGirl.create(:standup, title: 'New York') }
   let(:timezone) { ActiveSupport::TimeZone.new(standup.time_zone_name) }
+  let(:date_today) { timezone.now.strftime("%Y-%m-%d") }
+  let(:date_tomorrow) { (timezone.now + 1.day).strftime("%Y-%m-%d") }
+  let(:date_five_days) { (timezone.now + 5.days).strftime("%Y-%m-%d") }
 
   before do
     Timecop.travel(Time.local(2013, 9, 2, 12, 0, 0)) #monday
-    date_today = timezone.now.strftime("%Y-%m-%d")
-    date_tomorrow = (timezone.now + 1.day).strftime("%Y-%m-%d")
-    date_five_days = (timezone.now + 5.days).strftime("%Y-%m-%d")
+  end
 
+  after do
+    Timecop.return
+  end
+
+  it 'setup and deck.js for standup' do
     login
     visit '/'
     click_link(standup.title)
@@ -68,13 +74,7 @@ describe "items", type: :request, js: true do
     fill_in 'item_author', :with => "DHH"
     fill_in 'item_description', with: "Now with more f-bombs"
     click_button 'Create Item'
-  end
 
-  after do
-    Timecop.return
-  end
-
-  it 'deck.js for standup' do
     visit '/'
     click_link(standup.title)
 
@@ -92,6 +92,13 @@ describe "items", type: :request, js: true do
       page.should have_css('.today + .item', text: 'Johnathon McKenzie')
       page.should have_css('.subheader.upcoming', text: 'Upcoming')
       page.should have_css('.upcoming + .item', text: 'Jane Doe')
+    end
+
+    within '.kind.interesting' do
+      page.should have_css('.item', text: 'Linus Torvalds')
+      first('a[data-toggle]').click
+      page.should have_selector('.in')
+      page.should have_content('Check it out!')
     end
 
     visit presentation_standup_items_path(standup)
@@ -121,6 +128,7 @@ describe "items", type: :request, js: true do
       page.should_not have_selector('.in')
       first('a[data-toggle]').click
       page.should have_selector('.in')
+      page.should have_content("Check it out!")
     end
     page.execute_script("$.deck('next')")
 
