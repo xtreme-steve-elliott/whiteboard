@@ -9,7 +9,7 @@
       </div>
 
       <div class="description collapse" id="item_<%= item.id %>">
-        <%= item.description %>
+        <%= raw GitHub::Markdown.render_gfm(item.description) %>
       </div>
 
       <div class="tools">

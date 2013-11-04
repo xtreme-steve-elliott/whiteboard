@@ -8,7 +8,7 @@
         <i class="icon-info-sign"></i>
       </a>
       <div class="block description collapse" id="item_<%= presentation_item.id %>">
-        <%= presentation_item.description %>
+        <%= raw GitHub::Markdown.render_gfm(presentation_item.description) %>
       </div>
   <% end %>
 </li>

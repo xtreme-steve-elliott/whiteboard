@@ -65,7 +65,7 @@ describe "items", type: :request, js: true do
     find('a[data-kind="Interesting"] i').click
     fill_in 'item_title', :with => "Linux 3.2 out"
     fill_in 'item_author', :with => "Linus Torvalds"
-    fill_in 'item_description', with: "Check it out!"
+    fill_in 'item_description', with: "Check it out: `inline code!` and www.links.com"
     click_button 'Create Item'
 
     find('a[data-kind="Event"] i').click
@@ -98,7 +98,8 @@ describe "items", type: :request, js: true do
       page.should have_css('.item', text: 'Linus Torvalds')
       first('a[data-toggle]').click
       page.should have_selector('.in')
-      page.should have_content('Check it out!')
+      page.should have_selector('code', text: 'inline code!')
+      page.should have_link('www.links.com')
     end
 
     visit presentation_standup_items_path(standup)
@@ -128,7 +129,9 @@ describe "items", type: :request, js: true do
       page.should_not have_selector('.in')
       first('a[data-toggle]').click
       page.should have_selector('.in')
-      page.should have_content("Check it out!")
+      page.should have_content("Check it out:")
+      page.should have_link("www.links.com")
+      page.should have_selector("code", text: "inline code!")
     end
     page.execute_script("$.deck('next')")
 
