@@ -26,7 +26,6 @@ group :test, :development do
   gem 'capybara-webkit'
   gem 'capybara-accessible'
   gem 'launchy'
-  gem 'sqlite3'
   gem 'database_cleaner'
   gem 'pry-debugger'
   gem 'letter_opener'
