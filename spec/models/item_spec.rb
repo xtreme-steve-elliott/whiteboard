@@ -26,7 +26,7 @@ describe Item do
 
   describe "kind" do
     describe "should allow valid kinds - " do
-      ['New face', 'Help', 'Interesting'].each do |kind|
+      ['New face', 'Help', 'Interesting', 'Event'].each do |kind|
         it kind do
           item.kind = kind
           item.should be_valid
@@ -170,15 +170,15 @@ describe Item do
 
   describe '.orphans' do
     it 'returns all unposted interestings and helps' do
-      interesting = FactoryGirl.create(:item, kind: 'Interesting')
       old_help = FactoryGirl.create(:item, kind: 'Help', date: 2.days.ago)
+      interesting = FactoryGirl.create(:item, kind: 'Interesting')
 
       Item.orphans.should == {'Help' => [old_help], 'Interesting' => [interesting]}
     end
 
     it 'returns new faces that are not in the past' do
       face = FactoryGirl.create(:item, kind: 'New face')
-      other_face = FactoryGirl.create(:item, kind: 'New face', date: 2.days.ago)
+      FactoryGirl.create(:item, kind: 'New face', date: 2.days.ago)
 
       Item.orphans['New face'].should == [face]
     end
