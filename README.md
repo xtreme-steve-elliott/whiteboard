@@ -89,12 +89,12 @@ Deployment After ENV Vars Set
 
 
     cf env --app whiteboard-acceptance
-	cf push --app whiteboard-acceptance
+	cf push whiteboard-acceptance
 
 	or
 
 	cf env --app whiteboard-product
-	cf push --app whiteboard-production
+	cf push whiteboard-production
 
 Author
 ======
