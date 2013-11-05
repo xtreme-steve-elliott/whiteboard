@@ -54,8 +54,9 @@ First Time Deployment Setup
 ==========
     See Kevin Olsen for credentials.
 
+    cf target --url https://api.run.pivotal.io
     cf login
-    cf target -s <cloud foundry space name>
+    cf target -s whiteboard
 
 	cf push --no-start --reset
 	cf set-env whiteboard-production WORDPRESS_USER username
@@ -75,15 +76,21 @@ First Time Deployment Setup
 	cf push --reset  # push env settings and start app
 	cf start
 
+
 Deployment After ENV Vars Set
 =============
-    cf env  # check all settings
-	cf push --app whiteboard-acceptance --reset
+    cf target --url https://api.run.pivotal.io
+    cf login
+    cf target -s whiteboard
+
+
+    cf env --app whiteboard-acceptance
+	cf push --app whiteboard-acceptance
 
 	or
 
-	cf env  # check all settings
-	cf push --app whiteboard-production --reset
+	cf env --app whiteboard-product
+	cf push --app whiteboard-production
 
 Author
 ======
