@@ -50,6 +50,10 @@ To use these environment variables in development mode:
 
 Another option is to use the dotenv gem to setup your environment. Created a .env file in the root of your project. See the .env-example file for setup.
 
+Testing
+=======
+bundle exec rspec
+
 First Time Deployment Setup
 ==========
     See Kevin Olsen for credentials.
