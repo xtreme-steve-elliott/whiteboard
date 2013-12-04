@@ -111,6 +111,14 @@ describe Post do
       post.items = items
       post.items_by_type['Help'].should == items.reverse
     end
+
+    it "merges events without overriding today's event" do
+      post = create(:post)
+      post.items = [create(:event, created_at: Time.now, standup_id: post.standup.id)]
+
+      future_item = create(:event, created_at: Date.tomorrow, standup_id: post.standup.id)
+      post.items_by_type['Event'].should == post.items + [future_item]
+    end
   end
 
   describe "#publishable_content?" do

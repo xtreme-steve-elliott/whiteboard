@@ -44,7 +44,7 @@ class Post < ActiveRecord::Base
   end
 
   def items_by_type
-    sorted_by_type(items).merge(events)
+    sorted_by_type(items).merge(events) { |key, old, new| old + new }
   end
 
   def public_items_by_type
