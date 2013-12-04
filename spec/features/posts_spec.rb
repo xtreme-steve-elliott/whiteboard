@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "posts", type: :request do
-  let!(:standup) { FactoryGirl.create(:standup, title: 'San Francisco', subject_prefix: "[Standup][SF]", closing_message: 'Woohoo', image_folder: 'sf', image_days: ['Mon']) }
+  let!(:standup) { FactoryGirl.create(:standup, title: 'San Francisco') }
 
   describe "archived posts" do
     let!(:archived_post) { FactoryGirl.create(:post, standup: standup, title: "Archived Post", archived: true) }
