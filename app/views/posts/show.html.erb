@@ -1,11 +1,11 @@
 <h1><%= @post.title %></h1>
 
 <% items = @post.items_by_type %>
-<% Item::KINDS.each do |kind| %>
-  <% if items[kind] %>
-    <h2><%= kind.pluralize %></h2>
+<% Item.kinds.map(&:name).each do |kindName| %>
+  <% if items[kindName] %>
+    <h2><%= kindName.pluralize %></h2>
     <ul>
-      <% items[kind].each do |item| %>
+      <% items[kindName].each do |item| %>
         <li><%=  item.title %></li>
         <% if item.description.present? %>
           <pre><%=  item.description %></pre>
