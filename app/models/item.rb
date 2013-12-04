@@ -27,7 +27,8 @@ class Item < ActiveRecord::Base
         where("standup_id = #{standup.id} OR standup_id IS NULL").
         where("date >= ?", date).
         where(post_id: nil).
-        order("date").group_by(&:kind)
+        order("date").
+        group_by(&:kind)
   end
 
   def self.for_post(standup)
