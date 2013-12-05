@@ -22,30 +22,48 @@ describe PostsController do
   end
 
   describe "#edit" do
+    let(:post) { create(:post) }
+
     it "shows the post for editing" do
-      post = create(:post)
       get :edit, id: post.id
       assigns[:post].should == post
       response.should be_ok
     end
+
+    it 'should not box the page contents' do
+      controller.should_not_receive(:boxed)
+      get :edit, id: post.id
+    end
   end
 
   describe "#show" do
+    let(:post) { create(:post) }
+
     it "shows the post" do
-      post = create(:post)
       get :show, id: post.id
       assigns[:post].should == post
       response.should be_ok
       response.body.should include(post.title)
     end
+
+    it 'should not box the page contents' do
+      controller.should_not_receive(:boxed)
+      get :show, id: post.id
+    end
   end
 
   describe "#update" do
+    let(:post) { create(:post) }
+
     it "updates the post" do
-      post = create(:post)
       put :update, id: post.id, post: { title: "New Title", from: "Matthew & Matthew" }
       post.reload.title.should == "New Title"
       post.from.should == "Matthew & Matthew"
+    end
+
+    it 'should not box the page contents' do
+      controller.should_not_receive(:boxed)
+      put :update, id: post.id, post: { title: "New Title", from: "Matthew & Matthew" }
     end
   end
 

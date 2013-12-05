@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_filter :load_post, except: [:create, :index, :archived]
   before_filter :load_standup
-  skip_before_filter :boxed, only: [:edit, :update]
+  skip_before_filter :boxed, only: [:show, :edit, :update]
 
   def create
     @standup = Standup.find_by_id(params[:standup_id])
