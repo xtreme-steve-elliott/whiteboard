@@ -9,8 +9,6 @@ gem 'omniauth-google-apps'
 gem 'github-markdown', require: 'github/markdown'
 gem 'exceptional'
 gem 'protected_attributes'
-gem 'cf'
-gem 'logs-cf-plugin'
 gem 'ruby-openid', git: 'git://github.com/kendagriff/ruby-openid.git', ref: '79beaa419d4754e787757f2545331509419e222e'
 
 group :production do
@@ -33,6 +31,8 @@ group :test, :development do
   gem 'foreman'
   gem 'fakefs', :require => 'fakefs/safe'
   gem 'dotenv', '~> 0.9.0'
+  gem 'cf'
+  gem 'logs-cf-plugin'
 end
 
 group :development do
