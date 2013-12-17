@@ -9,7 +9,6 @@ gem 'omniauth-google-apps'
 gem 'github-markdown', require: 'github/markdown'
 gem 'exceptional'
 gem 'protected_attributes'
-gem 'ruby-openid', git: 'git://github.com/kendagriff/ruby-openid.git', ref: '79beaa419d4754e787757f2545331509419e222e'
 
 group :production do
   gem 'rails_12factor'
@@ -40,9 +39,9 @@ group :development do
 end
 
 gem 'sass-rails'
-gem "compass-rails", "~> 2.0.alpha.0"  # alpha required for Rails 4 support
+gem 'compass-rails'
 gem 'coffee-rails'
 gem 'uglifier'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '~> 2.3.2'
 gem 'font-awesome-sass-rails'
 
