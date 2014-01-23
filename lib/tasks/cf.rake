@@ -17,7 +17,7 @@ task :deploy => 'cf:deploy'
 
 namespace :cf do
   task :deploy do
-    raise 'Specify `rake staging cf:deploy`, or `rake production cf:deploy`' unless ENVIRONMENT
+    raise 'Specify `rake acceptance deploy`, or `rake production deploy`' unless ENVIRONMENT
     environment = ENVIRONMENT
     cf_target = 'api.run.pivotal.io'
     deploy_space = 'whiteboard'
