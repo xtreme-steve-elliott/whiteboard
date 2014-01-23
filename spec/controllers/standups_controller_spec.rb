@@ -36,11 +36,33 @@ describe StandupsController do
   end
 
   describe "#index" do
-    it "renders an index of standups" do
-      standup = create(:standup)
-      get :index
-      response.should be_ok
-      assigns[:standups].should == [standup]
+    context 'when the user is logged in' do
+      it 'renders an index of all of the standups' do
+        standup1 = create(:standup)
+        standup2 = create(:standup)
+
+        get :index
+
+        response.should be_ok
+        assigns[:standups].should == [standup1, standup2]
+      end
+    end
+
+    context 'when the user is not logged in' do
+      before do
+        request.stub(:remote_ip) { '0.0.0.9' }
+        request.session[:logged_in] = false
+      end
+
+      it "renders an index of the whitelisted of the standups" do
+        standup1 = create(:standup, ip_addresses_string: '0.0.0.9')
+        standup2 = create(:standup, ip_addresses_string: '0.0.0.8')
+
+        get :index
+
+        response.should be_ok
+        assigns[:standups].should == [standup1]
+      end
     end
   end
 
@@ -87,39 +109,4 @@ describe StandupsController do
     end
   end
 
-  describe "#route" do
-    let!(:new_york) { create(:standup, ip_addresses_string: "123.4.5.6/32") }
-    let!(:san_fran) { create(:standup, ip_addresses_string: "127.0.0.1/32") }
-
-
-    context "when a standup matches the ip address" do
-      let!(:new_york2) { create(:standup, ip_addresses_string: "123.4.5.6/32") }
-      let!(:no_location) { create(:standup, ip_addresses_string: "") }
-
-      before do
-        request.stub(remote_ip: "123.4.5.6")
-        get :route
-      end
-
-      it "renders the standups index" do
-        response.should render_template :index
-      end
-
-      it "includes all standups with the specified ip address" do
-        assigns(:standups).should include new_york, new_york2
-      end
-
-      it "includes all standups with the specified ip address" do
-        assigns(:standups).should include no_location
-      end
-    end
-
-    context "when no standup matches" do
-      it "redirects to the standup index page if no standup with a corresponding ip" do
-        request.stub(remote_ip: "111.9.9.9")
-        get :route
-        response.should redirect_to standups_path
-      end
-    end
-  end
 end

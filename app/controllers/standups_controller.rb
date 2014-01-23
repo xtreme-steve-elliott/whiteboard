@@ -15,7 +15,12 @@ class StandupsController < ApplicationController
   end
 
   def index
-    @standups = Standup.all
+    if session[:logged_in]
+      @standups = Standup.all
+    else
+      mapper = IpToStandupMapper.new
+      @standups = mapper.standups_matching_ip_address(ip_address: request.remote_ip)
+    end
   end
 
   def edit
@@ -41,17 +46,6 @@ class StandupsController < ApplicationController
     @standup = Standup.find(params[:id])
     @standup.destroy
     redirect_to standups_path
-  end
-
-  def route
-    mapper = IpToStandupMapper.new
-    @standups = mapper.standups_matching_ip_address(ip_address: request.remote_ip)
-
-    if @standups.any?
-      render :index
-    else
-      redirect_to standups_path
-    end
   end
 
   private
