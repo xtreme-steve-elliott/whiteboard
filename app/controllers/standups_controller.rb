@@ -1,6 +1,4 @@
 class StandupsController < ApplicationController
-  before_filter :load_standup, except: [:index, :new, :create, :route]
-
   def create
     @standup = standup_service.create(attributes: params[:standup])
 
@@ -57,10 +55,6 @@ class StandupsController < ApplicationController
   end
 
   private
-
-  def load_standup
-    @standup = Standup.find(params[:id])
-  end
 
   def standup_service
     @standup_service ||= StandupService.new()
