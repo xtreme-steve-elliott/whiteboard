@@ -1,6 +1,4 @@
 class StandupsController < ApplicationController
-  before_filter :load_standup, except: [:index, :new, :create, :route]
-
   def create
     @standup = standup_service.create(attributes: params[:standup])
 
@@ -17,7 +15,12 @@ class StandupsController < ApplicationController
   end
 
   def index
-    @standups = Standup.all
+    if session[:logged_in]
+      @standups = Standup.all
+    else
+      mapper = IpToStandupMapper.new
+      @standups = mapper.standups_matching_ip_address(ip_address: request.remote_ip)
+    end
   end
 
   def edit
@@ -45,22 +48,7 @@ class StandupsController < ApplicationController
     redirect_to standups_path
   end
 
-  def route
-    mapper = IpToStandupMapper.new
-    @standups = mapper.standups_matching_ip_address(ip_address: request.remote_ip)
-
-    if @standups.any?
-      render :index
-    else
-      redirect_to standups_path
-    end
-  end
-
   private
-
-  def load_standup
-    @standup = Standup.find(params[:id])
-  end
 
   def standup_service
     @standup_service ||= StandupService.new()

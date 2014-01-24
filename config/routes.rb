@@ -27,5 +27,5 @@ Whiteboard::Application.routes.draw do
   post '/auth/:provider/callback', to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'
 
-  root :to => 'standups#route'
+  root to: 'standups#index'
 end
