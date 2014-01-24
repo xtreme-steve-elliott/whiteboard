@@ -54,9 +54,11 @@ Testing
 =======
 bundle exec rspec
 
-First Time Deployment Setup
-==========
-    See Kevin Olsen for credentials.
+# How to Deploy to Cloud Foundry
+
+##First Time Deployment Setup
+
+See Kevin Olsen for credentials.
 
     cf target --url https://api.run.pivotal.io
     cf login
@@ -81,20 +83,22 @@ First Time Deployment Setup
 	cf start
 
 
-Deployment After ENV Vars Set
-=============
+##Deployment After ENV Vars Set
+
+First, log into Cloud Foundry:
+
     cf target --url https://api.run.pivotal.io
     cf login
-    cf target -s whiteboard
 
+Then run:
 
-    cf env --app whiteboard-acceptance
-	cf push whiteboard-acceptance
+    rake acceptance deploy
 
-	or
+or
 
-	cf env --app whiteboard-product
-	cf push whiteboard-production
+    rake production deploy
+
+The rake task copies the code to be deployed into a `/tmp` directory, so you can continue working while deploying.
 
 Author
 ======
