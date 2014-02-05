@@ -31,6 +31,13 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  config.after(:each, :type => :feature) do
+    if example.exception
+      artifact = save_page
+      puts "\"#{example.description}\" failed. Page saved to #{artifact}"
+    end
+  end
+
   config.around(:each, inaccessible: true) do |example|
     Capybara::Accessible.skip_audit { example.run }
   end
