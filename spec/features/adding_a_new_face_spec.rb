@@ -11,7 +11,14 @@ describe "Adding new faces", js: true do
     click_on standup.title
     find(:css, '[data-kind="New face"]').click
     fill_in "item[title]", with: "Jane"
+
     fill_in "item[date]", with: "2010-01-01"
+
+    find(:css, '[name="item[date]"]').click
+    find(:css, 'td.day', text: '11').click
+
+    find_field("item[date]").value.should == "2010-01-01"
+
     click_on "Create New Face"
 
     page.should have_content "Please choose a date in present or future"

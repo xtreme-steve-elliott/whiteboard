@@ -33,8 +33,14 @@ jQuery(function($) {
         });
     });
 
-    $("#item_date").datepicker({
-      show: new Date()
+    $(".item-form #item_date").datepicker({});
+
+    $(".new-face-form #item_date").datepicker({
+      beforeShowDay: function(date) {
+        var nowTemp = new Date();
+        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+        return date.valueOf() < now.valueOf() ? {enabled: false} : {};
+      }
     });
 
   $('a[data-toggle]').click(function() {

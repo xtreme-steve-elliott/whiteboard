@@ -244,3 +244,15 @@ a:hover {
 .help-wide {
   width: 200px;
 }
+
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+  background: none;
+  color: #dedede;
+  cursor: default;
+}
+.datepicker table tr td.active {
+  background: #0088CC;
+  border-radius: 8px;
+  color: white;
+}
