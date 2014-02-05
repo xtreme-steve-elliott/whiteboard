@@ -10,4 +10,12 @@ FactoryGirl.define do
   factory :event, parent: :item do
     kind "Event"
   end
+
+  factory :new_face, class: Item do
+    title "John"
+    kind "New face"
+    date Date.today
+
+    association :standup
+  end
 end

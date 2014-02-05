@@ -66,7 +66,7 @@ describe ItemsController do
   describe "#index" do
     it "generates a hash of items by type" do
       help = create(:item, kind: "Help", standup: standup)
-      new_face = create(:item, kind: "New face", standup: standup)
+      new_face = create(:new_face, standup: standup)
       interesting = create(:item, kind: "Interesting", standup: standup)
 
       get :index, params
@@ -87,7 +87,7 @@ describe ItemsController do
     it "does not include items which are associated with a post" do
       post = create(:post, standup: standup)
       help = create(:item, kind: "Help", standup: standup)
-      new_face = create(:item, kind: "New face", standup: standup)
+      new_face = create(:new_face, standup: standup)
       interesting = create(:item, kind: "Interesting", standup: standup)
       posted_item = create(:item, post: post, standup: standup)
 
@@ -154,7 +154,7 @@ describe ItemsController do
     end
 
     it "should render the custom template for the kind if there is one" do
-      item = create(:item, kind: 'New face')
+      item = create(:new_face)
       get :edit, id: item.id
       response.should render_template('items/new_new_face')
     end
@@ -193,7 +193,7 @@ describe ItemsController do
       end
 
       it "should render a custom template if there is one" do
-        item = create(:item, kind: 'New face')
+        item = create(:new_face)
         put :update, id: item.id, post_id: item.post, item: { title: "" }
         response.should render_template('items/new_new_face')
       end

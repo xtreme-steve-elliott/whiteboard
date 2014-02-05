@@ -26,11 +26,19 @@ describe Item do
 
   describe "kind" do
     describe "should allow valid kinds - " do
-      ['New face', 'Help', 'Interesting', 'Event'].each do |kind|
+      ['Help', 'Interesting', 'Event'].each do |kind|
         it kind do
           item.kind = kind
           item.should be_valid
         end
+      end
+    end
+
+    describe "New face" do
+      it "is valid with a date in the future" do
+        item.kind = 'New face'
+        item.date = Date.tomorrow
+        item.should be_valid
       end
     end
 
@@ -174,13 +182,6 @@ describe Item do
       interesting = FactoryGirl.create(:item, kind: 'Interesting')
 
       Item.orphans.should == {'Help' => [old_help], 'Interesting' => [interesting]}
-    end
-
-    it 'returns new faces that are not in the past' do
-      face = FactoryGirl.create(:item, kind: 'New face')
-      FactoryGirl.create(:item, kind: 'New face', date: 2.days.ago)
-
-      Item.orphans['New face'].should == [face]
     end
 
     it 'returns items in date asc order' do
