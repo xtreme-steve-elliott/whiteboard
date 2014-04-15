@@ -1,24 +1,26 @@
 pairs:
-  sl: Stephen Levine; slevine
-  cj: Christopher Jobst; cjobst
-  sh: Stephan Hagemann; stephan
-  ea: Ethan Andrews; eandrews
-  db: Dakota Bailey; dbailey
-  ck: Chris Kramp; ckramp
-  br: Brian Rose; brose
-  kk: Kris Kelly; kkelly
-  bj: Brian Jennings; bjennings
   ab: Adam Berlin; aberlin
+  bb: Brian Buchalter; bbuchalter
+  bj: Brian Jennings; bjennings
+  br: Brian Rose; brose
+  cj: Christopher Jobst; cjobst
+  ck: Chris Kramp; ckramp
+  db: Dakota Bailey; dbailey
   dlb: Damien Le Berrigaud; dleberrigaud
   dn: Dan Neumann; dneumann
-  lm: Lucas Marks; lmarks
-  ib: Ian Baker; ibaker
-  bb: Brian Buchalter; bbuchalter
+  ea: Ethan Andrews; eandrews
   et: Elaine Tai; etai
-  rw: Raphael Weiner; rweiner
-  tg: Travis Grathwell
+  ib: Ian Baker; ibaker
+  kk: Kris Kelly; kkelly
+  lm: Lucas Marks; lmarks
   rb: Rachel Bobbins
+  rw: Raphael Weiner; rweiner
   sf: Serguei Filimonov; sfilimonov
+  sh: Stephan Hagemann; stephan
+  sl: Stephen Levine; slevine
+  ss: Sam Serrano; sserrano
+  tg: Travis Grathwell
+  yt: Yulia Tolskaya; ytolskaya
 email:
   prefix: pair
   domain: pivotallabs.com

@@ -22,6 +22,36 @@ describe Item do
   describe "validations" do
     it { should validate_presence_of(:title) }
     it { should validate_presence_of(:standup) }
+
+    context 'New Faces' do
+      let(:item) { build(:new_face) }
+
+      context 'when new' do
+        let(:yesterday) { Date.today - 1.day }
+
+        it 'should disallow a past creation date' do
+          Timecop.freeze do
+            item = build(:new_face, date: yesterday)
+            item.should_not be_valid
+          end
+        end
+      end
+
+      context 'when updating' do
+        before do
+          Timecop.freeze('2014-04-14 12:22:33') do
+            item.save!
+          end
+        end
+
+        it 'should allow a past creation date' do
+          Timecop.freeze('2014-04-28 14:42:11') do
+            item.post_id = 1
+            item.should be_valid
+          end
+        end
+      end
+    end
   end
 
   describe "kind" do
