@@ -9,7 +9,6 @@ describe "Adding new faces", js: true do
     login
     visit '/'
 
-    puts standup.title
     click_on standup.title
     find(:css, '[data-kind="New face"]').click
     fill_in "item[title]", with: "Jane"
