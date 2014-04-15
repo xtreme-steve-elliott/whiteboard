@@ -37,6 +37,7 @@ end
 
 group :development do
   gem 'debugger'
+  gem 'auto_tagger'
 end
 
 gem 'sass-rails'
