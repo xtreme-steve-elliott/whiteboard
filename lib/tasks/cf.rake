@@ -29,6 +29,8 @@ namespace :cf do
 
     check_for_dirty_git
 
+    tag_deploy(environment)
+
     # Copy repo to tmp dir so we can continue working while it deploys
     puts "Copying repo to #{deploy_repo_subdir}..."
     FileUtils.rm_rf("#{Rails.root.to_s}/#{deploy_repo_subdir}")
@@ -52,9 +54,10 @@ namespace :cf do
   end
 
   def check_for_dirty_git
-    if `git status --porcelain`.present?
-      puts "Unstaged or uncommitted changes will be deployed! continue? (y/n)"
-      raise "Aborted!" unless STDIN.gets.strip == "y"
-    end
+    raise "Unstaged or uncommitted changes cannot be deployed! Aborting!" if `git status --porcelain`.present?
+  end
+
+  def tag_deploy env
+    sh "autotag create #{env}"
   end
 end
