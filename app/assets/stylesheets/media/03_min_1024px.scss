@@ -1,4 +1,5 @@
 @import "compass/css3/box";
+@import 'sass-flex-mixin';
 
 //four columns for big screens
 @media (min-width: 1025px) {
@@ -6,9 +7,7 @@
     margin-left: 0;
   }
 
-
-
   .outer {
-    @include box-orient(horizontal);
+    @include flex-direction(row);
   }
 }
