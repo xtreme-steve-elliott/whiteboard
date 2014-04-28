@@ -19,6 +19,7 @@
 </section>
 
 <% Item.kinds.each do |kind| %>
+    <% next if kind.name == 'Win' && !@items[kind.name].present? %>
     <section class="slide">
       <div class="titles">
         <h2><%= kind.name.pluralize %></h2>

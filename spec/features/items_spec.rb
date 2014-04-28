@@ -174,4 +174,29 @@ describe "items", type: :request, js: true do
 
     current_path.should == standup_items_path(standup)
   end
+
+  it 'hides wins if there are none' do
+    login
+    visit presentation_standup_items_path(standup)
+
+    within 'section.deck-current' do
+      page.should have_content "Standup"
+      page.should have_css('.countdown')
+    end
+    page.execute_script("$.deck('next')")
+
+    find('section.deck-current').should have_content "New faces"
+    page.execute_script("$.deck('next')")
+    find('section.deck-current').should have_content "Helps"
+    page.execute_script("$.deck('next')")
+    find('section.deck-current').should have_content "Interestings"
+    page.execute_script("$.deck('next')")
+    find('section.deck-current').should have_content "Events"
+    page.execute_script("$.deck('next')")
+
+    within 'section.deck-current' do
+      page.should_not have_content "Wins"
+      page.should have_content "Woohoo"
+    end
+  end
 end
