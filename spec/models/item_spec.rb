@@ -56,7 +56,7 @@ describe Item do
 
   describe "kind" do
     describe "should allow valid kinds - " do
-      ['Help', 'Interesting', 'Event'].each do |kind|
+      ['Help', 'Interesting', 'Event', 'Win'].each do |kind|
         it kind do
           item.kind = kind
           item.should be_valid

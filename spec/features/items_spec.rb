@@ -75,6 +75,14 @@ describe "items", type: :request, js: true do
     fill_in 'item_description', with: "Now with more f-bombs"
     click_button 'Create Item'
 
+    find('a[data-kind="Win"] i').click
+    click_button('Win')
+    fill_in 'item_title', :with => "Tracker iOS 7 app"
+    fill_in 'item_author', :with => "Tracker team"
+    fill_in 'item_description', with: "In the app store now! New and shiny!"
+    select 'San Francisco', from: 'item[standup_id]'
+    click_button 'Create Item'
+
     visit '/'
     click_link(standup.title)
 
@@ -100,6 +108,10 @@ describe "items", type: :request, js: true do
       page.should have_selector('.in')
       page.should have_selector('code', text: 'inline code!')
       page.should have_link('www.links.com')
+    end
+
+    within '.kind.win' do
+      page.should have_css('.item', text: 'Tracker iOS 7 app')
     end
 
     visit presentation_standup_items_path(standup)
@@ -146,8 +158,14 @@ describe "items", type: :request, js: true do
     find('section.deck-current').should_not have_content("Rails 62 is out")
     page.execute_script("$.deck('next')")
 
+    find('section.deck-current').should have_content "Wins"
+    page.should have_css('section.deck-current', text: 'Tracker iOS 7 app')
+    find('section.deck-current').should_not have_content 'Happy Hour'
+    find('section.deck-current').should_not have_content 'Baseball'
+    page.execute_script("$.deck('next')")
+
     within 'section.deck-current' do
-      page.should_not have_content "Events"
+      page.should_not have_content "Wins"
       page.should have_content "Woohoo"
       page.should have_css('img[src="http://example.com/bar.png"]')
     end
