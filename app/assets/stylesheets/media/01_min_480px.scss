@@ -1,9 +1,0 @@
-@import "compass/css3/box";
-@import 'sass-flex-mixin';
-
-//one column on small screens
-@media (min-width: 480px) {
-  .two-wide {
-    @include flex-direction(row);
-  }
-}

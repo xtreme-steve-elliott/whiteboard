@@ -1,8 +1,8 @@
 @import "compass/css3/box";
 @import 'sass-flex-mixin';
 
-//four columns for big screens
-@media (min-width: 1025px) {
+//all columns for big screens
+@media (min-width: 1281px) {
   .navbar .brand{
     margin-left: 0;
   }

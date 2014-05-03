@@ -1,8 +1,9 @@
 class Item < ActiveRecord::Base
   KINDS = [{name: 'New face', subtitle: ''},
            {name: 'Help', subtitle: ''},
-           {name: 'Interesting', subtitle: 'News, Articles, Tools, Best Practices, Project Milestones, etc'},
-           {name: 'Event', subtitle: ''}]
+           {name: 'Interesting', subtitle: 'News, Articles, Tools, Best Practices, etc'},
+           {name: 'Event', subtitle: ''},
+           {name: 'Win', subtitle: 'Use this to announce achievements in line with company goals. Eg. signed client X, incepted project Y, released product Z...'}]
   default_scope { order('date ASC') }
 
   belongs_to :post

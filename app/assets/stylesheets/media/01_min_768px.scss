@@ -10,7 +10,7 @@
   }
 
   .kind {
-    margin: 0 10px;
+    padding: 0 10px;
   }
 
   .navbar.bottom {
@@ -26,5 +26,22 @@
       }
     }
   }
+}
 
+@media (min-width: 768px) and (max-width: 1280px) {
+  .outer {
+    display: block;
+  }
+
+  .kind {
+    &.left-column {
+      float: left;
+      width: 50%;
+    }
+
+    &.right-column {
+      float: right;
+      width: 50%;
+    }
+  }
 }
