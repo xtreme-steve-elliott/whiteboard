@@ -1,9 +1,11 @@
 class Item < ActiveRecord::Base
   KINDS = [{name: 'New face', subtitle: ''},
-           {name: 'Help', subtitle: ''},
-           {name: 'Interesting', subtitle: 'News, Articles, Tools, Best Practices, etc'},
-           {name: 'Event', subtitle: ''},
-           {name: 'Win', subtitle: 'Use this to announce achievements in line with company goals. Eg. signed client X, incepted project Y, released product Z...'}]
+    {name: 'Help', subtitle: ''},
+    {name: 'Interesting', subtitle: 'News, Articles, Tools, Best Practices, etc'},
+    {name: 'Event', subtitle: ''},
+    {name: 'Win', subtitle: 'Use this to announce achievements in line with company goals. Eg. signed client X, incepted project Y, released product Z...'}
+  ]
+
   default_scope { order('date ASC') }
 
   belongs_to :post
@@ -26,18 +28,18 @@ class Item < ActiveRecord::Base
 
   def self.events_on_or_after(date, standup)
     where(kind: "Event").
-        where("standup_id = #{standup.id} OR standup_id IS NULL").
-        where("date >= ?", date).
-        where(post_id: nil).
-        order("date").
-        group_by(&:kind)
+      where("standup_id = #{standup.id} OR standup_id IS NULL").
+      where("date >= ?", date).
+      where(post_id: nil).
+      order("date").
+      group_by(&:kind)
   end
 
   def self.for_post(standup)
     where(post_id: nil, bumped: false).
-        where("standup_id = #{standup.id} OR standup_id IS NULL").
-        where("(kind != 'Event' OR date = ?)", Date.today).
-        where("date IS NULL OR date <= ?", Date.today)
+      where("standup_id = #{standup.id} OR standup_id IS NULL").
+      where("(kind != 'Event' OR date = ?)", Date.today).
+      where("date IS NULL OR date <= ?", Date.today)
   end
 
   def possible_template_name
@@ -46,17 +48,21 @@ class Item < ActiveRecord::Base
 
   def relative_date
     case date
-      when standup.date_today then
-        :today
-      when standup.date_tomorrow then
-        :tomorrow
-      else
-        :upcoming
+    when standup.date_today then
+      :today
+    when standup.date_tomorrow then
+      :tomorrow
+    else
+      :upcoming
     end
   end
 
   def self.kinds
-    KINDS.map { |kind| Kind.new(kind[:name], kind[:subtitle]) }
+    kinds = KINDS.map { |kind| Kind.new(kind[:name], kind[:subtitle]) }
+    unless ENV['ENABLE_WINS'] == 'true'
+      kinds.delete_if {|kind| kind.name == 'Win'}
+    end
+    kinds
   end
 
   private

@@ -10,10 +10,13 @@ describe "items", type: :request, js: true do
 
   before do
     Timecop.travel(Time.local(2013, 9, 2, 12, 0, 0)) #monday
+    allow(ENV).to receive(:[])
+    ENV.stub(:[]).with("ENABLE_WINS").and_return('true')
   end
 
   after do
     Timecop.return
+    ENV.unstub(:[])
   end
 
   it 'setup and deck.js for standup' do
@@ -173,6 +176,16 @@ describe "items", type: :request, js: true do
     all('.exit-presentation').first.click
 
     current_path.should == standup_items_path(standup)
+  end
+
+  it 'does not let you create wins if the feature flag is off' do
+    ENV.stub(:[]).with("ENABLE_WINS").and_return('false')
+
+    login
+    visit '/'
+    click_link(standup.title)
+
+    page.should_not have_css('a[data-kind="Win"] i')
   end
 
   it 'hides wins if there are none' do
