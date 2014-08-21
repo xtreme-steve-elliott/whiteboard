@@ -4,14 +4,15 @@ describe PostMailer do
   describe 'send_to_all' do
     let(:post) { create(:post, items: [create(:item, title: '"Winning"',description: 'Like this & like "that"')]) }
     let(:destination) { Faker::Internet.email }
-    let(:mail) { PostMailer.send_to_all(post, destination, post.standup_id) }
+    let(:from_address) { 'noreply@fakedomain.io' }
+    let(:mail) { PostMailer.send_to_all(post, destination, from_address, post.standup_id) }
 
     it 'sets the title to be the posts title' do
       mail.subject.should == post.title_for_email
     end
 
     it 'sets the from address' do
-      mail.from.should == [destination]
+      mail.from.should == [from_address]
     end
 
     it 'renders the items in the body of the message' do
