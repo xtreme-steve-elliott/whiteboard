@@ -31,7 +31,6 @@ group :test, :development do
   gem 'capybara-accessible'
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'pry-debugger'
   gem 'letter_opener'
   gem 'timecop'
   gem 'foreman'
@@ -46,6 +45,5 @@ group :test do
 end
 
 group :development do
-  gem 'debugger'
   gem 'auto_tagger'
 end
