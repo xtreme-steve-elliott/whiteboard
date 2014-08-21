@@ -7,8 +7,7 @@ class IpToStandupMapper
 
     begin
       ip_address = IPAddr.new(ip_address_string)
-
-      authorized_ips = standups.map(&:ip_addresses)
+      authorized_ips = standups.map(&:ip_addresses).flatten
       return authorized_ips.any? { |ip| ip.include? ip_address }
 
     rescue
