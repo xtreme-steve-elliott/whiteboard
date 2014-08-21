@@ -9,6 +9,12 @@ gem 'omniauth-google-apps'
 gem 'github-markdown', require: 'github/markdown'
 gem 'exceptional'
 gem 'protected_attributes'
+gem 'sass-rails'
+gem 'compass-rails'
+gem 'coffee-rails'
+gem 'uglifier'
+gem 'bootstrap-sass', '~> 2.3.2'
+gem 'font-awesome-sass-rails'
 
 group :production do
   gem 'rails_12factor'
@@ -35,15 +41,11 @@ group :test, :development do
   gem 'logs-cf-plugin'
 end
 
+group :test do
+  gem 'selenium-webdriver'
+end
+
 group :development do
   gem 'debugger'
   gem 'auto_tagger'
 end
-
-gem 'sass-rails'
-gem 'compass-rails'
-gem 'coffee-rails'
-gem 'uglifier'
-gem 'bootstrap-sass', '~> 2.3.2'
-gem 'font-awesome-sass-rails'
-

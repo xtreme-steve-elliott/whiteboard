@@ -303,6 +303,7 @@ DEPENDENCIES
   rails_12factor
   rspec-rails (= 2.14.0)
   sass-rails
+  selenium-webdriver
   shoulda-matchers
   timecop
   uglifier
