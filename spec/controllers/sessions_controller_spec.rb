@@ -5,7 +5,7 @@ describe SessionsController do
     before { ActionController::Base.any_instance.should_receive(:verify_authenticity_token).never }
 
     it "sets the session['logged_in'] to true" do
-      request.env['omniauth.auth'] = { 'info' => { 'email' => 'mkocher@pivotallabs.com' } }
+      request.env['omniauth.auth'] = { 'info' => { 'email' => 'mkocher@pivotal.io' } }
       post :create
       request.session['logged_in'].should == true
     end
@@ -16,7 +16,7 @@ describe SessionsController do
       request.session['username'].should == 'Dennis'
     end
 
-    it "does not allow someone from outside pivotallabs.com to log in" do
+    it "does not allow someone from outside pivotal.io to log in" do
       request.env['omniauth.auth'] = { 'info' => { 'email' => 'mkocher@l33thack3r.com' } }
       post :create
       request.session['logged_in'].should be_nil
