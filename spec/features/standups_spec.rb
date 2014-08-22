@@ -29,7 +29,8 @@ describe "standups", type: :request do
     current_page.should match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
     find('div.navbar-fixed-top').should have_content 'London Whiteboard'
 
-    page.find('a.btn.btn-navbar').click if page.has_link?('.btn.btn-navbar')
+    p page.has_css?('.btn.btn-navbar')
+    page.find('a.btn.btn-navbar').click if page.has_css?('.btn.btn-navbar')
 
     page.find('a.posts', text: 'Posts').click
     page.should have_content 'Current Post'
@@ -37,7 +38,7 @@ describe "standups", type: :request do
     page.should have_content 'London Whiteboard'
     current_page.should match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
 
-    page.find('a.btn.btn-navbar').click if page.has_link?('.btn.btn-navbar')
+    page.find('a.btn.btn-navbar').click if page.has_css?('.btn.btn-navbar')
     click_on 'Preferences'
     page.should have_css('input[value="London"]')
     page.should have_css('input[value="[Standup][ENG]"]')
