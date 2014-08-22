@@ -16,10 +16,6 @@ gem 'uglifier'
 gem 'bootstrap-sass', '~> 2.3.2'
 gem 'font-awesome-sass-rails'
 
-group :production do
-  gem 'rails_12factor'
-end
-
 group :test, :development do
   gem 'minitest'
   gem 'rspec-rails', '2.14.0'
