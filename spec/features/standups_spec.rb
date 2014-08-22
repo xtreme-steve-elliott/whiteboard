@@ -29,6 +29,7 @@ describe "standups", type: :request do
     current_page.should match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
     find('div.navbar-fixed-top').should have_content 'London Whiteboard'
     page.html.should include 'Posts'
+    page.html.should include 'Pants'
     page.find('a.posts', text: 'Posts').click
     page.should have_content 'Current Post'
     click_link('Current Post')
