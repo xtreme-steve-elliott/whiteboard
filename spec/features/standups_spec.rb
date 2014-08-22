@@ -28,12 +28,15 @@ describe "standups", type: :request do
     current_page = current_url
     current_page.should match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
     find('div.navbar-fixed-top').should have_content 'London Whiteboard'
+
+    page.find('a.btn.btn-navbar').click if page.has_css?('.btn.btn-navbar')
     page.find('a.posts', text: 'Posts').click
     page.should have_content 'Current Post'
     click_link('Current Post')
     page.should have_content 'London Whiteboard'
     current_page.should match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
 
+    page.find('a.btn.btn-navbar').click if page.has_css?('.btn.btn-navbar')
     click_on 'Preferences'
     page.should have_css('input[value="London"]')
     page.should have_css('input[value="[Standup][ENG]"]')
