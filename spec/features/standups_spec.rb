@@ -36,8 +36,7 @@ describe "standups", type: :request do
     page.should have_content 'London Whiteboard'
     current_page.should match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
 
-    page.find('a.btn.btn-navbar').click if page.has_css?('.btn.btn-navbar')
-    click_on 'Preferences'
+    click_on_preferences(page)
     page.should have_css('input[value="London"]')
     page.should have_css('input[value="[Standup][ENG]"]')
     page.should have_css('input[value="all@pivotallabs.com"]')
@@ -53,7 +52,7 @@ describe "standups", type: :request do
   end
 
   it "allows you to delete existing standups", js: true do
-    click_on 'Preferences'
+    click_on_preferences(page)
     click_on 'Delete Standup'
     page.driver.browser.switch_to.alert.accept
 

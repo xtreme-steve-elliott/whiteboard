@@ -51,4 +51,9 @@ RSpec.configure do |config|
 
   config.include FactoryGirl::Syntax::Methods
   config.include MockAuth, :type => :feature
+
+  def click_on_preferences(page)
+    page.find('a.btn.btn-navbar').click if page.has_css?('.btn.btn-navbar')
+    click_on 'Preferences'
+  end
 end
