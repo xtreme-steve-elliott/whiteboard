@@ -5,9 +5,7 @@ describe "standups", type: :request do
     login
     visit '/'
     FactoryGirl.create(:standup, ip_addresses_string: "127.0.0.1/32")
-  end
 
-  it "creates new standups", js: true do
     find('h2').should have_content 'CHOOSE A STANDUP'
     click_link('New Standup')
 
@@ -24,7 +22,9 @@ describe "standups", type: :request do
     visit '/'
     page.should have_content 'LONDON'
     click_link('London')
+  end
 
+  it "creates new standups", js: true do
     current_page = current_url
     current_page.should match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
     find('div.navbar-fixed-top').should have_content 'London Whiteboard'
@@ -50,5 +50,14 @@ describe "standups", type: :request do
       page.should have_content('192.168.1.5')
       page.should have_content('127.0.0.1')
     end
+  end
+
+  it "allows you to delete existing standups", js: true do
+    click_on 'Preferences'
+    click_on 'Delete Standup'
+    page.driver.browser.switch_to.alert.accept
+
+    current_url.should match(/http:\/\/127\.0\.0\.1:\d*\/standups$/)
+    page.should_not have_content 'London Whiteboard'
   end
 end

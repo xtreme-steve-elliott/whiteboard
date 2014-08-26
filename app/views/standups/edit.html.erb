@@ -4,4 +4,12 @@
   </div>
 
   <%= render 'form', standup: @standup %>
+
+  <%= form_for @standup, method: :delete, html: {class: 'form-horizontal'} do |form| %>
+    <div class='control-group'>
+      <div class="controls">
+        <%= form.submit 'Delete Standup', class: 'btn btn-danger', data: {confirm: 'Are you sure?'} %>
+      </div>
+    </div>
+  <%- end %>
 </div>
