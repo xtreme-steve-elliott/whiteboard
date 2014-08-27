@@ -27,7 +27,7 @@ namespace :cf do
     check_for_dirty_git
     tag_deploy(environment)
 
-    sh "cf login -a #{cf_target}"
+    sh "cf api #{cf_target}"
     sh "cf target -o #{deploy_org} -s #{deploy_space}"
     sh "cf push -f config/cf-#{environment}.yml"
   end
