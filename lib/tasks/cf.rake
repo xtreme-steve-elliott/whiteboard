@@ -22,34 +22,19 @@ namespace :cf do
     cf_target = 'api.run.pivotal.io'
     deploy_space = 'whiteboard'
     deploy_org = "pivotallabs"
-    deploy_repo_subdir = "tmp/cf_deploy"
-    tmp_copy_dir = "/tmp/cf_deploy"
 
     check_for_cli
-
     check_for_dirty_git
-
     tag_deploy(environment)
 
-    # Copy repo to tmp dir so we can continue working while it deploys
-    puts "Copying repo to #{deploy_repo_subdir}..."
-    FileUtils.rm_rf("#{Rails.root.to_s}/#{deploy_repo_subdir}")
-    FileUtils.cp_r Rails.root.to_s, tmp_copy_dir
-    FileUtils.mv tmp_copy_dir, "#{Rails.root.to_s}/#{deploy_repo_subdir}"
-
-    # Change working directory to copied repo
-    Dir.chdir("#{Rails.root.to_s}/#{deploy_repo_subdir}")
-
-    # Delete symbolic links before deploy because cf doesn't like them
-    sh 'find . -type l -exec rm -f {} \;'
-
-    sh "cf target #{cf_target} -o #{deploy_org} -s #{deploy_space}"
-    sh "cf push -m config/cf-#{environment}.yml"
+    sh "cf login -a #{cf_target}"
+    sh "cf target -o #{deploy_org} -s #{deploy_space}"
+    sh "cf push -f config/cf-#{environment}.yml"
   end
 
   def check_for_cli
-    sh 'cf -v' do |ok, res|
-      raise "The CloudFoundry CLI is required. Run: gem install cf" unless ok
+    unless is_go_cli?
+      raise "The CloudFoundry CLI is required. Run: 'brew tap pivotal/tap && brew install cloudfoundry-cli'"
     end
   end
 
@@ -59,5 +44,10 @@ namespace :cf do
 
   def tag_deploy env
     sh "autotag create #{env}"
+  end
+
+  def is_go_cli?
+    `cf -v`.match(/version (\d\.\d)/)
+    $1.to_f >= 6
   end
 end
