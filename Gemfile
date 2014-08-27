@@ -32,8 +32,6 @@ group :test, :development do
   gem 'foreman'
   gem 'fakefs', :require => 'fakefs/safe'
   gem 'dotenv', '~> 0.9.0'
-  gem 'cf'
-  gem 'logs-cf-plugin'
 end
 
 group :test do
