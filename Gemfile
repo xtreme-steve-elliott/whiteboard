@@ -32,6 +32,7 @@ group :test, :development do
   gem 'foreman'
   gem 'fakefs', :require => 'fakefs/safe'
   gem 'dotenv', '~> 0.9.0'
+  gem 'pry-rails'
 end
 
 group :test do
@@ -40,4 +41,6 @@ end
 
 group :development do
   gem 'auto_tagger'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
