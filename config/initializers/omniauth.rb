@@ -1,3 +1,6 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :google_apps, domain: 'pivotal.io'
+  provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'],
+    {
+      hd: ENV['GOOGLE_CLIENT_DOMAIN'] || 'pivotal.io'
+    }
 end

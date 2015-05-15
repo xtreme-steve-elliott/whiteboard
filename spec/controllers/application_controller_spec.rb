@@ -13,6 +13,6 @@ describe StandupsController do
     allow(request).to receive(:remote_ip).and_return('')
     get :index
     response.should be_redirect
-    expect(response).to redirect_to 'http://test.host/auth/google_apps'
+    expect(response).to redirect_to 'http://test.host/auth/google_oauth2'
   end
 end

@@ -15,12 +15,6 @@ describe SessionsController do
       post :create
       request.session['username'].should == 'Dennis'
     end
-
-    it "does not allow someone from outside pivotal.io to log in" do
-      request.env['omniauth.auth'] = { 'info' => { 'email' => 'mkocher@l33thack3r.com' } }
-      post :create
-      request.session['logged_in'].should be_nil
-    end
   end
 
   describe '#destroy' do

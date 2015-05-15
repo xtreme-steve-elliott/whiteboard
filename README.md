@@ -43,6 +43,14 @@ The following environment variables are necessary for posting to email via SendG
 
     export SENDGRID_USERNAME=<username>
     export SENDGRID_PASSWORD=<password>
+    
+The following environment variables are necessary to integrate with google oauth2.
+
+    export GOOGLE_CLIENT_ID=<client_id>
+    export GOOGLE_CLIENT_SECRET=<client_secret>
+    
+You can find these in the [Google Developers Console](https://console.developers.google.com). See the 
+[OmniAuth Google OAuth2 repo](https://github.com/zquestz/omniauth-google-oauth2) for more details.
 
 To use these environment variables in development mode:
 
