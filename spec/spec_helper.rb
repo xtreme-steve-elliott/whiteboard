@@ -8,6 +8,7 @@ require 'capybara/rails'
 require 'capybara/rspec'
 Capybara.javascript_driver = :selenium
 Capybara.default_driver = :webkit
+Selenium::WebDriver::Firefox::Binary.path = ENV['FIREFOX_BINARY_PATH'] || Selenium::WebDriver::Firefox::Binary.path
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
