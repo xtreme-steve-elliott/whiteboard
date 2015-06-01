@@ -23,6 +23,11 @@ class StandupsController < ApplicationController
     end
   end
 
+  def fetch_all
+    @standups = Standup.all
+    render :json => @standups.to_json(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
+  end
+
   def edit
     @standup = Standup.find(params[:id])
   end

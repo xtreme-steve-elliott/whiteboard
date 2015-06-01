@@ -2,6 +2,7 @@ Whiteboard::Application.routes.draw do
   resources :items, only: :create
   resources :sessions, only: [:create, :destroy]
 
+  get '/standups.json', to: 'standups#fetch_all'
   resources :standups, shallow: true do
     resources :items, only: :new
     resources :items do
@@ -20,7 +21,6 @@ Whiteboard::Application.routes.draw do
       collection do
         get 'archived'
       end
-
     end
   end
 
