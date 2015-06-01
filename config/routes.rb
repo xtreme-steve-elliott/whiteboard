@@ -4,6 +4,9 @@ Whiteboard::Application.routes.draw do
 
   get '/standups.json', to: 'standups#fetch_all'
   resources :standups, shallow: true do
+    member do
+      get 'items.json', to: 'standups#fetch_items'
+    end
     resources :items, only: :new
     resources :items do
       collection do

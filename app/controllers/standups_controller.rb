@@ -37,6 +37,33 @@ class StandupsController < ApplicationController
     redirect_to standup_items_path(@standup)
   end
 
+  def fetch_items
+    @standup = Standup.find(params[:id])
+    events = Item.events_on_or_after(Date.today, @standup)
+    @categoried_items = @standup.items.orphans.merge(events)
+    item_list = []
+    @categoried_items.each do |item_name, item_value|
+      item_json = {
+          :category_name => item_name,
+          :items => item_value.map do |entry|
+            {
+                :id => entry.id,
+                :title => entry.title,
+                :description => entry.description,
+                :public => entry.public,
+                :bumped => entry.bumped,
+                :created_at => entry.created_at,
+                :updated_at => entry.updated_at,
+                :date => entry.date,
+                :author => entry.author
+            }
+          end
+      }
+      item_list.append item_json
+    end
+    render :json => item_list
+  end
+
   def update
     @standup = standup_service.update(id: params[:id], attributes: params[:standup])
 
