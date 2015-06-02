@@ -8,13 +8,13 @@ describe IpToStandupMapper do
       FactoryGirl.create(:standup, ip_addresses_string: "168.2.1.3, 168.2.1.4")
 
       mapper = IpToStandupMapper.new
-      mapper.authorized?(ip_address_string: "127.0.0.8").should == true
-      mapper.authorized?(ip_address_string: "168.2.1.3").should == true
+      expect(mapper.authorized?(ip_address_string: "127.0.0.8")).to eq(true)
+      expect(mapper.authorized?(ip_address_string: "168.2.1.3")).to eq(true)
     end
 
     it 'returns false with an invalid address' do
       mapper = IpToStandupMapper.new
-      mapper.authorized?(ip_address_string: "").should == false
+      expect(mapper.authorized?(ip_address_string: "")).to eq(false)
     end
   end
 
@@ -25,7 +25,7 @@ describe IpToStandupMapper do
       london_standup = FactoryGirl.create(:standup, ip_addresses_string: "168.2.1.3/24")
 
       mapper = IpToStandupMapper.new
-      mapper.standups_matching_ip_address(ip_address: "127.0.0.88").should == [nyc_standup]
+      expect(mapper.standups_matching_ip_address(ip_address: "127.0.0.88")).to eq([nyc_standup])
     end
 
     context "when no standups match the ip address" do
@@ -35,7 +35,7 @@ describe IpToStandupMapper do
 
         mapper = IpToStandupMapper.new
         matching = mapper.standups_matching_ip_address(ip_address: "234.2.1.3")
-        matching.should == [anywhere_standup]
+        expect(matching).to eq([anywhere_standup])
       end
     end
   end

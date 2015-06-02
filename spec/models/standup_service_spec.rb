@@ -12,8 +12,8 @@ describe StandupService do
         standup = service.create(attributes: default_attributes)
       }.to change(Standup, :count).by(1)
 
-      standup.attributes.should include(default_attributes)
-      standup.should be_persisted
+      expect(standup.attributes).to include(default_attributes)
+      expect(standup).to be_persisted
     end
 
     context "when given an ip address that is already in the ip_addresses_string" do
@@ -23,7 +23,7 @@ describe StandupService do
           standup = service.create(attributes: default_attributes.merge(ip_addresses_string: "127.0.0.1/32"))
         }.to change(Standup, :count).by(1)
 
-        standup.ip_addresses_string.should == "127.0.0.1/32"
+        expect(standup.ip_addresses_string).to eq("127.0.0.1/32")
       end
     end
 
@@ -34,7 +34,7 @@ describe StandupService do
           standup = service.create(attributes: default_attributes.merge(ip_addresses_string: "192.168.0.0/24"))
         }.to change(Standup, :count).by(1)
 
-        standup.ip_addresses.should =~ [IPAddr.new("192.168.0.0/24")]
+        expect(standup.ip_addresses).to match_array([IPAddr.new("192.168.0.0/24")])
       end
     end
   end
@@ -48,8 +48,8 @@ describe StandupService do
         standup = service.update(id: existing_standup.id, attributes: {title: "Updated Title"})
       }.to_not change(Standup, :count)
 
-      standup.title.should == "Updated Title"
-      standup.should_not be_changed
+      expect(standup.title).to eq("Updated Title")
+      expect(standup).not_to be_changed
     end
 
     context "when given an ip address that is already in the ip_addresses_string" do
@@ -59,7 +59,7 @@ describe StandupService do
           standup = service.update(id: existing_standup.id, attributes: {ip_addresses_string: "127.0.0.1/32"})
         }.to_not change(Standup, :count)
 
-        standup.ip_addresses_string.should == "127.0.0.1/32"
+        expect(standup.ip_addresses_string).to eq("127.0.0.1/32")
       end
     end
 
@@ -70,7 +70,7 @@ describe StandupService do
           standup = service.update(id: existing_standup.id, attributes: {ip_addresses_string: "192.168.0.0/24"})
         }.to_not change(Standup, :count)
 
-        standup.ip_addresses.should =~ [IPAddr.new("192.168.0.0/24")]
+        expect(standup.ip_addresses).to match_array([IPAddr.new("192.168.0.0/24")])
       end
     end
   end

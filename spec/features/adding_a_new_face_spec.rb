@@ -18,11 +18,11 @@ describe "Adding new faces", js: true do
     find(:css, '[name="item[date]"]').click
     find(:css, 'td.day', text: '11').click
 
-    find_field("item[date]").value.should == "2010-01-01"
+    expect(find_field("item[date]").value).to eq("2010-01-01")
 
     click_on "Create New Face"
 
-    page.should have_content "Please choose a date in present or future"
+    expect(page).to have_content "Please choose a date in present or future"
     #page.should have_content "Create New Face" #TODO: as of 2014-02-05, this captures a bug.
   end
 
@@ -41,11 +41,11 @@ describe "Adding new faces", js: true do
 
       page.driver.browser.switch_to.alert.accept
 
-      page.should_not have_content "Unable to create post"
-      current_path.should_not eq(standup_items_path(standup))
+      expect(page).not_to have_content "Unable to create post"
+      expect(current_path).not_to eq(standup_items_path(standup))
 
       post = Post.last
-      post.items.should =~ [new_face]
+      expect(post.items).to match_array([new_face])
     end
   end
 end

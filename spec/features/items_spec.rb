@@ -88,92 +88,92 @@ describe "items", type: :request, js: true do
     click_link(standup.title)
 
     within '.kind.event' do
-      page.should have_css('.subheader.today', text: 'Today')
-      page.should have_css('.today + .item', text: 'Happy Hour')
-      page.should have_css('.subheader.tomorrow', text: 'Tomorrow')
-      page.should have_css('.tomorrow + .item', text: 'Baseball')
-      page.should have_css('.subheader.upcoming', text: 'Upcoming')
-      page.should have_css('.upcoming + .item', text: 'Party')
+      expect(page).to have_css('.subheader.today', text: 'Today')
+      expect(page).to have_css('.today + .item', text: 'Happy Hour')
+      expect(page).to have_css('.subheader.tomorrow', text: 'Tomorrow')
+      expect(page).to have_css('.tomorrow + .item', text: 'Baseball')
+      expect(page).to have_css('.subheader.upcoming', text: 'Upcoming')
+      expect(page).to have_css('.upcoming + .item', text: 'Party')
     end
 
     within '.kind.new_face' do
-      page.should have_css('.subheader.today', text: 'Today')
-      page.should have_css('.today + .item', text: 'Johnathon McKenzie')
-      page.should have_css('.subheader.upcoming', text: 'Upcoming')
-      page.should have_css('.upcoming + .item', text: 'Jane Doe')
+      expect(page).to have_css('.subheader.today', text: 'Today')
+      expect(page).to have_css('.today + .item', text: 'Johnathon McKenzie')
+      expect(page).to have_css('.subheader.upcoming', text: 'Upcoming')
+      expect(page).to have_css('.upcoming + .item', text: 'Jane Doe')
     end
 
     within '.kind.interesting' do
-      page.should have_css('.item', text: 'Linus Torvalds')
+      expect(page).to have_css('.item', text: 'Linus Torvalds')
       first('a[data-toggle]').click
-      page.should have_selector('.in')
-      page.should have_selector('code', text: 'inline code!')
-      page.should have_link('www.links.com')
+      expect(page).to have_selector('.in')
+      expect(page).to have_selector('code', text: 'inline code!')
+      expect(page).to have_link('www.links.com')
     end
 
     within '.kind.win' do
-      page.should have_css('.item', text: 'Tracker iOS 7 app')
+      expect(page).to have_css('.item', text: 'Tracker iOS 7 app')
     end
 
     visit presentation_standup_items_path(standup)
 
     within 'section.deck-current' do
-      page.should have_content "Standup"
-      page.should have_css('.countdown')
+      expect(page).to have_content "Standup"
+      expect(page).to have_css('.countdown')
     end
     page.execute_script("$.deck('next')")
 
     within 'section.deck-current' do
-      page.should have_content "New faces"
-      page.should have_content "Today"
-      page.should have_content "Upcoming"
-      page.should have_content "Johnathon McKenzie"
+      expect(page).to have_content "New faces"
+      expect(page).to have_content "Today"
+      expect(page).to have_content "Upcoming"
+      expect(page).to have_content "Johnathon McKenzie"
     end
     page.execute_script("$.deck('next')")
 
-    find('section.deck-current').should have_content "Helps"
+    expect(find('section.deck-current')).to have_content "Helps"
     page.execute_script("$.deck('next')")
 
     within 'section.deck-current' do
-      page.should have_content "Interestings"
-      page.should have_content("Linux 3.2 out")
-      page.should have_content("Linus Torvalds")
-      page.should have_content("Rails 62 is out")
-      page.should_not have_selector('.in')
+      expect(page).to have_content "Interestings"
+      expect(page).to have_content("Linux 3.2 out")
+      expect(page).to have_content("Linus Torvalds")
+      expect(page).to have_content("Rails 62 is out")
+      expect(page).not_to have_selector('.in')
       first('a[data-toggle]').click
-      page.should have_selector('.in')
-      page.should have_content("Check it out:")
-      page.should have_link("www.links.com")
-      page.should have_selector("code", text: "inline code!")
+      expect(page).to have_selector('.in')
+      expect(page).to have_content("Check it out:")
+      expect(page).to have_link("www.links.com")
+      expect(page).to have_selector("code", text: "inline code!")
     end
     page.execute_script("$.deck('next')")
 
-    find('section.deck-current').should have_content "Events"
-    page.should have_css('section.deck-current', text: 'Today')
-    page.should have_css('.today + ul li', text: 'Happy Hour')
-    page.should have_css('section.deck-current', text: 'Tomorrow')
-    page.should have_css('.tomorrow + ul li', text: 'Baseball')
-    page.should have_css('section.deck-current', text: 'Upcoming')
-    page.should have_css('.upcoming + ul li', text: 'Party')
-    find('section.deck-current').should_not have_content "Meetup"
-    find('section.deck-current').should_not have_content("Rails 62 is out")
+    expect(find('section.deck-current')).to have_content "Events"
+    expect(page).to have_css('section.deck-current', text: 'Today')
+    expect(page).to have_css('.today + ul li', text: 'Happy Hour')
+    expect(page).to have_css('section.deck-current', text: 'Tomorrow')
+    expect(page).to have_css('.tomorrow + ul li', text: 'Baseball')
+    expect(page).to have_css('section.deck-current', text: 'Upcoming')
+    expect(page).to have_css('.upcoming + ul li', text: 'Party')
+    expect(find('section.deck-current')).not_to have_content "Meetup"
+    expect(find('section.deck-current')).not_to have_content("Rails 62 is out")
     page.execute_script("$.deck('next')")
 
-    find('section.deck-current').should have_content "Wins"
-    page.should have_css('section.deck-current', text: 'Tracker iOS 7 app')
-    find('section.deck-current').should_not have_content 'Happy Hour'
-    find('section.deck-current').should_not have_content 'Baseball'
+    expect(find('section.deck-current')).to have_content "Wins"
+    expect(page).to have_css('section.deck-current', text: 'Tracker iOS 7 app')
+    expect(find('section.deck-current')).not_to have_content 'Happy Hour'
+    expect(find('section.deck-current')).not_to have_content 'Baseball'
     page.execute_script("$.deck('next')")
 
     within 'section.deck-current' do
-      page.should_not have_content "Wins"
-      page.should have_content "Woohoo"
-      page.should have_css('img[src="http://example.com/bar.png"]')
+      expect(page).not_to have_content "Wins"
+      expect(page).to have_content "Woohoo"
+      expect(page).to have_css('img[src="http://example.com/bar.png"]')
     end
 
     all('.exit-presentation').first.click
 
-    current_path.should == standup_items_path(standup)
+    expect(current_path).to eq(standup_items_path(standup))
   end
 
   it 'does not let you create wins if the feature flag is off' do
@@ -183,7 +183,7 @@ describe "items", type: :request, js: true do
     visit '/'
     click_link(standup.title)
 
-    page.should_not have_css('a[data-kind="Win"] i')
+    expect(page).not_to have_css('a[data-kind="Win"] i')
   end
 
   it 'hides wins if there are none' do
@@ -191,23 +191,23 @@ describe "items", type: :request, js: true do
     visit presentation_standup_items_path(standup)
 
     within 'section.deck-current' do
-      page.should have_content "Standup"
-      page.should have_css('.countdown')
+      expect(page).to have_content "Standup"
+      expect(page).to have_css('.countdown')
     end
     page.execute_script("$.deck('next')")
 
-    find('section.deck-current').should have_content "New faces"
+    expect(find('section.deck-current')).to have_content "New faces"
     page.execute_script("$.deck('next')")
-    find('section.deck-current').should have_content "Helps"
+    expect(find('section.deck-current')).to have_content "Helps"
     page.execute_script("$.deck('next')")
-    find('section.deck-current').should have_content "Interestings"
+    expect(find('section.deck-current')).to have_content "Interestings"
     page.execute_script("$.deck('next')")
-    find('section.deck-current').should have_content "Events"
+    expect(find('section.deck-current')).to have_content "Events"
     page.execute_script("$.deck('next')")
 
     within 'section.deck-current' do
-      page.should_not have_content "Wins"
-      page.should have_content "Woohoo"
+      expect(page).not_to have_content "Wins"
+      expect(page).to have_content "Woohoo"
     end
   end
 end

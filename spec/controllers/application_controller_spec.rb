@@ -5,14 +5,14 @@ describe StandupsController, :type => :controller do
     FactoryGirl.create(:standup, ip_addresses_string: "127.0.0.1/32")
     allow(request).to receive(:remote_ip).and_return('127.0.0.1')
     get :index
-    response.should_not be_redirect
+    expect(response).not_to be_redirect
   end
 
   it "requires authentication for invalid IP" do
     FactoryGirl.create(:standup, ip_addresses_string: "127.0.0.1/32")
     allow(request).to receive(:remote_ip).and_return('')
     get :index
-    response.should be_redirect
+    expect(response).to be_redirect
     expect(response).to redirect_to 'http://test.host/auth/google_oauth2'
   end
 end
