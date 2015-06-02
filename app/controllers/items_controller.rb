@@ -38,7 +38,15 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
     @item.update_attributes(params[:item])
     if @item.save
-      redirect_to params[:redirect_to] || @standup
+      respond_to do |format|
+        format.html { redirect_to(params[:redirect_to] || @standup) }
+        format.json {
+          render :json => {
+            :status => :redirect,
+            :to => params[:redirect_to] || standup_path(@standup)
+          }.to_json
+        }
+      end
     else
       render_custom_item_template @item
     end
