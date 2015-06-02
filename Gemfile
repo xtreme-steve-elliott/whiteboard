@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 ruby '2.2.2'
-gem 'rails', '4.1.0.rc1'
+gem 'rails', '4.2.1'
 
 gem 'pg'
 gem 'unicorn'
@@ -21,8 +21,9 @@ group :development, :production do
 end
 
 group :test, :development do
+  gem 'test-unit'
   gem 'minitest'
-  gem 'rspec-rails', '2.14.0'
+  gem 'rspec-rails', '3.2.1'
   gem 'shoulda-matchers'
   gem 'factory_girl_rails'
   gem 'faker'

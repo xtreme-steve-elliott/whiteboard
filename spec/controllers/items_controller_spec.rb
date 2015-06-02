@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ItemsController do
+describe ItemsController, :type => :controller do
   let(:standup) { create(:standup) }
   let(:params) { {standup_id: standup.id} }
   before do
@@ -37,7 +37,7 @@ describe ItemsController do
     end
   end
 
-  describe '#new' do
+  describe "#new" do
     it "should create a new Item object" do
       get :new, params
       assigns[:item].should be_new_record

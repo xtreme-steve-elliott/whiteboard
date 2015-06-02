@@ -6,6 +6,7 @@ require 'rspec/autorun'
 
 require 'capybara/rails'
 require 'capybara/rspec'
+require 'support/mock_auth' # TODO: figure out why the rails root join didn't work below
 Capybara.javascript_driver = :selenium
 Capybara.default_driver = :webkit
 Selenium::WebDriver::Firefox::Binary.path = ENV['FIREFOX_BINARY_PATH'] || Selenium::WebDriver::Firefox::Binary.path
@@ -53,7 +54,8 @@ RSpec.configure do |config|
   config.render_views
 
   config.include FactoryGirl::Syntax::Methods
-  config.include MockAuth, :type => :feature
+  config.include MockAuth
+  config.include Capybara::DSL
 
   def click_on_preferences(page)
     page.find('a.btn.btn-navbar').click if page.has_css?('.btn.btn-navbar')

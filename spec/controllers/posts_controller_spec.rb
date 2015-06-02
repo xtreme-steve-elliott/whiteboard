@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PostsController do
+describe PostsController, :type => :controller do
   let(:standup) { create(:standup) }
   before do
     request.session[:logged_in] = true

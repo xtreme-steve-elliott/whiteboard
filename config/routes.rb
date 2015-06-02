@@ -2,7 +2,6 @@ Whiteboard::Application.routes.draw do
   resources :items, only: :create
   resources :sessions, only: [:create, :destroy]
 
-  get '/standups.json', to: 'standups#fetch_all'
   resources :standups, shallow: true do
     member do
       get 'items.json', to: 'standups#fetch_items'

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SessionsController do
+describe SessionsController, :type => :controller do
   describe '#create' do
     before { ActionController::Base.any_instance.should_receive(:verify_authenticity_token).never }
 

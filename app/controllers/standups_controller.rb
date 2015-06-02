@@ -21,11 +21,12 @@ class StandupsController < ApplicationController
       mapper = IpToStandupMapper.new
       @standups = mapper.standups_matching_ip_address(ip_address: request.remote_ip)
     end
-  end
-
-  def fetch_all
-    @standups = Standup.all
-    render :json => @standups.to_json(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
+    respond_to do |format|
+      format.html
+      format.json {
+        render :json => @standups.to_json(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
+      }
+    end
   end
 
   def edit
@@ -40,9 +41,9 @@ class StandupsController < ApplicationController
   def fetch_items
     @standup = Standup.find(params[:id])
     events = Item.events_on_or_after(Date.today, @standup)
-    @categoried_items = @standup.items.orphans.merge(events)
+    categorized_items = @standup.items.orphans.merge(events)
     item_list = []
-    @categoried_items.each do |item_name, item_value|
+    categorized_items.each do |item_name, item_value|
       item_json = {
           :category_name => item_name,
           :items => item_value.map do |entry|

@@ -1,24 +1,23 @@
 require 'spec_helper'
 
-describe StandupsController do
+describe StandupsController, :type => :controller do
   let(:standup) { create(:standup) }
-
   before do
     request.session[:logged_in] = true
   end
 
-  describe "#create" do
-    context "with valid params" do
-      it "creates a standup" do
+  describe '#create' do
+    context 'with valid params' do
+      it 'creates a standup' do
         expect do
-          post :create, standup: {title: "Berlin", to_address: "berlin+standup@pivotallabs.com"}
+          post :create, standup: {title: 'Berlin', to_address: 'berlin+standup@pivotallabs.com'}
         end.to change { Standup.count }.by(1)
         response.should be_redirect
       end
     end
 
-    context "with invalid params" do
-      it "creates a standup" do
+    context 'with invalid params' do
+      it 'creates a standup' do
         expect do
           post :create, standup: {}
         end.to change { Standup.count }.by(0)
