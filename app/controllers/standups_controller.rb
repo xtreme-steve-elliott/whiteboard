@@ -21,6 +21,7 @@ class StandupsController < ApplicationController
       mapper = IpToStandupMapper.new
       @standups = mapper.standups_matching_ip_address(ip_address: request.remote_ip)
     end
+    @standups.sort_by { |x| x.id }
     respond_to do |format|
       format.html
       format.json {

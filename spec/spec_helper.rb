@@ -1,14 +1,13 @@
-ENV["RAILS_ENV"] ||= 'test'
+ENV['RAILS_ENV'] ||= 'test'
 
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
 
 require 'capybara/rails'
 require 'capybara/rspec'
 require 'support/mock_auth' # TODO: figure out why the rails root join didn't work below
-Capybara.javascript_driver = :selenium
-Capybara.default_driver = :webkit
+Capybara.javascript_driver = :accessible_selenium
+Capybara.default_driver = :accessible_webkit
 Selenium::WebDriver::Firefox::Binary.path = ENV['FIREFOX_BINARY_PATH'] || Selenium::WebDriver::Firefox::Binary.path
 
 # Requires supporting ruby files with custom matchers and macros, etc,
