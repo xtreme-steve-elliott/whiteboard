@@ -12,7 +12,18 @@ describe StandupsController, :type => :controller do
         expect do
           post :create, standup: {title: 'Berlin', to_address: 'berlin+standup@pivotallabs.com'}
         end.to change { Standup.count }.by(1)
+      end
+
+      it 'redirects on success' do
+        post :create, standup: {title: 'Berlin', to_address: 'berlin+standup@pivotallabs.com'}
         expect(response).to be_redirect
+      end
+
+      it 'returns the created standup in JSON if requesting JSON' do
+        request.env['HTTP_ACCEPT'] = 'application/json'
+        post :create, standup: {title: 'Berlin', to_address: 'berlin+standup@pivotallabs.com'}
+        # JsonSpec might get updated to have a better message for this
+        expect(response.body).to be_json_eql('{"title":"Berlin"}').excluding('start_time_string', 'time_zone_name')
       end
     end
 
@@ -21,7 +32,18 @@ describe StandupsController, :type => :controller do
         expect do
           post :create, standup: {}
         end.to change { Standup.count }.by(0)
+      end
+
+      it 'renders the new standups template' do
+        post :create, standup: {}
         expect(response).to render_template 'standups/new'
+      end
+
+      it 'returns the errors in JSON if requesting JSON' do
+        request.env['HTTP_ACCEPT'] = 'application/json'
+        post :create, standup: {}
+        expect(response.status).to eq(400)
+        expect(response.body).to be_json_eql(%({"status":"error","message":["title can't be blank","to_address can't be blank"]}))
       end
     end
   end
@@ -46,19 +68,17 @@ describe StandupsController, :type => :controller do
         expect(assigns[:standups]).to eq([standup1, standup2])
       end
 
-      it 'returns a list of JSON standups if requesting JSON' do
+      it 'returns a list of standups in JSON if requesting JSON' do
         standup1 = create(:standup, :title => 'Standup 1')
-        standup1Json = standup1.to_json(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
         standup2 = create(:standup, :title => 'Standup 2')
-        standup2Json= standup2.to_json(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
         request.env['HTTP_ACCEPT'] = 'application/json'
         get :index
 
         expect(assigns[:standups]).to eq([standup1, standup2])
         parsed_response = JSON.parse(response.body)
         expect(parsed_response).to have_exactly(2).items
-        expect(response.body).to include_json(standup1Json)
-        expect(response.body).to include_json(standup2Json)
+        expect(response.body).to include_json(standup1.force_to_json)
+        expect(response.body).to include_json(standup2.force_to_json)
       end
     end
 
@@ -78,9 +98,8 @@ describe StandupsController, :type => :controller do
         expect(assigns[:standups]).to eq([standup1])
       end
 
-      it 'returns a list of JSON whitelisted standups' do
+      it 'returns a list of whitelisted standups in JSON' do
         standup1 = create(:standup, ip_addresses_string: '0.0.0.9')
-        standup1Json = standup1.to_json(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
         standup2 = create(:standup, ip_addresses_string: '0.0.0.8')
 
         request.env['HTTP_ACCEPT'] = 'application/json'
@@ -88,7 +107,7 @@ describe StandupsController, :type => :controller do
 
         parsed_response = JSON.parse(response.body)
         expect(parsed_response).to have_exactly(1).items
-        expect(response.body).to include_json(standup1Json)
+        expect(response.body).to include_json(standup1.force_to_json)
       end
     end
   end

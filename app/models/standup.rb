@@ -43,11 +43,19 @@ class Standup < ActiveRecord::Base
     standup_time_today < time_zone.now
   end
 
-  def as_json(options = nil)
+  def as_json(options = nil) # TODO: make a test for this
     if options != nil
       super(options)
     else
       super(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
+    end
+  end
+
+  def force_to_json(options = nil) # TODO: make a test for this
+    if options != nil
+      to_json(options)
+    else
+      to_json(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
     end
   end
 
