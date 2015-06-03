@@ -3,10 +3,23 @@ class StandupsController < ApplicationController
     @standup = standup_service.create(attributes: params[:standup])
 
     if @standup.persisted?
-      flash[:notice] = "#{@standup.title} Standup successfully created"
-      redirect_to @standup
+      respond_to do |format|
+        format.html {
+          flash[:notice] = "#{@standup.title} Standup successfully created"
+          redirect_to @standup
+        }
+        format.json { render :json => @standup.as_json }
+      end
     else
-      render 'standups/new'
+      respond_to do |format|
+        format.html { render 'standups/new' }
+        format.json {
+          render :status => 400, :json => {
+              :status => :error,
+              :message => @standup.errors.map { |attribute, error| attribute.to_s + ' ' + error.to_s }
+          }
+        }
+      end
     end
   end
 
@@ -25,7 +38,7 @@ class StandupsController < ApplicationController
     respond_to do |format|
       format.html
       format.json {
-        render :json => @standups.to_json(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
+        render :json => @standups.as_json
       }
     end
   end

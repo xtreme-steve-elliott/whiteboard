@@ -43,6 +43,14 @@ class Standup < ActiveRecord::Base
     standup_time_today < time_zone.now
   end
 
+  def as_json(options = nil)
+    if options != nil
+      super(options)
+    else
+      super(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
+    end
+  end
+
   private
 
   def standup_time_today
