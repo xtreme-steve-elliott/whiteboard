@@ -3,9 +3,6 @@ Whiteboard::Application.routes.draw do
   resources :sessions, only: [:create, :destroy]
 
   resources :standups, shallow: true do
-    member do
-      get 'items.json', to: 'standups#fetch_items'
-    end
     resources :items, only: :new
     resources :items do
       collection do

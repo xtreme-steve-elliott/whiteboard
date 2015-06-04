@@ -18,12 +18,13 @@ describe StandupsController, :type => :controller do
         post :create, standup: {title: 'Berlin', to_address: 'berlin+standup@pivotallabs.com'}
         expect(response).to be_redirect
       end
-
-      it 'returns the created standup in JSON if requesting JSON' do
-        request.env['HTTP_ACCEPT'] = 'application/json'
-        post :create, standup: {title: 'Berlin', to_address: 'berlin+standup@pivotallabs.com'}
-        # JsonSpec might get updated to have a better message for this
-        expect(response.body).to be_json_eql('{"title":"Berlin"}').excluding('start_time_string', 'time_zone_name')
+      context 'requesting JSON' do
+        it 'returns the created standup in JSON' do
+          request.env['HTTP_ACCEPT'] = 'application/json'
+          post :create, standup: {title: 'Berlin', to_address: 'berlin+standup@pivotallabs.com'}
+          # JsonSpec might get updated to have a better message for this
+          expect(response.body).to be_json_eql('{"title":"Berlin"}').excluding('start_time_string', 'time_zone_name')
+        end
       end
     end
 
@@ -38,12 +39,13 @@ describe StandupsController, :type => :controller do
         post :create, standup: {}
         expect(response).to render_template 'standups/new'
       end
-
-      it 'returns the errors in JSON if requesting JSON' do
-        request.env['HTTP_ACCEPT'] = 'application/json'
-        post :create, standup: {}
-        expect(response.status).to eq(400)
-        expect(response.body).to be_json_eql(%({"status":"error","message":["title can't be blank","to_address can't be blank"]}))
+      context 'requesting JSON' do
+        it 'returns the errors in JSON' do
+          request.env['HTTP_ACCEPT'] = 'application/json'
+          post :create, standup: {}
+          expect(response.status).to eq(Rack::Utils::SYMBOL_TO_STATUS_CODE[:bad_request])
+          expect(response.body).to be_json_eql(%({"status":"error","message":["title can't be blank","to_address can't be blank"]}))
+        end
       end
     end
   end
@@ -67,18 +69,19 @@ describe StandupsController, :type => :controller do
         expect(response).to be_ok
         expect(assigns[:standups]).to eq([standup1, standup2])
       end
+      context 'requesting JSON' do
+        it 'returns a list of standups in JSON' do
+          standup1 = create(:standup, :title => 'Standup 1')
+          standup2 = create(:standup, :title => 'Standup 2')
+          request.env['HTTP_ACCEPT'] = 'application/json'
+          get :index
 
-      it 'returns a list of standups in JSON if requesting JSON' do
-        standup1 = create(:standup, :title => 'Standup 1')
-        standup2 = create(:standup, :title => 'Standup 2')
-        request.env['HTTP_ACCEPT'] = 'application/json'
-        get :index
-
-        expect(assigns[:standups]).to eq([standup1, standup2])
-        parsed_response = JSON.parse(response.body)
-        expect(parsed_response).to have_exactly(2).items
-        expect(response.body).to include_json(standup1.force_to_json)
-        expect(response.body).to include_json(standup2.force_to_json)
+          expect(assigns[:standups]).to eq([standup1, standup2])
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response).to have_exactly(2).items
+          expect(response.body).to include_json(standup1.to_builder(true))
+          expect(response.body).to include_json(standup2.to_builder(true))
+          end
       end
     end
 
@@ -97,23 +100,24 @@ describe StandupsController, :type => :controller do
         expect(response).to be_ok
         expect(assigns[:standups]).to eq([standup1])
       end
+      context 'requesting JSON' do
+        it 'returns a list of whitelisted standups in JSON' do
+          standup1 = create(:standup, ip_addresses_string: '0.0.0.9')
+          standup2 = create(:standup, ip_addresses_string: '0.0.0.8')
 
-      it 'returns a list of whitelisted standups in JSON' do
-        standup1 = create(:standup, ip_addresses_string: '0.0.0.9')
-        standup2 = create(:standup, ip_addresses_string: '0.0.0.8')
+          request.env['HTTP_ACCEPT'] = 'application/json'
+          get :index
 
-        request.env['HTTP_ACCEPT'] = 'application/json'
-        get :index
-
-        parsed_response = JSON.parse(response.body)
-        expect(parsed_response).to have_exactly(1).items
-        expect(response.body).to include_json(standup1.force_to_json)
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response).to have_exactly(1).items
+          expect(response.body).to include_json(standup1.to_builder(true))
+        end
       end
     end
   end
 
   describe '#edit' do
-    it 'shows the post for editing' do
+    it 'shows the standup for editing' do
       get :edit, id: standup.id
       expect(assigns[:standup]).to eq(standup)
       expect(response).to be_ok
@@ -128,30 +132,66 @@ describe StandupsController, :type => :controller do
   end
 
   describe '#update' do
-    context 'with valid params' do
-      it 'updates the post' do
-        put :update, id: standup.id, standup: {title: 'New Title'}
-        expect(standup.reload.title).to eq('New Title')
+    context 'HTML' do
+      context 'with valid params' do
+        it 'updates the standup' do
+          put :update, id: standup.id, standup: {title: 'New Title'}
+          expect(standup.reload.title).to eq('New Title')
+        end
+      end
+
+      context 'with invalid params' do
+        it 'does not update the standup' do
+          put :update, id: standup.id, standup: {title: nil}
+          expect(standup.reload.title).to eq(standup.title)
+          expect(response).to render_template 'standups/edit'
+        end
       end
     end
 
-    context 'with invalid params' do
-      it 'does not update the post' do
-        put :update, id: standup.id, standup: {title: nil}
-        expect(standup.reload.title).to eq(standup.title)
-        expect(response).to render_template 'standups/edit'
+    context 'JSON' do
+      context 'with valid params' do
+        it 'returns the standup in JSON form' do
+          request.env['HTTP_ACCEPT'] = 'application/json'
+          put :update, id: standup.id, standup: {title: 'New Title'}
+          expect(response).to have_http_status(:ok)
+          standup.title = 'New Title'
+          expect(response.body).to be_json_eql(standup.to_builder(true)).excluding('updated_at')
+        end
+      end
+
+      context 'with invalid params' do
+        it 'returns appropriate errors' do
+          request.env['HTTP_ACCEPT'] = 'application/json'
+          put :update, id: standup.id, standup: {title: nil}
+          expect(response).to have_http_status(:bad_request)
+          expect(response.body).to be_json_eql(%({"status":"error","message":["title can't be blank"]}))
+        end
       end
     end
   end
 
   describe '#destroy' do
     let!(:standup) { create(:standup) }
-
     it 'destroys the specified standup' do
       expect {
         post :destroy, id: standup.id
       }.to change(Standup, :count).by(-1)
-      expect(response).to redirect_to standups_path
+    end
+    context 'HTML' do
+      it 'redirects to standups index on success' do
+        post :destroy, id: standup.id
+        expect(response).to redirect_to standups_path
+        end
+    end
+
+    context 'JSON' do
+      it 'returns ok on success' do
+        request.env['HTTP_ACCEPT'] = 'application/json'
+        post :destroy, id: standup.id
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to be_json_eql(%({"status":"ok","message":"Successfully deleted standup"}))
+      end
     end
   end
 end

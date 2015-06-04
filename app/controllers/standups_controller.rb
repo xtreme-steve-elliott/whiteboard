@@ -8,13 +8,13 @@ class StandupsController < ApplicationController
           flash[:notice] = "#{@standup.title} Standup successfully created"
           redirect_to @standup
         }
-        format.json { render :json => @standup.as_json }
+        format.json { render :json => @standup.to_builder(true) }
       end
     else
       respond_to do |format|
         format.html { render 'standups/new' }
         format.json {
-          render :status => 400, :json => {
+          render :status => :bad_request, :json => {
               :status => :error,
               :message => @standup.errors.map { |attribute, error| attribute.to_s + ' ' + error.to_s }
           }
@@ -38,7 +38,11 @@ class StandupsController < ApplicationController
     respond_to do |format|
       format.html
       format.json {
-        render :json => @standups.as_json
+        result = Jbuilder.encode do |json|
+          # We have to actually map the attributes to produce items when doing collections
+          json.array! @standups.map { |standup| standup.to_builder.attributes! }
+        end
+        render :json => result
       }
     end
   end
@@ -52,47 +56,52 @@ class StandupsController < ApplicationController
     redirect_to standup_items_path(@standup)
   end
 
-  def fetch_items
-    @standup = Standup.find(params[:id])
-    events = Item.events_on_or_after(Date.today, @standup)
-    categorized_items = @standup.items.orphans.merge(events)
-    item_list = []
-    categorized_items.each do |item_name, item_value|
-      item_json = {
-          :category_name => item_name,
-          :items => item_value.map do |entry|
-            {
-                :id => entry.id,
-                :title => entry.title,
-                :description => entry.description,
-                :public => entry.public,
-                :bumped => entry.bumped,
-                :created_at => entry.created_at,
-                :updated_at => entry.updated_at,
-                :date => entry.date,
-                :author => entry.author
-            }
-          end
-      }
-      item_list.append item_json
-    end
-    render :json => item_list
-  end
-
   def update
     @standup = standup_service.update(id: params[:id], attributes: params[:standup])
-
     if @standup.changed?
-      render 'standups/edit'
+      respond_to do |format|
+        format.html { render '/standups/edit', :location => edit_standup_path(@standup) }
+        format.json {
+          render :status => :bad_request, :json => {
+            :status => :error,
+            :message => @standup.errors.map { |attribute, error| attribute.to_s + ' ' + error.to_s }
+          }
+        }
+      end
     else
-      redirect_to @standup
+      respond_to do |format|
+        format.html {
+          flash[:notice] = "#{@standup.title} Standup successfully updated"
+          redirect_to @standup
+        }
+        format.json { render :json => @standup.to_builder(true) }
+      end
     end
   end
 
   def destroy
-    @standup = Standup.find(params[:id])
-    @standup.destroy
-    redirect_to standups_path
+    @standup = standup_service.delete(id: params[:id])
+    if @standup.destroyed?
+      respond_to do |format|
+        format.html { redirect_to standups_path }
+        format.json {
+          render :json => {
+            :status => :ok,
+            :message => 'Successfully deleted standup'
+          }
+        }
+      end
+    else # TODO: figure out how to get a deletion failure
+      respond_to do |format|
+        format.html { render @standup }
+        format.json {
+          render :status => :bad_request, :json => {
+            :status => :error,
+            :message => @standup.errors.map { |attribute, error| attribute.to_s + ' ' + error.to_s }
+          }
+        }
+      end
+    end
   end
 
   private

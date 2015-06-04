@@ -13,6 +13,17 @@ class Standup < ActiveRecord::Base
   validates :to_address, presence: true
   validates :start_time_string, format: {with: TIME_FORMAT, message: "should be in the format: 9:00am"}
 
+  def to_builder(should_build = false, fields = nil)
+    builder = Jbuilder.new do |json|
+      if fields.nil?
+        json.(self, :id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string)
+      else
+        json.(self, fields)
+      end
+    end
+    should_build ? builder.target! : builder
+  end
+
   def date_today
     time_zone.now.to_date
   end
@@ -41,22 +52,6 @@ class Standup < ActiveRecord::Base
 
   def finished_today
     standup_time_today < time_zone.now
-  end
-
-  def as_json(options = nil) # TODO: make a test for this
-    if options != nil
-      super(options)
-    else
-      super(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
-    end
-  end
-
-  def force_to_json(options = nil) # TODO: make a test for this
-    if options != nil
-      to_json(options)
-    else
-      to_json(:only => [:id, :title, :created_at, :updated_at, :time_zone_name, :start_time_string])
-    end
   end
 
   private

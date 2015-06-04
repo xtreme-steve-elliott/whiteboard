@@ -1,3 +1,5 @@
+require 'jbuilder'
+
 class ItemsController < ApplicationController
   before_filter :load_standup, except: [:create]
 
@@ -21,6 +23,20 @@ class ItemsController < ApplicationController
     @standup = Standup.find_by_id(params[:standup_id])
     events = Item.events_on_or_after(Date.today, @standup)
     @items = @standup.items.orphans.merge(events)
+    respond_to do |format|
+      format.html { @items }
+      format.json {
+        result = Jbuilder.encode do |json|
+          json.array! @items do |category, item_list|
+            json.set! :category_name, category
+            json.items item_list do |item|
+              json.(item, :id, :title, :description, :public, :bumped, :created_at, :updated_at, :date, :author)
+            end
+          end
+        end
+        render :json => result
+      }
+    end
   end
 
   def destroy
@@ -42,13 +58,21 @@ class ItemsController < ApplicationController
         format.html { redirect_to(params[:redirect_to] || @standup) }
         format.json {
           render :json => {
-            :status => :redirect,
-            :to => params[:redirect_to] || standup_path(@standup)
+            :status => :ok,
+            :message => 'Successfully updated item'
           }.to_json
         }
       end
     else
-      render_custom_item_template @item
+      respond_to do |format|
+        format.html { render_custom_item_template @item }
+        format.json {
+          render :status => 400, :json => {
+            :status => :error,
+            :message => @standup.errors.map { |attribute, error| attribute.to_s + ' ' + error.to_s }
+          }
+        }
+      end
     end
   end
 

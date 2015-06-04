@@ -15,6 +15,7 @@ gem 'coffee-rails'
 gem 'uglifier'
 gem 'bootstrap-sass', '~> 2.3.2'
 gem 'font-awesome-sass-rails'
+gem 'jbuilder'
 
 group :development, :production do
   gem 'rails_12factor'
