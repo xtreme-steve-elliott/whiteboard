@@ -7,26 +7,31 @@ describe ItemsController, :type => :controller do
     request.session[:logged_in] = true
   end
 
-  describe "#create" do
-    let(:valid_params) { {item: attributes_for(:item).merge(standup_id: standup.to_param)} }
+  describe '#create' do
+    let(:valid_item) {
+      { :item => { :title => 'Test post', :kind => 'Event' } }
+    }
+    let(:empty_item) {
+      { :item => {} }
+    }
 
-    it "should allow you to create an item" do
+    it 'should allow you to create an item' do
       expect {
-        post :create, valid_params
+        post :create, params.merge(valid_item)
       }.to change { standup.items.count }.by(1)
     end
 
-    it "should redirect to root on success" do
+    it 'should redirect to root on success' do
       post :create, valid_params
       expect(response.location).to eq("http://test.host/standups/#{standup.id}")
     end
 
-    it "should render new on failure" do
+    it 'should render new on failure' do
       post :create, item: {}
       expect(response).to render_template 'items/new'
     end
 
-    it "sets the post_id if one is provided" do
+    it 'sets the post_id if one is provided' do
       standup_post = create(:post)
       expect {
         post :create, (valid_params.tap do |params|

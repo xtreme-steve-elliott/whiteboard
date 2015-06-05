@@ -4,17 +4,32 @@ class ItemsController < ApplicationController
   before_filter :load_standup, except: [:create]
 
   def create
-    @item = Item.new(params[:item])
+    @item = Item.new((params[:item] || {}).merge({standup_id: params[:standup_id]}))
+    @standup = Standup.find_by_id(params[:standup_id])
     if @item.save
-      redirect_to @item.post ? edit_post_path(@item.post) : standup_path(@item.standup)
+      respond_to do |format|
+        format.html {
+          flash[:notice] = "#{@item.title} item successfully created"
+          redirect_to @item.post ? edit_post_path(@item.post) : standup_path(@item.standup)
+        }
+        format.json { render :json => @item.to_builder(true) }
+      end
     else
-      render 'items/new'
+      respond_to do |format|
+        format.html { render 'items/new' }
+        format.json {
+          render :status => :bad_request, :json => {
+              :status => :error,
+              :message => @item.errors.map { |attribute, error| attribute.to_s + ' ' + error.to_s }
+            }
+        }
+      end
     end
   end
 
   def new
     @standup = Standup.find_by_id(params[:standup_id])
-    options = (params[:item] || {}).merge({post_id: params[:post_id], author: session[:username]})
+    options = (params[:item] || {}).merge({standup_id: params[:standup_id], post_id: params[:post_id], author: session[:username]})
     @item = @standup.items.build(options)
     render_custom_item_template @item
   end
@@ -29,9 +44,7 @@ class ItemsController < ApplicationController
         result = Jbuilder.encode do |json|
           json.array! @items do |category, item_list|
             json.set! :category_name, category
-            json.items item_list do |item|
-              json.(item, :id, :title, :description, :public, :bumped, :created_at, :updated_at, :date, :author)
-            end
+            json.items item_list.map { |item| item.to_builder.attributes!.select { |x| x != 'category_name' } }
           end
         end
         render :json => result
@@ -67,7 +80,7 @@ class ItemsController < ApplicationController
       respond_to do |format|
         format.html { render_custom_item_template @item }
         format.json {
-          render :status => 400, :json => {
+          render :status => :bad_request, :json => {
             :status => :error,
             :message => @standup.errors.map { |attribute, error| attribute.to_s + ' ' + error.to_s }
           }

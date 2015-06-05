@@ -12,11 +12,23 @@ class Item < ActiveRecord::Base
   belongs_to :standup
 
   validates_inclusion_of :kind, in: KINDS.map { |k| k[:name] }
-  validates :standup, presence: true
   validates :title, presence: true
+  # validate :standup_present
   validate :face_is_in_the_future
 
   attr_accessible :title, :description, :kind, :public, :post_id, :date, :standup_id, :author
+
+  def to_builder(should_build = false, fields = nil)
+    builder = Jbuilder.new do |json|
+      json.set! :category_name, self.kind
+      if fields.nil?
+        json.(self, :id, :title, :description, :public, :bumped, :created_at, :updated_at, :date, :author)
+      else
+        json.(self, fields)
+      end
+    end
+    should_build ? builder.target! : builder
+  end
 
   def self.public
     where(public: true)
@@ -68,7 +80,13 @@ class Item < ActiveRecord::Base
   private
   def face_is_in_the_future
     if kind == 'New face' && (date || Time.at(0)).to_time < Time.now.beginning_of_day
-      errors.add(:base, "Please choose a date in present or future")
+      errors.add(:date, "must be in the present or future")
+    end
+  end
+
+  def standup_present # TODO: eventually make the standup id come from the URL
+    unless standup.present?
+      errors.add(:standup_id, "can't be blank")
     end
   end
 end

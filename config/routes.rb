@@ -1,5 +1,4 @@
 Whiteboard::Application.routes.draw do
-  resources :items, only: :create
   resources :sessions, only: [:create, :destroy]
 
   resources :standups, shallow: true do

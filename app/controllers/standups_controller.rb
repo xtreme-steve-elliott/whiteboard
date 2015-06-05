@@ -60,7 +60,7 @@ class StandupsController < ApplicationController
     @standup = standup_service.update(id: params[:id], attributes: params[:standup])
     if @standup.changed?
       respond_to do |format|
-        format.html { render '/standups/edit', :location => edit_standup_path(@standup) }
+        format.html { render 'standups/edit' }
         format.json {
           render :status => :bad_request, :json => {
             :status => :error,
