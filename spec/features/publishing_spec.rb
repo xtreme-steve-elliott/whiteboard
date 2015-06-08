@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'publishing', type: :request, js: true do
+describe 'publishing', :type => :request, js: true do
   let!(:standup) { FactoryGirl.create(:standup, title: 'Camelot', subject_prefix: '[Standup][CO]') }
 
   before do
@@ -69,33 +69,33 @@ describe 'publishing', type: :request, js: true do
       expect(page).to have_content('Wrong size. Was 180, should be 131')
     end
 
-    expect(page).not_to have_content("This entry was posted at")
+    expect(page).not_to have_content('This entry was posted at')
     expect(page).to have_css('a', text: 'Post Blog Entry')
   end
 
 
-  it "shows the URL the post was published to" , js: true do
-    expect_any_instance_of(WordpressService).to receive(:send!).and_return("best-post-eva")
+  it 'shows the URL the post was published to', js: true do
+    expect_any_instance_of(WordpressService).to receive(:send!).and_return('best-post-eva')
     page.click_link(standup.title)
 
     find('a[data-kind="Event"] i').click
-    fill_in 'item_title', :with => "Happy Hour"
+    fill_in 'item_title', :with => 'Happy Hour'
     fill_in 'item_date', :with => Date.today
     select 'Camelot', from: 'item[standup_id]'
     click_on 'Post to Blog'
     click_button 'Create Item'
 
-    fill_in "Blogger Name(s)", with: "Me"
-    fill_in "Post Title (eg: Best Standup Ever)", with: "empty post"
+    fill_in 'Blogger Name(s)', with: 'Me'
+    fill_in 'Post Title (eg: Best Standup Ever)', with: 'empty post'
 
     page.evaluate_script('window.confirm = function() { return true; }')
-    click_on "Create Post"
+    click_on 'Create Post'
 
     click_on 'Post Blog Entry'
 
     page.driver.browser.switch_to.alert.accept
 
-    expect(page).to have_content("This entry was posted at")
+    expect(page).to have_content('This entry was posted at')
     expect(page).to have_css('a', text: 'best-post-eva')
   end
 end

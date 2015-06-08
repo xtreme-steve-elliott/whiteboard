@@ -2,8 +2,8 @@
 <html>
 <head>
   <title>Whiteboard</title>
-  <%= stylesheet_link_tag "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag 'application', :media => 'all' %>
+  <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="apple-touch-icon-precomposed" href="<%= asset_path 'whiteboard-icon.png' %>">
@@ -25,16 +25,16 @@
 
               <a class='dropdown-toggle posts' data-toggle='dropdown' style='cursor: pointer'>Posts<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><%= link_to "Current Post", standup_path(@standup) %></li>
+                <li><%= link_to 'Current Post', standup_path(@standup) %></li>
                 <li><%= link_to "Pending Posts (#{pending_post_count(@standup)})", standup_posts_path(@standup) %></li>
-                <li><%= link_to "Archived Posts", archived_standup_posts_path(@standup) %></li>
+                <li><%= link_to 'Archived Posts', archived_standup_posts_path(@standup) %></li>
               </ul>
             </li>
-            <li><%= link_to "Preferences", edit_standup_path(@standup) %></li>
+            <li><%= link_to 'Preferences', edit_standup_path(@standup) %></li>
           </ul>
           <ul class="nav pull-right">
             <li>
-              <%= link_to "All Standups", standups_path %>
+              <%= link_to 'All Standups', standups_path %>
             </li>
             <% if session['logged_in'] %>
                 <li>
@@ -47,7 +47,7 @@
           </ul>
         </div>
     <% else %>
-        <%= link_to "Whiteboard", standups_path, :class => 'brand' %>
+        <%= link_to 'Whiteboard', standups_path, :class => 'brand' %>
     <% end %>
   </div>
 </div>

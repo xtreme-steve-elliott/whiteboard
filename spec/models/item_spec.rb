@@ -3,35 +3,35 @@ require 'spec_helper'
 describe Item do
   let(:item) { build_stubbed(:item) }
 
-  describe "default_scope" do
+  describe 'default_scope' do
     let!(:furthest_item) { create(:item, date: 5.days.from_now) }
     let!(:closest_item) { create(:item, date: 1.days.from_now) }
     let!(:middlest_item) { create(:item, date: 3.days.from_now) }
     let!(:no_date_item) { create(:item, date: nil) }
 
-    it "should bring them back in date asc order" do
+    it 'should bring them back in date asc order' do
       expect(Item.all).to match_array([no_date_item, closest_item, middlest_item, furthest_item])
     end
   end
 
-  describe "associations" do
+  describe 'associations' do
     it { is_expected.to belong_to(:post) }
     it { is_expected.to belong_to(:standup) }
   end
 
-  describe "validations" do
+  describe 'validations' do
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_presence_of(:standup_id) }
 
     context 'New Faces' do
-      let(:item) { build(:new_face) }
+      let(:item) { build(:new_face_item) }
 
       context 'when new' do
         let(:yesterday) { Date.today - 1.day }
 
         it 'should disallow a past creation date' do
           Timecop.freeze do
-            item = build(:new_face, date: yesterday)
+            item = build(:new_face_item, date: yesterday)
             expect(item).not_to be_valid
           end
         end
@@ -54,9 +54,9 @@ describe Item do
     end
   end
 
-  describe "kind" do
-    describe "should allow valid kinds - " do
-      ['Help', 'Interesting', 'Event', 'Win'].each do |kind|
+  describe 'kind' do
+    describe 'should allow valid kinds - ' do
+      [Item::KIND_NEW_FACE, Item::KIND_HELP, Item::KIND_INTERESTING, Item::KIND_EVENT, Item::KIND_WIN].each do |kind|
         it kind do
           item.kind = kind
           expect(item).to be_valid

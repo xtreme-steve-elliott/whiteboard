@@ -10,7 +10,7 @@ class PostsController < ApplicationController
       @post.adopt_all_the_items
       redirect_to edit_post_path(@post)
     else
-      flash[:error] = "Unable to create post"
+      flash[:error] = 'Unable to create post'
       redirect_to @standup
     end
   end
@@ -37,7 +37,7 @@ class PostsController < ApplicationController
 
   def send_email
     if @post.sent_at
-      flash[:error] = "The post has already been emailed"
+      flash[:error] = 'The post has already been emailed'
     else
       @post.deliver_email
     end
@@ -46,9 +46,9 @@ class PostsController < ApplicationController
 
   def post_to_blog
     if @post.blogged_at
-      flash[:error] = "The post has already been blogged"
+      flash[:error] = 'The post has already been blogged'
     elsif !view_context.wordpress_enabled?
-      flash[:error] = "Wordpress blogging disabled. Please set wordpress environment variables."
+      flash[:error] = 'Wordpress blogging disabled. Please set wordpress environment variables.'
     else
       blog_post = BlogPost.new.tap do |blog_post|
         blog_post.title = @post.title
@@ -60,7 +60,7 @@ class PostsController < ApplicationController
         @post.blogged_at = Time.now
         @post.save!
       rescue XMLRPC::FaultException => e
-        message = "While posting to the blog, the service reported the following error: '" + e.message + "', please repost."
+        message = "While posting to the blog, the service reported the following error: '#{e.message}', please repost."
         flash[:error] = message
       end
 

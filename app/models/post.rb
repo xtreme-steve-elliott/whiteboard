@@ -2,7 +2,7 @@ class Post < ActiveRecord::Base
   belongs_to :standup
 
   has_many :items
-  has_many :public_items, -> { where public: true }, class_name: "Item"
+  has_many :public_items, -> { where public: true }, class_name: 'Item'
 
   validates :standup, presence: true
   validates :title, presence: true
@@ -27,12 +27,12 @@ class Post < ActiveRecord::Base
     if standup_subject_prefix.present?
       "#{standup_subject_prefix} " + title_for_blog
     else
-      "[Standup] " + title_for_blog
+      '[Standup] ' + title_for_blog
     end
   end
 
   def title_for_blog
-    created_at.strftime("%m/%d/%y") + ': '+ title
+    created_at.strftime('%m/%d/%y') + ': '+ title
   end
 
   def events
@@ -53,7 +53,7 @@ class Post < ActiveRecord::Base
 
   def deliver_email
     if sent_at
-      raise "Duplicate Email"
+      raise 'Duplicate Email'
     else
       PostMailer.send_to_all(self, standup.to_address, 'noreply@pivotal.io', standup.id).deliver_now
       self.sent_at = Time.now

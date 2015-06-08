@@ -5,7 +5,7 @@ describe 'Adding new faces', js: true do
   let(:timezone) { ActiveSupport::TimeZone.new(standup.time_zone_name) }
   let(:date_five_days) { timezone.now + 5.days }
 
-  it "doesn't allow start dates in the past" do
+  it 'does not allow start dates in the past' do
     login
     visit '/'
 
@@ -26,8 +26,8 @@ describe 'Adding new faces', js: true do
     #page.should have_content "Create New Face" #TODO: as of 2014-02-05, this captures a bug.
   end
 
-  it "allows yesterday's new faces to post today" do
-    new_face = FactoryGirl.create(:new_face, standup: standup)
+  it 'allows new faces from yesterday to post today' do
+    new_face = FactoryGirl.create(:new_face_item, standup: standup)
 
     Timecop.travel(date_five_days) do
       login
