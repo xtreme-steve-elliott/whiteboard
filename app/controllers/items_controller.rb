@@ -31,7 +31,7 @@ class ItemsController < ApplicationController
 
   def new
     @standup = Standup.find_by_id(params[:standup_id])
-    options = (params[:item] || {}).merge({standup_id: params[:standup_id], post_id: params[:post_id], author: session[:username]})
+    options = (params[:item] || {}).merge({post_id: params[:post_id], author: session[:username]}).reverse_merge!({standup_id: params[:standup_id]})
     @item = @standup.items.build(options)
     render_custom_item_template @item
   end
@@ -56,8 +56,29 @@ class ItemsController < ApplicationController
 
   def destroy
     @item = Item.find(params[:id])
+    @referer = request.referer || standup_items_path(@item.standup)
     @item.destroy
-    redirect_to request.referer
+    if @item.destroyed?
+      respond_to do |format|
+        format.html { redirect_to @referer }
+        format.json {
+          render :json => {
+              :status => :ok,
+              :message => 'Successfully deleted item'
+            }
+        }
+      end
+    else # TODO: figure out how to get a deletion failure
+      respond_to do |format|
+        format.html { redirect_to @referer }
+        format.json {
+          render :status => :bad_request, :json => {
+              :status => :error,
+              :message => @item.errors.map { |attribute, error| attribute.to_s + ' ' + error.to_s }
+            }
+        }
+      end
+    end
   end
 
   def edit
@@ -103,7 +124,7 @@ class ItemsController < ApplicationController
     if item.possible_template_name && template_exists?(item.possible_template_name)
       render item.possible_template_name
     else
-      render "items/new"
+      render 'items/new'
     end
   end
 

@@ -17,51 +17,178 @@ describe 'items', type: :request, js: true do
     Timecop.return
   end
 
+  context 'new face tests' do
+    context 'creation via UI' do
+      it 'creates new face entries' do
+        login
+        visit '/'
+        click_link standup.title
+        expect {
+          find("a[data-kind=\"#{Item::KIND_NEW_FACE}\"] i").click
+          fill_in 'item_title', :with => 'Fred Flintstone'
+          select other_standup.title, :from => 'item[standup_id]'
+          click_button 'Create New Face'
+
+          find("a[data-kind=\"#{Item::KIND_NEW_FACE}\"] i").click
+          fill_in 'item_title', :with => 'Johnathon McKenzie'
+          fill_in 'item_date', :with => date_today
+          select standup.title, from: 'item[standup_id]'
+          click_button 'Create New Face'
+
+          find("a[data-kind=\"#{Item::KIND_NEW_FACE}\"] i").click
+          fill_in 'item_title', :with => 'Jane Doe'
+          fill_in 'item_date', :with => date_five_days
+          select standup.title, from: 'item[standup_id]'
+          click_button 'Create New Face'
+        }.to change {standup.items.count}.by(2).and change {other_standup.items.count}.by(1)
+      end
+    end
+
+    context 'creation via rails' do
+      let!(:fred_flintstone) { FactoryGirl.create(:new_face_item, title: 'Fred Flintstone', date: date_today, standup: other_standup) }
+      let!(:johnathon_mckenzie) { FactoryGirl.create(:new_face_item, title: 'Johnathon McKenzie', date: date_today, standup: standup) }
+      let!(:jane_doe) { FactoryGirl.create(:new_face_item, title: 'Jane Doe', date: date_five_days, standup: standup) }
+
+      it 'sets up the new faces' do
+        login
+
+        visit standup_items_path(standup)
+        within '.kind.new_face' do
+          expect(page).to have_css('.subheader.today', text: 'Today')
+          expect(page).to have_css('.today + .item', text: johnathon_mckenzie.title)
+          expect(page).to have_css('.subheader.upcoming', text: 'Upcoming')
+          expect(page).to have_css('.upcoming + .item', text: jane_doe.title)
+        end
+
+        visit standup_items_path(other_standup)
+        within '.kind.new_face' do
+          expect(page).to have_css('.subheader.today', text: 'Today')
+          expect(page).to have_css('.today + .item', text: fred_flintstone.title)
+        end
+      end
+
+      it 'sets up the deck' do
+        login
+
+        visit presentation_standup_items_path(standup)
+        page.execute_script("$.deck('next')")
+        within 'section.deck-current' do
+          expect(page).to have_css('h2', text: 'New faces')
+          expect(page).to have_css('h3.today', text: 'Today')
+          expect(page).to have_css('.today + ul li', text: johnathon_mckenzie.title)
+          expect(page).to have_css('h3.upcoming', text: 'Upcoming')
+          expect(page).to have_css('.upcoming + ul li', text: jane_doe.title)
+        end
+
+        visit presentation_standup_items_path(other_standup)
+        page.execute_script("$.deck('next')")
+        within 'section.deck-current' do
+          expect(page).to have_css('h2', text: 'New faces')
+          expect(page).to have_css('h3.today', text: 'Today')
+          expect(page).to have_css('.today + ul li', text: fred_flintstone.title)
+        end
+      end
+    end
+  end
+
+  context 'event tests' do
+    context 'creation via UI' do
+      it 'creates event entries' do
+        login
+        visit '/'
+        click_link standup.title
+
+        expect {
+          find("a[data-kind=\"#{Item::KIND_EVENT}\"] i").click
+          fill_in 'item_title', :with => 'Meetup'
+          fill_in 'item_date', :with => date_five_days
+          select other_standup.title, from: 'item[standup_id]'
+          click_button 'Create Item'
+
+          find("a[data-kind=\"#{Item::KIND_EVENT}\"] i").click
+          fill_in 'item_title', :with => 'Party'
+          fill_in 'item_date', :with => date_five_days
+          select standup.title, from: 'item[standup_id]'
+          click_button 'Create Item'
+
+          find("a[data-kind=\"#{Item::KIND_EVENT}\"] i").click
+          fill_in 'item_title', :with => 'Happy Hour'
+          fill_in 'item_date', :with => date_today
+          select standup.title, from: 'item[standup_id]'
+          click_button 'Create Item'
+
+          find("a[data-kind=\"#{Item::KIND_EVENT}\"] i").click
+          fill_in 'item_title', :with => 'Baseball'
+          fill_in 'item_date', :with => date_tomorrow
+          select standup.title, from: 'item[standup_id]'
+          click_button 'Create Item'
+        }.to change {standup.items.count}.by(3).and change {other_standup.items.count}.by(1)
+      end
+    end
+
+    context 'creation via rails' do
+      let!(:meetup) { FactoryGirl.create(:event_item, title: 'Meetup', date: date_five_days, standup: other_standup) }
+      let!(:party) { FactoryGirl.create(:event_item, title: 'Party', date: date_five_days, standup: standup) }
+      let!(:happy_hour) { FactoryGirl.create(:event_item, title: 'Happy Hour', date: date_today, standup: standup) }
+      let!(:baseball) { FactoryGirl.create(:event_item, title: 'Baseball', date: date_tomorrow, standup: standup) }
+
+      it 'sets up the events' do
+        login
+
+        visit standup_items_path(standup)
+        within '.kind.event' do
+          expect(page).to have_css('.subheader.today', text: 'Today')
+          expect(page).to have_css('.today + .item', text: happy_hour.title)
+          expect(page).to have_css('.subheader.tomorrow', text: 'Tomorrow')
+          expect(page).to have_css('.tomorrow + .item', text: baseball.title)
+          expect(page).to have_css('.subheader.upcoming', text: 'Upcoming')
+          expect(page).to have_css('.upcoming + .item', text: party.title)
+        end
+
+        visit standup_items_path(other_standup)
+        within '.kind.event' do
+          expect(page).to have_css('.subheader.upcoming', text: 'Upcoming')
+          expect(page).to have_css('.upcoming + .item', text: meetup.title)
+        end
+      end
+
+      it 'sets up the deck' do
+        login
+
+        visit presentation_standup_items_path(standup)
+        page.execute_script("$.deck('next')")
+        page.execute_script("$.deck('next')")
+        page.execute_script("$.deck('next')")
+        page.execute_script("$.deck('next')")
+        within 'section.deck-current' do
+          expect(page).to have_css('h2', text: 'Events')
+          expect(page).to have_css('h3.today', text: 'Today')
+          expect(page).to have_css('.today + ul li', text: happy_hour.title)
+          expect(page).to have_css('h3.tomorrow', text: 'Tomorrow')
+          expect(page).to have_css('.tomorrow + ul li', text: baseball.title)
+          expect(page).to have_css('h3.upcoming', text: 'Upcoming')
+          expect(page).to have_css('.upcoming + ul li', text: party.title)
+        end
+
+        visit presentation_standup_items_path(other_standup)
+        page.execute_script("$.deck('next')")
+        page.execute_script("$.deck('next')")
+        page.execute_script("$.deck('next')")
+        page.execute_script("$.deck('next')")
+        within 'section.deck-current' do
+          expect(page).to have_css('h2', text: 'Events')
+          expect(page).to have_css('h3.upcoming', text: 'Upcoming')
+          expect(page).to have_css('.upcoming + ul li', text: meetup.title)
+        end
+      end
+    end
+  end
+
+  # TODO: refactor the rest of this
   it 'setup and deck.js for standup' do
     login
     visit '/'
     click_link(standup.title)
-
-    find('a[data-kind="New face"] i').click
-    fill_in 'item_title', :with => 'Fred Flintstone'
-    select 'New York', :from => 'item[standup_id]'
-    click_button 'Create New Face'
-
-    find('a[data-kind="New face"] i').click
-    fill_in 'item_title', :with => 'Johnathon McKenzie'
-    fill_in 'item_date', :with => date_today
-    select 'San Francisco', from: 'item[standup_id]'
-    click_button 'Create New Face'
-
-    find('a[data-kind="New face"] i').click
-    fill_in 'item_title', :with => 'Jane Doe'
-    fill_in 'item_date', :with => date_five_days
-    select 'San Francisco', from: 'item[standup_id]'
-    click_button 'Create New Face'
-
-    find('a[data-kind="Event"] i').click
-    fill_in 'item_title', :with => 'Meetup'
-    fill_in 'item_date', :with => date_five_days
-    select 'New York', from: 'item[standup_id]'
-    click_button 'Create Item'
-
-    find('a[data-kind="Event"] i').click
-    fill_in 'item_title', :with => 'Party'
-    fill_in 'item_date', :with => date_five_days
-    select 'San Francisco', from: 'item[standup_id]'
-    click_button 'Create Item'
-
-    find('a[data-kind="Event"] i').click
-    fill_in 'item_title', :with => 'Happy Hour'
-    fill_in 'item_date', :with => date_today
-    select 'San Francisco', from: 'item[standup_id]'
-    click_button 'Create Item'
-
-    find('a[data-kind="Event"] i').click
-    fill_in 'item_title', :with => 'Baseball'
-    fill_in 'item_date', :with => date_tomorrow
-    select 'San Francisco', from: 'item[standup_id]'
-    click_button 'Create Item'
 
     find('a[data-kind="Interesting"] i').click
     fill_in 'item_title', :with => 'Linux 3.2 out'
@@ -87,22 +214,6 @@ describe 'items', type: :request, js: true do
     visit '/'
     click_link(standup.title)
 
-    within '.kind.event' do
-      expect(page).to have_css('.subheader.today', text: 'Today')
-      expect(page).to have_css('.today + .item', text: 'Happy Hour')
-      expect(page).to have_css('.subheader.tomorrow', text: 'Tomorrow')
-      expect(page).to have_css('.tomorrow + .item', text: 'Baseball')
-      expect(page).to have_css('.subheader.upcoming', text: 'Upcoming')
-      expect(page).to have_css('.upcoming + .item', text: 'Party')
-    end
-
-    within '.kind.new_face' do
-      expect(page).to have_css('.subheader.today', text: 'Today')
-      expect(page).to have_css('.today + .item', text: 'Johnathon McKenzie')
-      expect(page).to have_css('.subheader.upcoming', text: 'Upcoming')
-      expect(page).to have_css('.upcoming + .item', text: 'Jane Doe')
-    end
-
     within '.kind.interesting' do
       expect(page).to have_css('.item', text: 'Linus Torvalds')
       first('a[data-toggle]').click
@@ -122,14 +233,6 @@ describe 'items', type: :request, js: true do
       expect(page).to have_css('.countdown')
     end
     page.execute_script("$.deck('next')")
-
-    within 'section.deck-current' do
-      expect(page).to have_content 'New faces'
-      expect(page).to have_content 'Today'
-      expect(page).to have_content 'Johnathon McKenzie'
-      expect(page).to have_content 'Upcoming'
-      expect(page).to have_content 'Jane Doe'
-    end
     page.execute_script("$.deck('next')")
 
     expect(find('section.deck-current')).to have_content 'Helps'
@@ -148,17 +251,6 @@ describe 'items', type: :request, js: true do
       expect(page).to have_selector('code', text: 'inline code!')
     end
     page.execute_script("$.deck('next')")
-
-    expect(find('section.deck-current')).to have_content 'Events'
-    expect(page).to have_css('section.deck-current', text: 'Today')
-    expect(page).to have_css('.today + ul li', text: 'Happy Hour')
-    expect(page).to have_css('section.deck-current', text: 'Tomorrow')
-    expect(page).to have_css('.tomorrow + ul li', text: 'Baseball')
-    expect(page).to have_css('section.deck-current', text: 'Upcoming')
-    expect(page).to have_css('.upcoming + ul li', text: 'Party')
-    page.execute_script("console.log($('section.deck-current').html())")
-    expect(find('section.deck-current')).not_to have_content('Meetup')
-    expect(find('section.deck-current')).not_to have_content('Rails 62 is out')
     page.execute_script("$.deck('next')")
 
     expect(find('section.deck-current')).to have_content 'Wins'

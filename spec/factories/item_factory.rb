@@ -1,21 +1,29 @@
 FactoryGirl.define do
   factory :item do
-    title "Focused specs are broken"
-    kind "Help"
+    title 'Test Item'
+    kind Item::KIND_HELP
     date Date.today
 
     association :standup
   end
 
-  factory :event, parent: :item do
-    kind "Event"
+  factory :help_item, :parent => :item do
+    title 'Test Hep'
+    kind Item::KIND_HELP
   end
 
-  factory :new_face, class: Item do
-    title "John"
-    kind "New face"
-    date Date.today
+  factory :interesting_item, :parent => :item do
+    title 'Test Interesting'
+    kind Item::KIND_INTERESTING
+  end
 
-    association :standup
+  factory :event_item, :parent => :item do
+    title 'Test Event'
+    kind Item::KIND_EVENT
+  end
+
+  factory :new_face_item, :parent => :item do
+    title 'Test New Face'
+    kind Item::KIND_NEW_FACE
   end
 end

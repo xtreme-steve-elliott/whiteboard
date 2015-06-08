@@ -2,18 +2,26 @@ require 'spec_helper'
 
 describe ItemsController, :type => :controller do
   let(:standup) { create(:standup) }
-  let(:params) { { standup_id: standup.id } }
+  let(:other_standup) { create(:standup) }
+  let(:params) { {standup_id: standup.id} }
   before do
     request.session[:logged_in] = true
   end
 
   describe '#create' do # TODO: make a test for new face creation
     context 'with valid parameters' do
-      let(:valid_item) { { :item => { :title => 'Test post', :kind => 'Event' } } }
+      let(:valid_item) { {item: {title: 'Test post', kind: Item::KIND_EVENT}} }
+      let(:other_valid_item) { {item: {standup_id: other_standup.id, title: 'Test post 2', kind: Item:: KIND_EVENT}} }
       it 'creates an item' do
         expect {
           post :create, params.merge(valid_item)
         }.to change { standup.items.count }.by(1)
+      end
+
+      it 'creates an item with standup_id passed in' do
+        expect {
+          post :create, params.merge(other_valid_item)
+        }.to change { other_standup.items.count }.by(1)
       end
 
       it 'redirects to parent standup (HTML)' do
@@ -25,7 +33,7 @@ describe ItemsController, :type => :controller do
         request.env['HTTP_ACCEPT'] = 'application/json'
         post :create, params.merge(valid_item)
         expect(response).to have_http_status(:ok)
-        expect(response.body).to be_json_eql(Item.where(:standup_id => standup.id).order('created_at').last.to_builder(true))
+        expect(response.body).to be_json_eql(Item.where(standup_id: standup.id).order('created_at').last.to_builder(true))
       end
 
       it 'sets the post_id if one is provided and redirects to post edit (HTML)' do
@@ -40,7 +48,7 @@ describe ItemsController, :type => :controller do
     end
 
     context 'with invalid parameters' do
-      let(:invalid_item) { { :item => {} } }
+      let(:invalid_item) { {item: {}} }
       it 'does not create an item' do
         expect {
           post :create, params.merge(invalid_item)
@@ -68,8 +76,8 @@ describe ItemsController, :type => :controller do
   end
 
   describe '#new' do
-    let(:valid_new_face) { { :item => { :kind => 'New face' } } }
-    let(:valid_interesting) { { :item => { :kind => 'Interesting' } } }
+    let(:valid_new_face) { {item: {kind: Item::KIND_NEW_FACE}} }
+    let(:valid_interesting) { {item: {kind: Item::KIND_INTERESTING}} }
     it 'renders the new item template (HTML)' do
       get :new, params
       expect(assigns[:item]).to be_new_record
@@ -97,136 +105,160 @@ describe ItemsController, :type => :controller do
 
   describe '#index' do
     it 'generates a hash of items by type' do
-      help = create(:item, kind: "Help", standup: standup)
-      new_face = create(:new_face, standup: standup)
-      interesting = create(:item, kind: "Interesting", standup: standup)
+      help = create(:help_item, standup: standup)
+      new_face = create(:new_face_item, standup: standup)
+      interesting = create(:interesting_item, standup: standup)
 
       get :index, params
-      expect(assigns[:items]['New face']).to    eq([ new_face ])
-      expect(assigns[:items]['Help']).to        eq([ help ])
-      expect(assigns[:items]['Interesting']).to eq([ interesting ])
-      expect(response).to be_ok
+      expect(assigns[:items][Item::KIND_NEW_FACE]).to eq([new_face])
+      expect(assigns[:items][Item::KIND_HELP]).to eq([help])
+      expect(assigns[:items][Item::KIND_INTERESTING]).to eq([interesting])
+      expect(response).to have_http_status(:ok)
     end
 
-    it "sorts the hash by date asc" do
-      new_help = create(:item, date: 1.days.ago, standup: standup)
-      old_help = create(:item, date: 4.days.ago, standup: standup)
+    it 'sorts the hash by date asc' do
+      new_help = create(:help_item, date: 1.days.ago, standup: standup)
+      old_help = create(:help_item, date: 4.days.ago, standup: standup)
 
       get :index, params
-      expect(assigns[:items]['Help']).to eq([ old_help, new_help ])
+      expect(assigns[:items][Item::KIND_HELP]).to eq([old_help, new_help])
     end
 
-    it "does not include items which are associated with a post" do
+    it 'does not include items which are associated with a post' do
       post = create(:post, standup: standup)
-      help = create(:item, kind: "Help", standup: standup)
-      new_face = create(:new_face, standup: standup)
-      interesting = create(:item, kind: "Interesting", standup: standup)
+      help = create(:help_item, standup: standup)
+      new_face = create(:new_face_item, standup: standup)
+      interesting = create(:interesting_item, standup: standup)
       posted_item = create(:item, post: post, standup: standup)
 
       get :index, params
-      expect(assigns[:items]['New face']).to    eq([ new_face ])
-      expect(assigns[:items]['Help']).to        eq([ help ])
-      expect(assigns[:items]['Interesting']).to eq([ interesting ])
-      expect(response).to be_ok
+      expect(assigns[:items][Item::KIND_NEW_FACE]).to eq([new_face])
+      expect(assigns[:items][Item::KIND_HELP]).to eq([help])
+      expect(assigns[:items][Item::KIND_INTERESTING]).to eq([interesting])
+      expect(response).to have_http_status(:ok)
     end
 
-    it "does not include items associated with other standups" do
-      other_standup = create(:standup)
-      standup_event = create(:item, kind: "Event", standup: standup, date: Date.tomorrow)
-      other_standup_event = create(:item, kind: "Event", standup: other_standup, date: Date.tomorrow)
+    it 'does not include items associated with other standups' do
+      standup_event = create(:event_item, date: Date.tomorrow, standup: standup)
+      other_standup_event = create(:event_item, date: Date.tomorrow, standup: other_standup)
 
       get :index, params
 
-      expect(assigns[:items]['Event']).to include standup_event
-      expect(assigns[:items]['Event']).not_to include other_standup_event
+      expect(assigns[:items][Item::KIND_EVENT]).to include(standup_event)
+      expect(assigns[:items][Item::KIND_EVENT]).not_to include(other_standup_event)
     end
   end
 
-  describe "#presentation" do
-    it "renders the deck template" do
+  describe '#presentation' do
+    it 'renders the deck template' do
       get :presentation, params
       expect(response).to render_template('deck')
     end
 
-    it "loads the posts" do
+    it 'loads the posts' do
       get :presentation, params
       expect(assigns[:items]).to be
     end
 
-    it "only loads items from the current standup" do
-      other_standup = create(:standup)
-      other_standup_event = create(:item, standup: other_standup, date: Date.tomorrow, kind: "Event")
-      standup_event = create(:item, standup: standup, date: Date.tomorrow, kind: "Event")
+    it 'only loads items from the current standup' do
+      other_standup_event = create(:event_item, date: Date.tomorrow, standup: other_standup)
+      standup_event = create(:event_item, date: Date.tomorrow, standup: standup)
 
       get :presentation, params
 
-      expect(assigns[:items]['Event']).to include standup_event
-      expect(assigns[:items]['Event']).not_to include other_standup_event
+      expect(assigns[:items][Item::KIND_EVENT]).to include(standup_event)
+      expect(assigns[:items][Item::KIND_EVENT]).not_to include(other_standup_event)
     end
   end
 
-  describe "#destroy" do
-    it "should destroy the item" do
-      request.env["HTTP_REFERER"] = "the url we came from"
+  describe '#destroy' do
+    let!(:item) { create(:item)}
+    let!(:params) { {id: item.id}}
+    it 'destroys the specified item' do
+      expect {
+        delete :destroy, params
+      }.to change(Item, :count).by(-1)
+    end
 
-      item = create(:item)
-      delete :destroy, id: item.id
-      expect(Item.find_by_id(item.id)).not_to be
+    context 'on success' do
+      it 'redirects to the page we came from (HTML)' do
+        request.env['HTTP_REFERER'] = 'the url we came from'
+        delete :destroy, params
+        expect(response).to redirect_to 'the url we came from'
+      end
 
-      expect(response).to redirect_to "the url we came from"
+      it 'redirects to the standup for that item if no referer (HTML)' do
+        delete :destroy, params
+        expect(response).to redirect_to standup_items_path(item.standup)
+      end
+
+      it 'returns ok (JSON)' do
+        request.env['HTTP_ACCEPT'] = 'application/json'
+        delete :destroy, params
+        expected_response = Jbuilder.encode do |json|
+          json.set! :status, 'ok'
+          json.set! :message, 'Successfully deleted item'
+        end
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to be_json_eql(expected_response)
+      end
+    end
+
+    context 'on failure' do
+      # TODO: figure out how to test deletion failure
     end
   end
 
-  describe "#edit" do
-    it "should edit the item" do
+  describe '#edit' do
+    it 'should edit the item' do
       item = create(:item)
       get :edit, id: item.id
       expect(assigns[:item]).to eq(item)
       expect(response).to render_template 'items/new'
     end
 
-    it "should render the custom template for the kind if there is one" do
-      item = create(:new_face)
+    it 'should render the custom template for the kind if there is one' do
+      item = create(:new_face_item)
       get :edit, id: item.id
       expect(response).to render_template('items/new_new_face')
     end
   end
 
-  describe "#update" do
-    it "should update the item" do
+  describe '#update' do
+    it 'should update the item' do
       item = create(:item)
-      put :update, id: item.id, item: { title: "New Title" }
-      expect(item.reload.title).to eq("New Title")
+      put :update, id: item.id, item: { title: 'New Title' }
+      expect(item.reload.title).to eq('New Title')
     end
 
-    context "with a redirect_to param" do
+    context 'with a redirect_to param' do
       let(:item) { create(:item, post: create(:post)) }
 
-      it "redirects to the edit post page" do
-        put :update, id: item.id, post_id: item.post, item: { title: "New Title" }, redirect_to: '/foo'
+      it 'redirects to the edit post page' do
+        put :update, id: item.id, post_id: item.post, item: { title: 'New Title' }, redirect_to: '/foo'
         expect(response).to redirect_to('/foo')
       end
     end
 
-    context "without a redirect_to param" do
+    context 'without a redirect_to param' do
       let(:item) { create(:item, post: create(:post)) }
 
-      it "redirects to the standup page" do
-        put :update, id: item.id, post_id: item.post, item: { title: "New Title" }
+      it 'redirects to the standup page' do
+        put :update, id: item.id, post_id: item.post, item: { title: 'New Title' }
         expect(response).to redirect_to(item.standup)
       end
     end
 
-    describe "when the item is invalid" do
-      it "should render new" do
+    context 'when the item is invalid' do
+      it 'should render new' do
         item = create(:item)
-        put :update, id: item.id, post_id: item.post, item: { title: "" }
+        put :update, id: item.id, post_id: item.post, item: { title: '' }
         expect(response).to render_template('items/new')
       end
 
-      it "should render a custom template if there is one" do
-        item = create(:new_face)
-        put :update, id: item.id, post_id: item.post, item: { title: "" }
+      it 'should render a custom template if there is one' do
+        item = create(:new_face_item)
+        put :update, id: item.id, post_id: item.post, item: { title: '' }
         expect(response).to render_template('items/new_new_face')
       end
     end

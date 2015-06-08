@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe StandupsController, :type => :controller do
   let(:standup) { create(:standup) }
-  let(:params) { { :id => standup.id } }
+  let(:params) { {id: standup.id} }
   before do
     request.session[:logged_in] = true
   end
 
   describe '#create' do
     context 'with valid parameters' do
-      let(:valid_standup) { { :standup => { :title => 'Berlin', :to_address => 'berlin+standup@pivotallabs.com' } } }
+      let(:valid_standup) { {standup: {title: 'Berlin', to_address: 'berlin+standup@pivotallabs.com'}} }
       it 'creates a standup' do
         expect do
           post :create, valid_standup
@@ -30,7 +30,7 @@ describe StandupsController, :type => :controller do
     end
 
     context 'with invalid parameters' do
-      let(:invalid_standup) { { :standup => {} } }
+      let(:invalid_standup) { {standup: {}} }
       it 'does not create a standup' do
         expect do
           post :create, invalid_standup
@@ -67,8 +67,8 @@ describe StandupsController, :type => :controller do
   end
 
   describe '#index' do
-    let!(:standup1) { create(:standup, :title => 'Standup 1', ip_addresses_string: '0.0.0.9') }
-    let!(:standup2) { create(:standup, :title => 'Standup 2', ip_addresses_string: '0.0.0.8') }
+    let!(:standup1) { create(:standup, title: 'Standup 1', ip_addresses_string: '0.0.0.9') }
+    let!(:standup2) { create(:standup, title: 'Standup 2', ip_addresses_string: '0.0.0.8') }
     context 'when the user is logged in' do
       it 'renders index of all standups (HTML)' do
         get :index
@@ -130,8 +130,8 @@ describe StandupsController, :type => :controller do
 
   describe '#update' do
     context 'with valid parameters' do
-      let(:start_standup) { { :standup => { :title => 'Start Title' } } }
-      let(:end_standup) { { :standup => { :title => 'End Title' } } }
+      let(:start_standup) { {standup: {title: 'Start Title'}} }
+      let(:end_standup) { {standup: {title: 'End Title'}} }
       after do
         put :update, params.merge(start_standup)
       end
@@ -156,9 +156,7 @@ describe StandupsController, :type => :controller do
     end
 
     context 'with invalid parameters' do
-      let (:invalid_standup) {
-        { :standup => { :title => nil } }
-      }
+      let (:invalid_standup) { {standup: {title: nil}} }
       it 'does not update the standup' do
         put :update, params.merge(invalid_standup)
         expect(standup.reload.title).to_not eq(invalid_standup[:standup][:title])
@@ -187,21 +185,22 @@ describe StandupsController, :type => :controller do
 
   describe '#destroy' do
     let!(:standup) { create(:standup) }
-    let!(:params) { { :id => standup.id } }
+    let!(:params) { {id: standup.id} }
     it 'destroys the specified standup' do
       expect {
-        post :destroy, params
+        delete :destroy, params
       }.to change(Standup, :count).by(-1)
     end
+
     context 'on success' do
       it 'redirects to standups index (HTML)' do
-        post :destroy, params
+        delete :destroy, params
         expect(response).to redirect_to standups_path
       end
 
       it 'returns ok (JSON)' do
         request.env['HTTP_ACCEPT'] = 'application/json'
-        post :destroy, params
+        delete :destroy, params
         expected_response = Jbuilder.encode do |json|
           json.set! :status, 'ok'
           json.set! :message, 'Successfully deleted standup'
