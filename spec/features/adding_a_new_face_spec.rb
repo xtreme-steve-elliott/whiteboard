@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe "Adding new faces", js: true do
-  let!(:standup) { FactoryGirl.create(:standup, ip_addresses_string: "127.0.0.1/32") }
+describe 'Adding new faces', js: true do
+  let!(:standup) { FactoryGirl.create(:standup, ip_addresses_string: '127.0.0.1/32') }
   let(:timezone) { ActiveSupport::TimeZone.new(standup.time_zone_name) }
   let(:date_five_days) { timezone.now + 5.days }
 
@@ -11,18 +11,18 @@ describe "Adding new faces", js: true do
 
     click_on standup.title
     find(:css, '[data-kind="New face"]').click
-    fill_in "item[title]", with: "Jane"
+    fill_in 'item[title]', with: 'Jane'
 
-    fill_in "item[date]", with: "2010-01-01"
+    fill_in 'item[date]', with: '2010-01-01'
 
     find(:css, '[name="item[date]"]').click
     find(:css, 'td.day', text: '11').click
 
-    expect(find_field("item[date]").value).to eq("2010-01-01")
+    expect(find_field('item[date]').value).to eq('2010-01-01')
 
-    click_on "Create New Face"
+    click_on 'Create New Face'
 
-    expect(page).to have_content "Please choose a date in present or future"
+    expect(page).to have_content 'Date must be in the present or future'
     #page.should have_content "Create New Face" #TODO: as of 2014-02-05, this captures a bug.
   end
 
@@ -41,7 +41,7 @@ describe "Adding new faces", js: true do
 
       page.driver.browser.switch_to.alert.accept
 
-      expect(page).not_to have_content "Unable to create post"
+      expect(page).not_to have_content 'Unable to create post'
       expect(current_path).not_to eq(standup_items_path(standup))
 
       post = Post.last

@@ -4,13 +4,15 @@ class ItemsController < ApplicationController
   before_filter :load_standup, except: [:create]
 
   def create
-    @item = Item.new((params[:item] || {}).merge({standup_id: params[:standup_id]}))
-    @standup = Standup.find_by_id(params[:standup_id])
+    options = (params[:item] || {}).reverse_merge!({standup_id: params[:standup_id]})
+    @standup = Standup.find_by_id(options[:standup_id])
+    @url_standup = Standup.find_by_id(params[:standup_id])
+    @item = Item.new(options)
     if @item.save
       respond_to do |format|
         format.html {
           flash[:notice] = "#{@item.title} item successfully created"
-          redirect_to @item.post ? edit_post_path(@item.post) : standup_path(@item.standup)
+          redirect_to @item.post ? edit_post_path(@item.post) : standup_path(@url_standup)
         }
         format.json { render :json => @item.to_builder(true) }
       end

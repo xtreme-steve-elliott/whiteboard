@@ -2,74 +2,101 @@ require 'spec_helper'
 
 describe ItemsController, :type => :controller do
   let(:standup) { create(:standup) }
-  let(:params) { {standup_id: standup.id} }
+  let(:params) { { standup_id: standup.id } }
   before do
     request.session[:logged_in] = true
   end
 
-  describe '#create' do
-    let(:valid_item) {
-      { :item => { :title => 'Test post', :kind => 'Event' } }
-    }
-    let(:empty_item) {
-      { :item => {} }
-    }
+  describe '#create' do # TODO: make a test for new face creation
+    context 'with valid parameters' do
+      let(:valid_item) { { :item => { :title => 'Test post', :kind => 'Event' } } }
+      it 'creates an item' do
+        expect {
+          post :create, params.merge(valid_item)
+        }.to change { standup.items.count }.by(1)
+      end
 
-    it 'should allow you to create an item' do
-      expect {
+      it 'redirects to parent standup (HTML)' do
         post :create, params.merge(valid_item)
-      }.to change { standup.items.count }.by(1)
+        expect(response).to redirect_to(standup_path(standup))
+      end
+
+      it 'returns the item (JSON)' do
+        request.env['HTTP_ACCEPT'] = 'application/json'
+        post :create, params.merge(valid_item)
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to be_json_eql(Item.where(:standup_id => standup.id).order('created_at').last.to_builder(true))
+      end
+
+      it 'sets the post_id if one is provided and redirects to post edit (HTML)' do
+        standup_post = create(:post)
+        expect {
+          post :create, params.merge(valid_item.tap do |params|
+                params[:item][:post_id] = standup_post.to_param
+              end)
+        }.to change { standup_post.items.count }.by(1)
+        expect(response).to redirect_to(edit_post_path(standup_post))
+      end
     end
 
-    it 'should redirect to root on success' do
-      post :create, valid_params
-      expect(response.location).to eq("http://test.host/standups/#{standup.id}")
-    end
+    context 'with invalid parameters' do
+      let(:invalid_item) { { :item => {} } }
+      it 'does not create an item' do
+        expect {
+          post :create, params.merge(invalid_item)
+        }.to change { standup.items.count }.by(0)
+      end
 
-    it 'should render new on failure' do
-      post :create, item: {}
-      expect(response).to render_template 'items/new'
-    end
+      it 'renders the new item template (HTML)' do
+        post :create, params.merge(invalid_item)
+        expect(response).to render_template('items/new')
+      end
 
-    it 'sets the post_id if one is provided' do
-      standup_post = create(:post)
-      expect {
-        post :create, (valid_params.tap do |params|
-          params[:item][:post_id] =  standup_post.to_param
-        end)
-      }.to change { standup_post.items.count }.by(1)
-      expect(response).to redirect_to(edit_post_path(standup_post))
+      it 'returns errors (JSON)' do
+        request.env['HTTP_ACCEPT'] = 'application/json'
+        post :create, params.merge(invalid_item)
+        expected_response = Jbuilder.encode do |json|
+          json.set! :status, 'error'
+          json.message do
+            json.array! ['kind is not included in the list','title can\'t be blank']
+          end
+        end
+        expect(response).to have_http_status(:bad_request)
+        expect(response.body).to be_json_eql(expected_response)
+      end
     end
   end
 
-  describe "#new" do
-    it "should create a new Item object" do
+  describe '#new' do
+    let(:valid_new_face) { { :item => { :kind => 'New face' } } }
+    let(:valid_interesting) { { :item => { :kind => 'Interesting' } } }
+    it 'renders the new item template (HTML)' do
       get :new, params
       expect(assigns[:item]).to be_new_record
+      expect(response).to have_http_status(:ok)
       expect(response).to render_template('items/new')
-      expect(response).to be_ok
     end
 
-    it "should render the custom template for the kind if there is one" do
-      get :new, params.merge(item: { kind: 'New face' })
+    it 'should render the custom template for the kind if there is one (HTML)' do
+      get :new, params.merge(valid_new_face)
       expect(response).to render_template('items/new_new_face')
     end
 
-    it "uses the params to create the new item so you can set defaults in the link" do
-      get :new, params.merge(item: { kind: 'Interesting' })
+    it 'uses the params to create the new item so you can set defaults in the link (HTML)' do
+      get :new, params.merge(valid_interesting)
       expect(assigns[:item].kind).to eq('Interesting')
     end
 
-    it "should set the author on the new Item" do
-      session[:username] = "Barney Rubble"
+    it 'should set the author on the new Item (HTML)' do
+      session[:username] = 'Barney Rubble'
       get :new, params
       item = assigns[:item]
-      expect(item.author).to eq("Barney Rubble")
+      expect(item.author).to eq('Barney Rubble')
     end
   end
 
-  describe "#index" do
-    it "generates a hash of items by type" do
+  describe '#index' do
+    it 'generates a hash of items by type' do
       help = create(:item, kind: "Help", standup: standup)
       new_face = create(:new_face, standup: standup)
       interesting = create(:item, kind: "Interesting", standup: standup)

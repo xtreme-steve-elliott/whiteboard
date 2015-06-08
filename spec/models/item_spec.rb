@@ -21,7 +21,7 @@ describe Item do
 
   describe "validations" do
     it { is_expected.to validate_presence_of(:title) }
-    it { is_expected.to validate_presence_of(:standup) }
+    it { is_expected.to validate_presence_of(:standup_id) }
 
     context 'New Faces' do
       let(:item) { build(:new_face) }

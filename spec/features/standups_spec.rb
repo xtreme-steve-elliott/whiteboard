@@ -4,16 +4,16 @@ describe "standups", type: :request do
   before do
     login
     visit '/'
-    FactoryGirl.create(:standup, ip_addresses_string: "127.0.0.1/32")
+    FactoryGirl.create(:standup, ip_addresses_string: '127.0.0.1/32')
 
     expect(find('h2')).to have_content 'CHOOSE A STANDUP'
     click_link('New Standup')
 
-    fill_in 'standup_title', with: "London"
-    fill_in 'standup_subject_prefix', with: "[Standup][ENG]"
-    select 'Mountain Time (US & Canada)', from: "standup_time_zone_name"
-    fill_in 'standup_to_address', with: "all@pivotallabs.com"
-    fill_in 'standup_closing_message', with: "Woohoo"
+    fill_in 'standup_title', with: 'London'
+    fill_in 'standup_subject_prefix', with: '[Standup][ENG]'
+    select 'Mountain Time (US & Canada)', from: 'standup_time_zone_name'
+    fill_in 'standup_to_address', with: 'all@pivotallabs.com'
+    fill_in 'standup_closing_message', with: 'Woohoo'
     fill_in 'standup_ip_addresses_string', with: "192.168.0.0/24\n\r192.168.1.5\n\r127.0.0.1"
     fill_in 'standup_start_time_string', with: '10:00am'
     fill_in 'standup_image_urls', with: 'http://example.com/bar.png'
@@ -24,7 +24,7 @@ describe "standups", type: :request do
     click_link('London')
   end
 
-  it "creates new standups", js: true do
+  it 'creates new standups', js: true do
     current_page = current_url
     expect(current_page).to match(/http:\/\/127\.0\.0\.1:\d*\/standups\/\d*/)
     expect(find('div.navbar-fixed-top')).to have_content 'London Whiteboard'

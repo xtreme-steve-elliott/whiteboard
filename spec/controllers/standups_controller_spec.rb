@@ -2,19 +2,14 @@ require 'spec_helper'
 
 describe StandupsController, :type => :controller do
   let(:standup) { create(:standup) }
-  let(:params) {
-    { :id => standup.id }
-  }
+  let(:params) { { :id => standup.id } }
   before do
     request.session[:logged_in] = true
   end
 
   describe '#create' do
     context 'with valid parameters' do
-      let(:valid_standup) {
-        { :standup => { :title => 'Berlin', :to_address => 'berlin+standup@pivotallabs.com' } }
-      }
-
+      let(:valid_standup) { { :standup => { :title => 'Berlin', :to_address => 'berlin+standup@pivotallabs.com' } } }
       it 'creates a standup' do
         expect do
           post :create, valid_standup
@@ -35,10 +30,7 @@ describe StandupsController, :type => :controller do
     end
 
     context 'with invalid parameters' do
-      let(:invalid_standup) {
-        { :standup => {} }
-      }
-
+      let(:invalid_standup) { { :standup => {} } }
       it 'does not create a standup' do
         expect do
           post :create, invalid_standup
@@ -68,6 +60,7 @@ describe StandupsController, :type => :controller do
   describe '#new' do
     it 'renders the new standup template (HTML)' do
       get :new
+      expect(assigns[:standup]).to be_new_record
       expect(response).to have_http_status(:ok)
       expect(response).to render_template('standups/new')
     end
@@ -137,12 +130,8 @@ describe StandupsController, :type => :controller do
 
   describe '#update' do
     context 'with valid parameters' do
-      let(:start_standup) {
-        { :standup => { :title => 'Start Title' } }
-      }
-      let(:end_standup) {
-        { :standup => { :title => 'End Title' } }
-      }
+      let(:start_standup) { { :standup => { :title => 'Start Title' } } }
+      let(:end_standup) { { :standup => { :title => 'End Title' } } }
       after do
         put :update, params.merge(start_standup)
       end
@@ -198,9 +187,7 @@ describe StandupsController, :type => :controller do
 
   describe '#destroy' do
     let!(:standup) { create(:standup) }
-    let!(:params) {
-      { :id => standup.id }
-    }
+    let!(:params) { { :id => standup.id } }
     it 'destroys the specified standup' do
       expect {
         post :destroy, params

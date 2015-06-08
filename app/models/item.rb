@@ -13,6 +13,7 @@ class Item < ActiveRecord::Base
 
   validates_inclusion_of :kind, in: KINDS.map { |k| k[:name] }
   validates :title, presence: true
+  validates :standup_id, presence: true
   # validate :standup_present
   validate :face_is_in_the_future
 
@@ -81,12 +82,6 @@ class Item < ActiveRecord::Base
   def face_is_in_the_future
     if kind == 'New face' && (date || Time.at(0)).to_time < Time.now.beginning_of_day
       errors.add(:date, "must be in the present or future")
-    end
-  end
-
-  def standup_present # TODO: eventually make the standup id come from the URL
-    unless standup.present?
-      errors.add(:standup_id, "can't be blank")
     end
   end
 end
