@@ -61,7 +61,7 @@ class Item < ActiveRecord::Base
   end
 
   def possible_template_name
-    kind && "items/new_#{kind.downcase.gsub(" ", '_')}"
+    kind && "items/new_#{kind.downcase.gsub(' ', '_')}"
   end
 
   def relative_date

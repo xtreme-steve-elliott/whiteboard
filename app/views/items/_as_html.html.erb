@@ -1,23 +1,25 @@
 <% Item.kinds.each_with_index do |kind, index| %>
-  <div class="kind <%= kind.name.downcase.tr(' ', '_') %> <%= index%2==0 ? 'left-column' : 'right-column' %>">
-    <div class="block header">
-      <h2 class="title"><%= kind.name.pluralize %></h2>
-      <%= link_to new_standup_item_path(@standup, post_id: @post.try(:id), 'item[kind]' => kind.name), 'data-kind' => kind.name do %>
-        <i class="icon-plus-sign"></i>
-      <% end %>
-    </div>
-    <% if kind.subtitle.present? %>
-      <div class="subtitle"><%= kind.subtitle %></div>
+<div class="item-kind-section">
+  <%= link_to(
+        kind.name.pluralize,
+        new_standup_item_path(@standup, post_id: @post.try(:id), 'item[kind]': kind.name),
+        'data-kind': kind.name,
+        class: 'item-kind-heading',
+        title: "Add #{kind.name} item"
+    )
+  %>
+<% if kind.subtitle.present? %>
+  <div class="item-kind-subheading"><%= kind.subtitle %></div>
+<% end %>
+<% if items[kind.name].present? %>
+  <% if kind.name == Item::KIND_EVENT || kind.name == Item::KIND_NEW_FACE %>
+    <% items[kind.name].group_by(&:relative_date).each do |group_name, entries| %>
+      <div class="item-group-heading"><%= group_name %></div>
+      <%= render entries %>
     <% end %>
-    <% if items[kind.name].present? %>
-      <% if kind.name == 'Event' || kind.name == 'New face' %>
-        <% items[kind.name].group_by(&:relative_date).each do |group_name, events| %>
-          <h4 class="subheader <%= group_name %>"><%= group_name.capitalize %></h4>
-          <%= render events %>
-        <% end %>
-      <% else %>
-        <%= render items[kind.name] %>
-      <% end %>
-    <% end %>
-  </div>
+  <% else %>
+    <%= render items[kind.name] %>
+  <% end %>
+<% end %>
+</div>
 <% end %>

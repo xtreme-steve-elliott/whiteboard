@@ -25,16 +25,16 @@ module ApplicationHelper
 
   def format_title(item)
     if item.date?
-      "#{item.date.strftime("%A(%m/%d)")}: #{item.title}"
+      "#{item.date.strftime('%A(%m/%d)')}: #{item.title}"
     else
       item.title
     end
   end
 
   def date_label(item)
-    if item.date.present? && (item.kind == "Event" || item.date > Date.today)
-      return item.date.strftime("%m/%d") + ": " if is_item_after_this_week(item)
-      Date::DAYNAMES[item.date.wday].to_s + ": "
+    if item.date.present? && (item.kind == Item::KIND_EVENT || item.date > Date.today)
+      return item.date.strftime('%m/%d') + ': ' if is_item_after_this_week(item)
+      Date::DAYNAMES[item.date.wday].to_s + ': '
     end
   end
 

@@ -1,13 +1,13 @@
-@import "compass/css3/box";
-@import 'sass-flex-mixin';
-
-//all columns for big screens
-@media (min-width: 1281px) {
-  .navbar .brand{
-    margin-left: 0;
-  }
-
-  .outer {
-    @include flex-direction(row);
-  }
-}
+//@import "compass/css3/box";
+//@import 'sass-flex-mixin';
+//
+////all columns for big screens
+//@media (min-width: 1281px) {
+//  .navbar .brand{
+//    margin-left: 0;
+//  }
+//
+//  .outer {
+//    @include flex-direction(row);
+//  }
+//}

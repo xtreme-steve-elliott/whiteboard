@@ -11,7 +11,7 @@ class Standup < ActiveRecord::Base
 
   validates :title, presence: true
   validates :to_address, presence: true
-  validates :start_time_string, format: {with: TIME_FORMAT, message: "should be in the format: 9:00am"}
+  validates :start_time_string, format: {with: TIME_FORMAT, message: 'should be in the format: 9:00am'}
 
   def to_builder(should_build = false, fields = nil)
     builder = Jbuilder.new do |json|

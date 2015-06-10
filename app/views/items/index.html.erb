@@ -1,8 +1,18 @@
-<%= render partial: 'as_html', locals: {items: @items} %>
+<h2 class="standup-title for-items"><%= @standup.title %></h2>
+<% # TODO: alternate appearance for when there are no items %>
+<div class="item-kind-sections">
+  <%= render partial: 'as_html', locals: {items: @items} %>
+  <script>
+    $('.item-description-expander').on('click', function(e) {
+      e.preventDefault();
+      $(this).prev().toggleClass('closed');
+      $(this).toggleClass('closed');
+    });
+  </script>
+</div>
 
 <div class='bottom navbar navbar-fixed-bottom'>
   <div class='navbar-inner'>
-    <%= link_to 'Presentation', presentation_standup_items_path(@standup), class: 'btn btn-success' %>
     <%= form_tag "/standups/#{@standup.id}/posts", method: 'post', class: 'navbar-form pull-right' do %>
         <%= text_field_tag 'post[from]', nil, placeholder: 'Blogger Name(s)' %>
         <%= text_field_tag 'post[title]', nil, placeholder: 'Post Title (eg: Best Standup Ever)', class: 'wide-input' %>

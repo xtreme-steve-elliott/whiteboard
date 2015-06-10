@@ -9,232 +9,212 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require_tree ./media
+ //TODO: Put this back
+ //*= require_tree ./media
  */
 
-@import "bootstrap";
-@import "bootstrap-responsive";
+//@import "bootstrap";
+//@import "bootstrap-responsive";
 @import 'font-awesome';
 @import "compass/css3/box";
 @import 'sass-flex-mixin';
+$navbar_height: 94px;
 
-body{
-  color: #5D5C5C;
+* {
+  font-family: "Lekton", sans-serif;
+  color: #000000;
 }
 
-a:hover {
+a, a:hover {
   text-decoration: none;
 }
 
-.navbar i {
-  font-size: 19px;
+/* Navbar */
+.navbar {
+  height: $navbar_height;
+}
+.navbar-fixed-top,
+.navbar-fixed-bottom {
+  position: fixed;
+  right: 0;
+  left: 0;
 }
 
-* {
-  box-sizing: border-box;
+.navbar-fixed-top {
+  top: 0;
 }
 
-.outer {
-  @include flexbox;
-  @include flex-direction(column);
-
-  height: 100%;
-  width: 100%;
-  margin-top: -18px;
+.navbar-fixed-bottom {
+  bottom: 0;
 }
 
-.standup {
-  @include flexbox;
-  @include flex-direction(column);
-}
-
-.kind {
-  width: 100%;
-  margin: 0;
-
-  @include flexbox;
-  @include flex-direction(column);
-}
-
-.subtitle {
-  padding: 3px 8px 4px;
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 4px;
-  color: #666;
-}
-
-.block {
-  @include flexbox;
-  @include flex-direction(row);
-
-  padding: 8px;
-
-  &.header {
-    border-bottom: 1px solid #ccc;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    position: relative;
-  }
-
-  &.errors {
-    @include flex-direction(column);
-
-    ul {
-      @include flexbox;
-    }
-  }
-
-  h1 {
-    padding-bottom: 8px;
-    text-transform: uppercase;
-  }
-
-  h2{
-    text-transform: uppercase;
-  }
-  a {
-    @include flexbox;
-  }
-
-  i.icon-plus-sign {
-    position: absolute;
-    right: 0;
-    line-height: 1.5em;
-    color: #08C;
-    font-size: 2.5rem;
-  }
-
-  .field_with_errors {
-    @include flexbox;
-    @include flex(1);
-  }
-}
-
-.item {
-  @include flexbox;
-  @include flex-direction(column);
-  position: relative;
-  font-size: 1rem;
-  line-height: 1.2rem;
-
-  .author {
-    padding-bottom: 8px;
-    color: #aaa;
-  }
-
-  .title {
-    padding-bottom: 8px;
-    margin-right: 42px;
-  }
-}
-
-.description {
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 8px;
-  margin-bottom: 8px;
-
-  color: #444;
-  font-size: .8rem;
-}
-
-.with-hint {
-  @include flex-direction(column);
-}
-
-.hint {
-  padding: 8px 8px 0 8px;;
-  color: #777;
-  font-style: italic;
-}
-
-.tools {
+.navbar-inner {
+  padding: 25px;
   @include flexbox;
   @include flex-direction(row);
   @include justify-content(space-between);
+  &.navbar-main {
+    @include justify-content(flex-end);
+  }
+  .back-navigation {
+    background: image-url('back-arrow-blue.png') no-repeat center;
+    background-size: 50px auto;
+    height: 44px;
+    width: 54px;
+  }
+  .action-wrapper {
+    @include flexbox;
+    @include flex-direction(row);
+    @include justify-content(space-between);
+    .action {
+      @include flexbox;
+      @include justify-content(center);
+      @include align-items(center);
+      text-transform: uppercase;
+      color: #0000ff;
+      border: 2px solid #0000ff;
+      height: 20px;
+      min-width: 20px;
+      padding: 10px;
+      &.action-text {
+        font-size: 17px;
+      }
+      &.action-icon {
+        background: no-repeat center;
+        &:not(:first-child) {
+          margin-left: 5px;
+        }
+        &:not(:last-child) {
+          margin-right: 5px;
+        }
+        &.presentation {
+          background-image: image-url('presentation-blue.png');
+          background-size: 24px;
+          background-position: center 65%;
+        }
+        &.archived {
+          background-image: image-url('archived-blue.png');
+          background-size: 24px;
+        }
+        &.settings {
+          background-image: image-url('settings-blue.png');
+          background-size: 20px;
+        }
+      }
+    }
+  }
+}
 
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  padding-bottom: 8px;
+.outer {
+  padding: $navbar_height 0;
+}
 
-  a {
-    margin: 0 0 0 10px;
+.standup-title {
+  &.for-items {
+    font-weight: bold;
+    font-size: 28px;
+    text-transform: uppercase;
+  }
+}
+
+.item-kind-sections {
+  @include flexbox;
+  @include flex-direction(column);
+  @include justify-content(space-between);
+}
+
+.item-kind-section {
+  @include flexbox;
+  @include flex-basis(100%);
+  @include flex-grow(1);
+  @include flex-direction(column);
+  &:not(:first-child) {
+    margin-top: 5px;
+  }
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
+}
+
+@media(min-width:768px) {
+  .item-kind-sections {
+    @include flex-direction(row);
   }
 
-  i {
-    font-size: 20px;
+  .item-kind-section {
+    &:not(:first-child) {
+      margin-top: 0;
+      margin-left: 5px;
+    }
+    &:not(:last-child) {
+      margin-bottom: 0;
+      margin-right: 5px;
+    }
   }
 }
 
-.fluid-container {
-  margin: 0 20px;
-}
-
-.preview pre {
-  background-color: white;
-}
-
-.control-group i {
-  font-size: 28px;
-  line-height: 28px;
-}
-
-.navbar.bottom {
-  .navbar-form, .btn {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .navbar-form input{
-    width: 100%;
+.item-kind-heading {
+  @include flexbox;
+  @include flex-basis(100%);
+  font-size: 19px;
+  text-transform: uppercase;
+  border-bottom: 3px solid #000000;
+  padding-bottom: 5px;
+  position: relative;
+  &:hover {
+    border-bottom-width: 5px;
+    padding-bottom: 3px;
+    &:after {
+      content: '+';
+      color: #0000ff;
+      font-size: 20px;
+      position:absolute;
+      right: 10px;
+    }
   }
 }
-.navbar-fixed-bottom .navbar-inner {
-  padding: 5px;
-}
 
-.notice {
+.item-kind-subheading {
   font-style: italic;
-  color: #FF8080;
+  padding: 10px 0 5px;
+  border-bottom: 1px solid #000000;
 }
 
-#errorExplanation {
-  border: 2px solid #b94a48;
-  background-color: #fdd;
-  padding: 1em;
-  margin: 1em;
+.item-group-heading {
+  font-size: 19px;
+  font-weight: bold;
+  text-transform: capitalize;
+  padding: 10px 0 0;
 }
 
-.image_days .controls{
-  margin-top: 5px;
-  
-  label {
-    display: inline;
-    margin-right: 12px;
-    margin-left: 2px;
+.item-presentation {
+  @include flexbox;
+  @include flex-direction(column);
+  padding: 15px 0;
+  border-bottom: 1px solid #000000;
+  &.expandable {
+    padding-bottom: 0;
   }
-  input {
-    margin-top: 0;
+  .item-author {
+    color: #D5D5D5;
   }
-}
-
-.help-block {
-  color: lighten($textColor, 15%); // lighten the text some for contrast
-}
-
-.help-wide {
-  width: 200px;
-}
-
-.datepicker table tr td.disabled,
-.datepicker table tr td.disabled:hover {
-  background: none;
-  color: #dedede;
-  cursor: default;
-}
-.datepicker table tr td.active {
-  background: #0088CC;
-  border-radius: 8px;
-  color: white;
+  .item-title {}
+  .item-description {
+    font-size: 13px;
+    font-style: italic;
+    padding-top: 5px;
+    &.closed {
+      display: none;
+    }
+  }
+  .item-description-expander {
+    height: 24px;
+    @include flexbox;
+    @include flex-grow(1);
+    background: image-url('chevron-up-blue.png') no-repeat center;
+    background-size: 12px;
+    &.closed {
+      background-image: image-url('chevron-down-blue.png');
+    }
+  }
 }

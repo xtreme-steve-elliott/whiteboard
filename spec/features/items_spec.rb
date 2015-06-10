@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'items', type: :request, js: true do
+describe 'items', :type => :request, js: true do
   let!(:standup) { FactoryGirl.create(:standup, title: 'San Francisco', subject_prefix: '[Standup][SF]', closing_message: 'Woohoo', image_urls: 'http://example.com/bar.png', image_days: ['Mon']) }
   let!(:other_standup) { FactoryGirl.create(:standup, title: 'New York') }
   let(:timezone) { ActiveSupport::TimeZone.new(standup.time_zone_name) }
@@ -41,6 +41,7 @@ describe 'items', type: :request, js: true do
           select standup.title, from: 'item[standup_id]'
           click_button 'Create New Face'
         }.to change {standup.items.count}.by(2).and change {other_standup.items.count}.by(1)
+        # TODO: check the values in the new faces themselves
       end
     end
 

@@ -1,0 +1,258 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree ./media
+ */
+
+@import "bootstrap";
+@import "bootstrap-responsive";
+@import 'font-awesome';
+@import "compass/css3/box";
+@import 'sass-flex-mixin';
+
+body{
+  color: #5D5C5C;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.navbar i {
+  font-size: 19px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.outer {
+  @include flexbox;
+  @include flex-direction(column);
+
+  height: 100%;
+  width: 100%;
+  margin-top: -18px;
+}
+
+.standup {
+  @include flexbox;
+  @include flex-direction(column);
+}
+
+.kind {
+  width: 100%;
+  margin: 0;
+
+  @include flexbox;
+  @include flex-direction(column);
+}
+
+.subtitle {
+  padding: 3px 8px 4px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 4px;
+  color: #666;
+}
+
+.block {
+  @include flexbox;
+  @include flex-direction(row);
+
+  padding: 8px;
+
+  &.header {
+    border-bottom: 1px solid #ccc;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    position: relative;
+  }
+
+  &.errors {
+    @include flex-direction(column);
+
+    ul {
+      @include flexbox;
+    }
+  }
+
+  h1 {
+    padding-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  h2{
+    text-transform: uppercase;
+  }
+  a {
+    @include flexbox;
+  }
+
+  i.icon-plus-sign {
+    position: absolute;
+    right: 0;
+    line-height: 1.5em;
+    color: #08C;
+    font-size: 2.5rem;
+  }
+
+  .field_with_errors {
+    @include flexbox;
+    @include flex(1);
+  }
+}
+
+.item {
+  @include flexbox;
+  @include flex-direction(column);
+  position: relative;
+  font-size: 1rem;
+  line-height: 1.2rem;
+
+  .author {
+    padding-bottom: 8px;
+    color: #aaa;
+  }
+
+  .title {
+    padding-bottom: 8px;
+    margin-right: 42px;
+  }
+}
+
+.description {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 8px;
+  margin-bottom: 8px;
+
+  color: #444;
+  font-size: .8rem;
+}
+
+.with-hint {
+  @include flex-direction(column);
+}
+
+.hint {
+  padding: 8px 8px 0 8px;;
+  color: #777;
+  font-style: italic;
+}
+
+.tools {
+  @include flexbox;
+  @include flex-direction(row);
+  @include justify-content(space-between);
+
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding-bottom: 8px;
+
+  a {
+    margin: 0 0 0 10px;
+  }
+
+  i {
+    font-size: 20px;
+  }
+}
+
+.fluid-container {
+  margin: 0 20px;
+}
+
+.preview pre {
+  background-color: white;
+}
+
+.control-group i {
+  font-size: 28px;
+  line-height: 28px;
+}
+
+.navbar.bottom {
+  .navbar-form, .btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .navbar-form input{
+    width: 100%;
+  }
+}
+.navbar-fixed-bottom .navbar-inner {
+  padding: 5px;
+}
+
+.notice {
+  font-style: italic;
+  color: #FF8080;
+}
+
+#errorExplanation {
+  border: 2px solid #b94a48;
+  background-color: #fdd;
+  padding: 1em;
+  margin: 1em;
+}
+
+.image_days .controls{
+  margin-top: 5px;
+  
+  label {
+    display: inline;
+    margin-right: 12px;
+    margin-left: 2px;
+  }
+  input {
+    margin-top: 0;
+  }
+}
+
+.help-block {
+  color: lighten($textColor, 15%); // lighten the text some for contrast
+}
+
+.help-wide {
+  width: 200px;
+}
+
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+  background: none;
+  color: #dedede;
+  cursor: default;
+}
+.datepicker table tr td.active {
+  background: #0088CC;
+  border-radius: 8px;
+  color: white;
+}
+
+/* New CSS */
+.standups {
+  margin-left: auto;
+  margin-right: auto;
+  width:100%;
+  max-width: 400px;
+  // TODO: remove this
+  border: 1px solid red;
+}
+
+.standup_title {
+  padding: 10px 20px;
+  border-bottom: 1px solid #000000;
+  &:not(:first-child) {
+    margin-top: 5px;
+  }
+}

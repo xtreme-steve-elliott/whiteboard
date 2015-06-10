@@ -1,47 +1,47 @@
-@media (min-width: 768px) {
-  // when navbar is fixed add padding to body
-
-  body {
-    padding: 60px 0;
-  }
-
-  .navbar-fixed-top, .navbar-fixed-bottom{
-    position: fixed;
-  }
-
-  .kind {
-    padding: 0 10px;
-  }
-
-  .navbar.bottom {
-    .navbar-form, .btn {
-      width: auto;
-      box-sizing: content-box;
-    }
-    .navbar-form input{
-      width: auto;
-
-      &.wide-input{
-        width: 300px;
-      }
-    }
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1280px) {
-  .outer {
-    display: block;
-  }
-
-  .kind {
-    &.left-column {
-      float: left;
-      width: 50%;
-    }
-
-    &.right-column {
-      float: right;
-      width: 50%;
-    }
-  }
-}
+//@media (min-width: 768px) {
+//  // when navbar is fixed add padding to body
+//
+//  body {
+//    padding: 60px 0;
+//  }
+//
+//  .navbar-fixed-top, .navbar-fixed-bottom{
+//    position: fixed;
+//  }
+//
+//  .kind {
+//    padding: 0 10px;
+//  }
+//
+//  .navbar.bottom {
+//    .navbar-form, .btn {
+//      width: auto;
+//      box-sizing: content-box;
+//    }
+//    .navbar-form input{
+//      width: auto;
+//
+//      &.wide-input{
+//        width: 300px;
+//      }
+//    }
+//  }
+//}
+//
+//@media (min-width: 768px) and (max-width: 1280px) {
+//  .outer {
+//    display: block;
+//  }
+//
+//  .kind {
+//    &.left-column {
+//      float: left;
+//      width: 50%;
+//    }
+//
+//    &.right-column {
+//      float: right;
+//      width: 50%;
+//    }
+//  }
+//}
