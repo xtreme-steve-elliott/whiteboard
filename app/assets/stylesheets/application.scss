@@ -29,6 +29,50 @@ a, a:hover {
   text-decoration: none;
 }
 
+.styled-input {
+  border-radius: 0;
+  color: #000000;
+  font-size: 16px;
+  padding: 10px 15px;
+  border: 2px solid #000000;
+  background: none;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  @extend .styled-input;
+  &::-ms-expand {
+    display: none;
+  }
+}
+
+option {
+  @extend .styled-input;
+  background: #ffffff;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow:0 0 0 50px #ffffff inset;
+  -webkit-text-fill-color: #000000;
+}
+
+input[type='text'] {
+  @extend .styled-input;
+  padding: 0 15px;
+}
+
+textarea {
+  @extend .styled-input;
+  padding: 15px 15px 0;
+  resize: none;
+}
+
+input[type='submit'] {
+  @extend .styled-input;
+}
+
 /* Navbar */
 .navbar {
   height: $navbar_height;
@@ -117,6 +161,7 @@ a, a:hover {
   }
 }
 
+$item_kind_section_spacing_margin: 5px;
 .item-kind-sections {
   @include flexbox;
   @include flex-direction(column);
@@ -129,10 +174,10 @@ a, a:hover {
   @include flex-grow(1);
   @include flex-direction(column);
   &:not(:first-child) {
-    margin-top: 5px;
+    margin-top: $item_kind_section_spacing_margin;
   }
   &:not(:last-child) {
-    margin-bottom: 5px;
+    margin-bottom: $item_kind_section_spacing_margin;
   }
 }
 
@@ -140,22 +185,20 @@ a, a:hover {
   .item-kind-sections {
     @include flex-direction(row);
   }
-
   .item-kind-section {
     &:not(:first-child) {
       margin-top: 0;
-      margin-left: 5px;
+      margin-left: $item_kind_section_spacing_margin;
     }
     &:not(:last-child) {
       margin-bottom: 0;
-      margin-right: 5px;
+      margin-right: $item_kind_section_spacing_margin;
     }
   }
 }
 
 .item-kind-heading {
   @include flexbox;
-  @include flex-basis(100%);
   font-size: 19px;
   text-transform: uppercase;
   border-bottom: 3px solid #000000;
@@ -195,20 +238,26 @@ a, a:hover {
   &.expandable {
     padding-bottom: 0;
   }
+  &:hover {
+    border-bottom-width: 2px;
+    &:not(.expandable) {
+      padding-bottom: 14px;
+    }
+  }
   .item-author {
     color: #D5D5D5;
+    padding-bottom: 5px;
   }
   .item-title {}
   .item-description {
     font-size: 13px;
-    font-style: italic;
-    padding-top: 5px;
     &.closed {
       display: none;
     }
   }
   .item-description-expander {
     height: 24px;
+    padding-bottom: 1px;
     @include flexbox;
     @include flex-grow(1);
     background: image-url('chevron-up-blue.png') no-repeat center;
@@ -216,5 +265,119 @@ a, a:hover {
     &.closed {
       background-image: image-url('chevron-down-blue.png');
     }
+    :hover > & {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.panel-holder {
+  position: fixed;
+  display: none;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 500px;
+  height: 100%;
+  padding: 50px;
+  background: #000000;
+  * {
+    color: #ffffff;
+  }
+}
+
+.panel-top-container {
+  @include flexbox;
+  @include justify-content(flex-start);
+}
+
+.panel-close {
+  height: 30px;
+  width: 30px;
+  padding: 2px;
+  background: image-url('close-white.png') no-repeat center;
+  background-size: 35px;
+  cursor: pointer;
+}
+
+.panel-title {
+  font-size: 35px;
+  padding-left: 40px;
+  padding-top: 2px;
+}
+
+.panel-form {
+  @include flexbox;
+  @include flex-direction(column);
+  @include justify-content(flex-start);
+  padding-top: 30px;
+  label {
+    font-size: 12px;
+  }
+  select,
+  input[type='text'],
+  input[type='submit'],
+  textarea {
+    height: 43px;
+    @include flexbox;
+    margin-top: 5px;
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+  input:-webkit-autofill {
+    -webkit-box-shadow:0 0 0 50px #000000 inset;
+    -webkit-text-fill-color: #ffffff;
+  }
+  textarea {
+    height: 86px;
+  }
+  option {
+    color: #ffffff;
+    background: #000000;
+  }
+}
+
+.panel-row {
+  @include flexbox;
+  @include flex-grow(1);
+  @include flex-direction(row);
+  @include justify-content(space-between);
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+  &.button-row {
+    @include justify-content(flex-start);
+  }
+}
+.panel-column {
+  $column_spacing: 10px;
+  @include flexbox;
+  @include flex-grow(1);
+  @include flex-direction(column);
+  &:not(:first-child) {
+    margin-left: $column_spacing;
+  }
+  &:not(:last-child) {
+    margin-right: $column_spacing;
+  }
+  .button-row > & {
+    @include flex-grow(0);
+  }
+}
+
+.datepicker {
+  @include flexbox;
+  @include flex-direction(row);
+  @include justify-content(space-around);
+  border: 1px solid #ffffff;
+  * {
+    color: #ffffff;
   }
 }

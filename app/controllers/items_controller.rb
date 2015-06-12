@@ -83,7 +83,14 @@ class ItemsController < ApplicationController
 
   def edit
     @item = Item.find(params[:id])
-    render_custom_item_template @item
+    respond_to do |format|
+      format.js
+      format.html {
+        redirect_to standup_items_path(@item.standup)
+        # TODO: see if we can get it to reopen the edit panel too
+      }
+    end
+    # render_custom_item_template @item
   end
 
   def update

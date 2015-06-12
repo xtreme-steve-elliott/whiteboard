@@ -4,12 +4,14 @@
   <%= render partial: 'as_html', locals: {items: @items} %>
   <script>
     $('.item-description-expander').on('click', function(e) {
+      e.stopImmediatePropagation();
       e.preventDefault();
       $(this).prev().toggleClass('closed');
       $(this).toggleClass('closed');
     });
   </script>
 </div>
+<div class="panel-holder"></div>
 
 <div class='bottom navbar navbar-fixed-bottom'>
   <div class='navbar-inner'>
