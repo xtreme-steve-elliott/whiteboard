@@ -356,6 +356,9 @@ $item_kind_section_spacing_margin: 5px;
       border-color: #ff0000;
     }
   }
+  select {
+    height: 47px;
+  }
   input:-webkit-autofill {
     -webkit-box-shadow:0 0 0 50px #000000 inset;
     -webkit-text-fill-color: #ffffff;
@@ -395,7 +398,7 @@ $item_kind_section_spacing_margin: 5px;
   .button-row > & {
     @include flex-grow(0);
   }
-  &.date:first-child {
+  .item-panel &.date:first-child {
     @include flex-grow(0);
     @include flex-basis(48%);
   }

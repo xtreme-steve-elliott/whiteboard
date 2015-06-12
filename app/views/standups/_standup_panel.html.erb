@@ -1,0 +1,82 @@
+<div class="panel standup-panel">
+  <div class="panel-top-container">
+    <div class="panel-close"></div>
+    <% if controller.action_name == 'new' || controller.action_name == 'create' %>
+      <div class="panel-title">New Standup</div>
+    <% else %>
+      <div class="panel-title">Edit Standup</div>
+    <% end %>
+  </div>
+  <% if standup.persisted? %>
+    <%= form_for(standup, :method => :delete, html: {id: 'delete-form'}, remote: true) do |delete_form| %>
+    <% end %>
+  <% end %>
+  <%= form_for(standup, url: (!standup.persisted?) ? standups_path(standup) : standup_path(standup), html: {class: 'panel-form'}, remote: true) do |f| %>
+    <% # TODO: render errors %>
+    <% # TODO: add various messaging %>
+      <div class="panel-row">
+        <div class="panel-column">
+          <%= f.label(:title, 'Standup Name') %>
+          <%= f.text_field(:title, placeholder: 'Standup Name') %>
+        </div>
+        <div class="panel-column">
+          <%= f.label(:subject_prefix, 'Email Subject Prefix') %>
+          <%= f.text_field(:subject_prefix, placeholder: 'Email Subject Prefix') %>
+        </div>
+      </div>
+      <div class="panel-row">
+        <div class="panel-column">
+          <%= f.label(:to_address, 'Send Email To') %>
+          <%= f.text_field(:to_address, placeholder: 'Send Email To (Address)') %>
+        </div>
+      </div>
+      <div class="panel-row">
+        <div class="panel-column">
+          <%= f.label(:closing_message, 'Closing Message') %>
+          <%= f.text_field(:closing_message, placeholder: 'Closing Message') %>
+        </div>
+      </div>
+      <div class="panel-row">
+        <div class="panel-column">
+          <%= f.label(:start_time_string, 'Start Time') %>
+          <%= f.text_field(:start_time_string, placeholder: 'Start Time (ex. 9:06am)') %>
+        </div>
+        <div class="panel-column">
+          <%= f.label(:time_zone_name, 'Time Zone') %>
+          <%= f.select(:time_zone_name, ActiveSupport::TimeZone.all.map(&:name)) %>
+        </div>
+      </div>
+      <div class="panel-row">
+        <div class="panel-column">
+          <%= f.label(:ip_addresses_string, 'Authorized IP Addresses') %>
+          <%= f.text_area(:ip_addresses_string, placeholder: 'Authorized IP Addresses') %>
+          <% # TODO: add message below (Please remember to add your own IP (#{request.remote_ip}) to the whitelist if you'd like to access this standup from your current location.)) %>
+        </div>
+      </div>
+      <div class="panel-row">
+        <div class="panel-column">
+          <%= f.label(:image_urls, 'Image URLs (newline separated)') %>
+          <%= f.text_area(:image_urls, placeholder: 'Image URLs (newline separated)', rows: 8) %>
+        </div>
+      </div>
+      <div class="panel-row">
+        <div class="panel-column">
+          <%= f.label(:image_days, 'Show Image On') %>
+          <div class="panel-row button-row">
+            <%= f.collection_check_boxes(:image_days, [%w(Mon M), %w(Tue Tu), %w(Wed W), %w(Thu Th), %w(Fri F)], :first, :last) do |day| %>
+              <div class="panel-column">
+                <%= day.label %>
+                <%= day.check_box %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+  <% end %>
+</div>
+<script>
+    $('.panel-close').on('click', function(e) {
+        e.preventDefault();
+        $(this).closest('.panel-holder').hide();
+    });
+</script>

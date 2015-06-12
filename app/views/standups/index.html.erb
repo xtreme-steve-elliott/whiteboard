@@ -1,13 +1,6 @@
-<div class="standup">
-  <div class="block header">
-    <h2>Choose a Standup</h2>
-  </div>
-  <% @standups.each do |standup| %>
-    <div class="block">
+<% # TODO: page title (Choose a Standup) %>
+<% @standups.each do |standup| %>
       <h1><%= link_to standup.title, standup %></h1>
-    </div>
-  <% end %>
-  <div class="block buttons">
-    <%= link_to('New Standup'.html_safe, new_standup_path, class: 'btn btn-primary btn-large btn-block') %>
-  </div>
-</div>
+<% end %>
+<%= link_to('New Standup'.html_safe, new_standup_path, remote: true) %>
+<div class="panel-holder"></div>

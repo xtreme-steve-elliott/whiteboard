@@ -1,7 +1,6 @@
 class StandupsController < ApplicationController
   def create
     @standup = standup_service.create(attributes: params[:standup])
-
     if @standup.persisted?
       respond_to do |format|
         format.html {
@@ -25,6 +24,13 @@ class StandupsController < ApplicationController
 
   def new
     @standup = Standup.new(params[:standup])
+    respond_to do |format|
+      format.js { render 'standups/edit_or_new' }
+      format.html {
+        redirect_to standups_path
+        # TODO: see if we can get it to reopen the edit/new panel too
+      }
+    end
   end
 
   def index
