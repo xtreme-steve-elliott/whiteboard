@@ -343,9 +343,17 @@ $item_kind_section_spacing_margin: 5px;
       color: #ff0000;
     }
   }
+  input[type='checkbox'] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 43px;
+    border-style: solid;
+  }
   select,
   input[type='text'],
   input[type='submit'],
+  input[type='checkbox'],
   textarea {
     height: 43px;
     @include flexbox;

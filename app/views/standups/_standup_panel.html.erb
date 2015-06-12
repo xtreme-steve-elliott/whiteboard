@@ -64,7 +64,7 @@
           <%= f.label(:image_days, 'Show Image On') %>
           <div class="panel-row button-row">
             <%= f.collection_check_boxes(:image_days, [%w(Mon M), %w(Tue Tu), %w(Wed W), %w(Thu Th), %w(Fri F)], :first, :last) do |day| %>
-              <div class="panel-column">
+              <div class="panel-column checkbox">
                 <%= day.label %>
                 <%= day.check_box %>
               </div>
@@ -72,6 +72,7 @@
           </div>
         </div>
       </div>
+      <% # TODO: add update and delete buttons like for items and hook up the endpoints as such %>
   <% end %>
 </div>
 <script>
