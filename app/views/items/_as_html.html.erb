@@ -3,6 +3,7 @@
   <%= link_to(
         kind.name.pluralize,
         new_standup_item_path(@standup, post_id: @post.try(:id), 'item[kind]': kind.name),
+        remote: true,
         'data-kind': kind.name,
         class: 'item-kind-heading',
         title: "Add #{kind.name} item"

@@ -36,6 +36,9 @@ a, a:hover {
   padding: 10px 15px;
   border: 2px solid #000000;
   background: none;
+  &.error {
+    border-color: #ff0000;
+  }
 }
 
 select {
@@ -71,6 +74,10 @@ textarea {
 
 input[type='submit'] {
   @extend .styled-input;
+}
+
+label.required:after {
+  content: '*';
 }
 
 /* Navbar */
@@ -153,6 +160,18 @@ input[type='submit'] {
   padding: $navbar_height 0;
 }
 
+.alert {
+  border-radius: 5px;
+  padding: 15px;
+  &.alert-success {
+    color: #699062;
+    background-color: #E8F1DD;
+  }
+  &.alert-error {
+
+  }
+}
+
 .standup-title {
   &.for-items {
     font-weight: bold;
@@ -220,7 +239,7 @@ $item_kind_section_spacing_margin: 5px;
 .item-kind-subheading {
   font-style: italic;
   padding: 10px 0 5px;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px dotted #000000;
 }
 
 .item-group-heading {
@@ -320,6 +339,9 @@ $item_kind_section_spacing_margin: 5px;
   padding-top: 30px;
   label {
     font-size: 12px;
+    &.error {
+      color: #ff0000;
+    }
   }
   select,
   input[type='text'],
@@ -330,6 +352,9 @@ $item_kind_section_spacing_margin: 5px;
     margin-top: 5px;
     color: #ffffff;
     border-color: #ffffff;
+    &.error {
+      border-color: #ff0000;
+    }
   }
   input:-webkit-autofill {
     -webkit-box-shadow:0 0 0 50px #000000 inset;
@@ -369,6 +394,10 @@ $item_kind_section_spacing_margin: 5px;
   }
   .button-row > & {
     @include flex-grow(0);
+  }
+  &.date:first-child {
+    @include flex-grow(0);
+    @include flex-basis(48%);
   }
 }
 

@@ -63,5 +63,13 @@ module Whiteboard
     config.assets.initialize_on_precompile = false
     config.assets.paths << Rails.root.join('lib', 'assets', 'deck-js')
     config.assets.precompile += %w(deck.js deck.css)
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance|
+      class_attr_index = html_tag.index 'class="'
+      if class_attr_index
+        html_tag.insert class_attr_index+7, 'error '
+      else
+        html_tag.insert html_tag.index('>'), ' class="error"'
+      end
+    }
   end
 end

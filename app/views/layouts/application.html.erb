@@ -36,16 +36,15 @@
 <% end %>
 </div>
 
-<% if flash[:error] %>
-    <p class="alert alert-error"><%= flash[:error] %></p>
-<% end %>
-<% if flash[:notice] %>
-    <p class="alert alert-success"><%= flash[:notice] %></p>
-<% end %>
-
 <% if @boxed %>
     <div class="outer">
     <% end %>
+<% if flash[:error] %>
+  <div class="alert alert-error"><%= flash[:error] %></div>
+<% end %>
+<% if flash[:notice] %>
+  <div class="alert alert-success"><%= flash[:notice] %></div>
+<% end %>
 <%= yield %>
 <% if @boxed %></div>
 <% end %>

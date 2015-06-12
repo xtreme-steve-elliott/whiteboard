@@ -1,15 +1,23 @@
 <div class="panel">
   <div class="panel-top-container">
-      <div class="panel-close"></div>
-      <div class="panel-title"><%= item.kind %> - <%= controller.action_name.capitalize %></div>
-  </div>
-  <%= form_for(item, :method => :delete, html: {id: 'delete-form'}) do |delete_form| %>
+    <div class="panel-close"></div>
+  <% if controller.action_name == 'new' || controller.action_name == 'create' %>
+    <div class="panel-title"><%= item.kind %> - New</div>
+  <% else %>
+    <div class="panel-title"><%= item.kind %> - Edit</div>
   <% end %>
-  <%= form_for(item, html: {class: 'panel-form'}) do |f| %>
+  </div>
+<% if item.persisted? %>
+  <%= form_for(item, :method => :delete, html: {id: 'delete-form'}, remote: true) do |delete_form| %>
+  <% end %>
+<% end %>
+  <%= form_for(item, url: (!item.persisted?) ? standup_items_path(@standup) : item_path(item), html: {class: 'panel-form'}, remote: true) do |f| %>
     <% # TODO: render errors %>
     <% # TODO: add kind switcher %>
     <% # TODO: add public switcher %>
     <% # TODO: add various messaging %>
+    <%= f.hidden_field :post_id %>
+    <%= f.hidden_field :kind %>
     <div class="panel-row">
       <div class="panel-column">
         <%= f.label(:standup_id) %>
@@ -18,27 +26,30 @@
     </div>
     <div class="panel-row">
       <div class="panel-column">
-        <%= f.label(:title, "#{item.kind} Title") %>
+        <%= f.label(:title) %>
         <%= f.text_field(:title, placeholder: "#{item.kind} Title") %>
       </div>
     </div>
     <div class="panel-row">
+    <% if item.kind != Item::KIND_NEW_FACE %>
       <div class="panel-column">
         <%= f.label(:author) %>
         <%= f.text_field(:author, placeholder: 'Author') %>
       </div>
+    <% end %>
       <div class="panel-column date">
         <%= f.label(:date) %>
         <%= f.text_field(:date, value: item.date || Date.today) %>
-        <!--<input type="text" data-provide="datepicker" data-date-format="yyyy-mm-dd" />-->
       </div>
     </div>
+  <% if item.kind != Item::KIND_NEW_FACE %>
     <div class="panel-row">
       <div class="panel-column">
         <%= f.label(:description) %>
         <%= f.text_area :description, placeholder: markdown_placeholder, rows: 5 %>
       </div>
     </div>
+  <% end %>
     <div class="panel-row button-row">
     <% if item.persisted? %>
       <div class="panel-column">
@@ -46,7 +57,7 @@
       </div>
     <% end %>
       <div class="panel-column">
-        <%= f.submit 'Update' %>
+        <%= f.submit ((item.persisted?) ? 'Update' : 'Create') %>
       </div>
     </div>
   <% end %>
